@@ -1,0 +1,44 @@
+<style>
+    a{
+        color: black;
+    }
+</style>
+<div id="mypage_area" style="margin-bottom: 100px;">
+    <div id="mypage_container" style="margin-top: 100px; width: 850px;">
+        <div class="book_mark_title">
+            결제내역
+        </div>
+        <div class="view_record_box" style="height: auto; margin-bottom: 50px;">
+            <div class="inquiry_list_nav" style="border-top: 0; width: 100%; border: 1px solid #999; border-top: 2px solid red; margin-top: 50px;">
+                <div class="view_record_box1" style="width: 90px;">PAY_NO</div>
+                <div class="view_record_box1" style="width: 130px;">EXHIBITION_NO</div>
+                <div class="view_record_box2" style="width: 210px;">TIME</div>
+                <div class="view_record_box2" style="width: 90px;">TYPE</div>
+                <div class="view_record_box2" style="width: 110px;">COST</div>
+                <div class="view_record_box2" style="width: 80px;">REFUND</div>
+                <div class="view_record_box2" style="width: 140px;"></div>
+            </div>
+            <%for (var i = 0; i < row.length; i++){%>
+                <div class="inquiry_list_nav_box2" style="justify-content: flex-start; width: 100%;  height: 40px; border: 1px solid #999; border-top: 0px;">
+                    <div class="view_record_box1" style="width: 90px;"><%=row[i].NUMBER%></div>
+                    <div class="view_record_box1" style="width: 130px;"><%=row[i].EXHIBITION_NUMBER%></div>
+                    <div class="view_record_box2" style="width: 210px;"><a href="/exhibition_detail/<%=row[i].EXHIBITION_NUMBER%>"><%=time[i]%></a></div>
+                    <div class="view_record_box2" style="width: 90px;"><%=row[i].PAYMENT_TYPE%></div>
+                    <div class="view_record_box2" style="width: 110px;"><%=row[i].PAYMENT_AMOUNT%></div>
+                    <% if (row[i].REFUND_STATUS == 'N'){%>
+                        <div class="view_record_box2" style="width: 80px;">N</div>
+                    <%} else {%>
+                        <div class="view_record_box2" style="width: 80px;">Y</div>
+                    <%}%>
+                    <% if (row[i].REFUND_STATUS == 'N'){%>
+                        <div class="view_record_box2" style="width: 140px;">
+                            <button style="width: 90px; height: 26px; outline: none; outline: none; border: none; cursor: pointer; background-color: #1387fc; color: white; border-radius: 4px; font-size: 16px;" onclick="location.href='/compensating/<%=row[i].NUMBER%>'">환불하기</button>
+                        </div>
+                    <%} else {%>
+                        
+                    <%}%>
+                </div>
+            <%}%>
+        </div>
+    </div>
+</div>

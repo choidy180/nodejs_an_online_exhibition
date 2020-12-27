@@ -1,0 +1,85 @@
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+<div class="app_for_exhibition_area">
+    <div class="app_for_exhibition_container">
+        <div class="app_for_exhibition_container_left">
+            <div class="app_for_exhibition_user_info">
+                <div class="afe_user_info_imgbox">
+                    <img class="afe_user_info_img" src="/uploads/<%=sess.user.IMG%>" alt="">
+                </div>
+                <p class="afe_user_info_name"><%= sess.user.NAME%></p>
+                <p class="afe_user_info_name" style="font-weight: 500; letter-spacing: -0.5px;"><%= sess.user.EMAIL%></p>
+            </div>
+            <div class="app_for_exhibition_user_info_bottom">
+                <p class="app_for_exhibition_user_info_bottom_text">전시회 승인</p>
+                <p class="app_for_exhibition_user_info_bottom_text" style="margin-bottom: 30px; margin-top: -10px;">전시작품 승인</p>
+                <p class="app_for_exhibition_user_info_bottom_text" style="color: #4B97FD; font-weight: 700;">전시회 등록</p>
+                <p class="app_for_exhibition_user_info_bottom_text" style="margin-bottom: 30px; margin-top: -10px;">전시작품 등록</p>
+            </div>
+        </div>
+        <form action="/board/exhibition_registration_last" method="POST">
+        <div class="app_for_exhibition_container_right">
+            <div class="afe_right_container" style="padding-top: 20px; padding-bottom: 20px">
+                <div style="border: 3px solid #999; padding: 30px; width: 100%;">
+                <div class="afe_right_headbox">
+                    전시회 등록 결제를 진행합니다.
+                </div>
+                <div class="afe_right_headbox" style="margin-top: -13px;">
+                    정보를 확인한 후에 결제를 진행하세요.
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 10px;">
+                   <span>전시회 번호 : <input type="text" class="afe_right_headbox_exhibinumber" value="<%=exhibition_number%>" readonly name="exhb_number"> / 
+                   </span> &nbsp;&nbsp;결제금액 : <span style="color: red;">&nbsp; ₩ <input name="account_price" type="text" class="afe_right_headbox_exhibiprice" value="<%=price%>"></span>
+                </div>
+                <% if(over_pay == '(추가금 지불 됨)'){%>
+                    <div class="afe_right_headbox" style="margin-top: -13px;">
+                        <input name="over_pay_on" class="overpay_on_box" type="text" value="추가금 지불됨" readonly> 
+                    </div>
+                <%}%>
+                <%if (row.length == 1) {%>
+                <div class="afe_right_headbox" style="margin-top: 50px; height: 30px;;justify-content: flex-start; ">
+                    카드 번호
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px;">
+                    <input class="card_input_box_first" type="text" name="number" id="" style="width: 100%;" readonly value="<%=row[0].NUMBER%>">
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 10px; height: 30px;;justify-content: flex-start; ">
+                    카드 유효 기간
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px; justify-content: flex-start;">
+                    <input class="card_input_box_first" type="text" name="date" id="" style="width: 100%;" readonly value="<%=row[0].DATE%>">
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 10px; height: 30px;;justify-content: flex-start; ">
+                    CVC
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px; justify-content: flex-start;">
+                    <input class="card_input_box_first" type="text" name="cvc" id="" style="width: 100%;">
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 10px; height: 30px;;justify-content: flex-start; ">
+                    비밀번호
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px; justify-content: flex-start;">
+                    <input class="card_input_box_first" type="text" name="pwd" id="" style="width: 100%;">
+                </div>
+                <div class="exhibition_approval_area" style="align-items: flex-start; border: none;">
+                    <div class="afe_right_app_exhibition_btn_container" style="margin-top: 10px; display: flex;">
+                        <button class="afe_right_app_exhibition_btn" style="width: 200px; margin-right: 50px;">결제하기</button>
+                        </form>
+                        <button class="afe_right_app_exhibition_btn" style="width: 200px;">취소하기</button>
+                    </div>
+                </div>
+                <%} else {%>
+                    <div class="afe_right_headbox">
+                        등록된 카드가 존재하지 않습니다.
+                    </div>
+                    <div class="exhibition_approval_area" style="align-items: flex-start; border: none; padding-top: 0px; height: 100px; margin-top: 0px;">
+                        <div class="afe_right_app_exhibition_btn_container" style="display: flex; margin-top: 20px;">
+                            <button class="afe_right_app_exhibition_btn" style="width: 200px;" onclick="location.href='/register_card'">등록하기</button>
+                        </div>
+                    </div>
+                <%}%>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

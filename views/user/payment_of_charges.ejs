@@ -1,0 +1,86 @@
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+<div class="app_for_exhibition_area">
+    <div class="app_for_exhibition_container">
+        <div class="app_for_exhibition_container_right">
+            <div class="afe_right_container" style="padding-top: 20px; padding-bottom: 20px">
+                <div style="border: 3px solid #999; padding: 30px;" >
+                <div class="afe_right_headbox" style="display: flex;flex-direction: column; justify-content: flex-start; align-items: center; width: 100%; height: 150px; margin-top: 30px;">
+                    <p>요금제 결제를 진행합니다.</p>
+                    <% if (para == 'premium'){%>
+                        <div style="width: 100%; display: flex;flex-direction: row; justify-content: flex-start; align-items: center; width: 100%; height: 50px; margin-top: 50px;">
+                            관람권 : <input type="text" id="count" name="grade" value="20" style="border: none; outline: none; font-size: 26px; margin-left: 20px; background-color: transparent; font-family: 'Noto Sans KR', sans-serif; font-weight: 700;">
+                            ₩ 169,000
+                        </div>
+                        <input type="text" id="pay" name="ava" style="border: none; outline: none; background-color: transparent; color: transparent;" readonly  value="169,000">
+                    <%}%>
+                    <% if (para == 'basic'){%>
+                        <div style="width: 100%; display: flex;flex-direction: row; justify-content: flex-start; align-items: center; width: 100%; height: 50px; margin-top: 50px;">
+                            관람권 : <input type="text" id="count" name="grade" value="5" style="border: none; outline: none; font-size: 26px; margin-left: 20px; background-color: transparent; font-family: 'Noto Sans KR', sans-serif; font-weight: 700;">
+                            ₩ 45,900
+                        </div>
+                        <input type="text" id="pay" name="ava" style="border: none; outline: none; background-color: transparent; color: transparent;" readonly  value="49,000">
+                    <%}%>
+                    <% if (para == 'standard'){%>
+                        <div style="width: 100%; display: flex;flex-direction: row; justify-content: flex-start; align-items: center; width: 100%; height: 50px; margin-top: 50px;">
+                            관람권 : <input type="text" id="count" name="grade" value="10" style="border: none; outline: none; font-size: 26px; margin-left: 20px; background-color: transparent; font-family: 'Noto Sans KR', sans-serif; font-weight: 700;">
+                            ₩ 89,000
+                        </div>
+                        <input type="text" id="pay" name="ava" style="border: none; outline: none; background-color: transparent; color: transparent;" readonly value="89,000">
+                    <%}%>
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 30px; height: 30px;justify-content: flex-start; ">
+                    카드 번호
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px;">
+                    <input class="card_input_box_first" type="text" name="c1" id="c1" readonly value="<%=row[0].NUMBER.slice(0,4)%>" style="text-align: center;">
+                    <div class="card_input_box_blank" style="width: 30px; height: 100%;">-</div>
+                    <input class="card_input_box_first" type="text" name="c2" id="c2" readonly value="<%=row[0].NUMBER.slice(5,9)%>" style="text-align: center;">
+                    <div class="card_input_box_blank" style="width: 30px; height: 100%;">-</div>
+                    <input class="card_input_box_first" type="text" name="c3" id="c3"  readonly value="<%=row[0].NUMBER.slice(10,14)%>" style="text-align: center;">
+                    <div class="card_input_box_blank" style="width: 30px; height: 100%;">-</div>
+                    <input class="card_input_box_first" type="text" name="c4" id="c4" readonly value="<%=row[0].NUMBER.slice(15,19)%>" style="text-align: center;">
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 10px; height: 30px;;justify-content: flex-start; ">
+                    카드 유효 기간
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px; justify-content: flex-start;">
+                    <input class="card_input_box_first" type="text" name="d1" id="" style="width: calc(50% - 15px); text-align: center;"  readonly value="<%=row[0].DATE.slice(0,2)%>">
+                    <div class="card_input_box_blank" style="width: 30px; height: 100%;">-</div>
+                    <input class="card_input_box_first" type="text" name="d2" id="" style="width: calc(50% - 15px); text-align: center;"  readonly value="<%=row[0].DATE.slice(3,5)%>">
+                </div>
+                <script>
+                    check_card = () => {
+                        if('<%=row[0].CVC%>' == document.getElementById('cvc').value){
+                            if('<%=row[0].PWD%>' == document.getElementById('pwd').value){
+                                location.href='/payment_of_charges_page/' + document.getElementById('c1').value + '-' + document.getElementById('c2').value + '-' + document.getElementById('c3').value + '-'  + document.getElementById('c4').value + '=' + document.getElementById('count').value + '=' + document.getElementById('pay').value + '=' + '<%=para%>'
+                            } else {
+                                alert("CVC 또는 비밀번호가 일치하지 않습니다.");
+                            }
+                        } else {
+                            alert("CVC 또는 비밀번호가 일치하지 않습니다.");
+                        }
+                    }
+                </script>
+                <div class="afe_right_headbox" style="margin-top: 10px; height: 30px;;justify-content: flex-start; ">
+                    CVC
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px; justify-content: flex-start;">
+                    <input class="card_input_box_first" type="text" name="cvc" id="cvc" style="width: 100%;">
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 10px; height: 30px;;justify-content: flex-start; ">
+                    비밀번호
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px; justify-content: flex-start;">
+                    <input class="card_input_box_first" type="text" name="pwd" id="pwd" style="width: 100%;">
+                </div>
+                <div class="exhibition_approval_area" style="align-items: flex-start; border: none;">
+                    <div class="afe_right_app_exhibition_btn_container" style="margin-top: 10px; display: flex;">
+                        <button class="afe_right_app_exhibition_btn" style="width: 200px;" onclick="check_card()">결제하기</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

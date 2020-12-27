@@ -1,0 +1,10 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.main_nav_area {
+  width: 1500px;
+}

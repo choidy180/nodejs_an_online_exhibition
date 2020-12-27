@@ -1,0 +1,33 @@
+<style>
+a{
+    text-decoration: none;
+    color: black;
+}
+</style>
+<div id="mypage_area">
+    <div id="mypage_container" style="margin-top: 100px; width: 900px;">
+        <div class="book_mark_title">
+            요금제 결제 기록
+        </div>
+        <div style="width: 100%; height: 40px; border: 1px solid #777777; border-top: 3px solid red; margin-top: 50px; display: flex; justify-content: flex-start;">
+            <div class="payment_record_box1">결제번호</div>
+            <div class="payment_record_box2">카드번호</div>
+            <div class="payment_record_box3">결제시간</div>
+            <div class="payment_record_box4">결제금액</div>
+            <div class="payment_record_box5">관람권</div>
+            <div class="payment_record_box6">환불여부</div>
+            <div class="payment_record_box7"></div>
+        </div>
+        <% for (var i = 0; i < row.length; i++){%>
+        <div style="width: 100%; height: 40px; border: 1px solid #777777; border-top: none; display: flex; justify-content: flex-start;">
+            <div class="payment_record_box1"><%=row[0].NUMBER%></div>
+            <div class="payment_record_box2">•••• •••• •••• <%=row[0].CARD_NUMBER.slice(15,19)%></div>
+            <div class="payment_record_box3"><%=pay_record[0]%></div>
+            <div class="payment_record_box4">₩ <%=costarray[0]%></div>
+            <div class="payment_record_box5"><%=row[0].VIEWING_AVA_COUNT%></div>
+            <div class="payment_record_box6"><%=row[0].REFUND_STATUS%></div>
+            <div class="payment_record_box7"><button>환불</button></div>
+        </div>
+        <%}%>
+    </div>
+</div>

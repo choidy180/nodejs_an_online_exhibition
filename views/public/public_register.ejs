@@ -1,0 +1,27 @@
+<div class="public_area">
+    <div class="public_container">
+        <div class="public_box_top" style="margin-top: 50px; font-size: 30px; margin-bottom: 20px;">
+            공지사항을 작성합니다.
+        </div>
+        <% if (sess.user.TYPE == 'A'){%>
+            <form action="/board/public_upload" method="POST">
+                <div class="public_box" style=" font-size: 24px; justify-content: flex-start; height: 28px;">
+                    공지사항 제목
+                </div>
+                <div class="public_box" style="height: 38px; height: auto; flex-direction: column;">
+                    <input name="title" class="public_box_title_box" type="text">
+                    <div class="public_box" style=" font-size: 24px; justify-content: flex-start; height: 28px; margin-top: 30px;">
+                        공지사항 내용
+                    </div>
+                    <textarea class="public_box_text_box" name="content" id="" cols="30" rows="10"></textarea>
+                    <button class="public_box_register_btn">공지사항 작성</button>
+                </div>
+        <%} else {%>
+            <div style="width: 100%; height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <p>로그인후에 작성할 수 있습니다.</p>
+                <button class="public_box_register_btn" onclick="location.href='/public'">뒤로 가기</button>
+            </div>
+        </form>
+        <%}%>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div id="mypage_area">
+    <div id="mypage_container" style="height: 100%; margin-top: 0px; flex-direction: row;">
+        <div class="app_for_exhibition_container_left">
+            <div class="app_for_exhibition_user_info">
+                <div class="afe_user_info_imgbox">
+                    <img class="afe_user_info_img" src="/uploads/<%=sess.user.IMG%>" alt="">
+                </div>
+                <p class="afe_user_info_name"><%= sess.user.NAME%></p>
+                <p class="afe_user_info_name" style="font-weight: 500; letter-spacing: -0.5px;"><%= sess.user.EMAIL%></p>
+            </div>
+            <div class="app_for_exhibition_user_info_bottom">
+                <p class="app_for_exhibition_user_info_bottom_text" onclick="location.href='/user_change_info_first'" style=" color: #4B97FD; font-weight: 700;">회원정보 수정</p>
+                <p class="app_for_exhibition_user_info_bottom_text" style="margin-bottom: 30px; margin-top: -10px;" onclick="location.href='/user_card'">결제카드 관리</p>
+                <p class="app_for_exhibition_user_info_bottom_text" style="">전시회 등록</p>
+                <p class="app_for_exhibition_user_info_bottom_text" style="margin-bottom: 30px; margin-top: -10px;">전시작품 등록</p>
+            </div>
+        </div>
+        <script>
+            enterKey = (event) => {
+                if(event.keyCode == 13){
+                    if(document.querySelector('.input_user_info_change_pwd_1').value == '<%=sess.user.PWD%>'){
+                        location.href= "http://localhost:3000/user_change_info_second"
+                    }
+                    else{
+                        alert("비밀번호가 일치하지 않습니다.");
+                    }
+                }
+            }
+        </script>
+        <div class="mypage_main_box_right" style="flex-direction: column ;justify-content: flex-start;">
+            <p style="font-size: 24px; font-weight: 700px; letter-spacing: -1.3px; margin-top: 50px;">비밀번호를 입력하세요.</p>
+            <input type="text" class="input_user_info_change_pwd_1" style="width: 300px; margin-top: 10px; height: 35px; border: 2px solid #999; padding-left: 10px; font-size: 22px;" onkeypress="enterKey(event)">
+        </div>
+    </div>
+</div>

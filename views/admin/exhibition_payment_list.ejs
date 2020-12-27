@@ -1,0 +1,50 @@
+<div class="app_for_exhibition_container_right" style="height: 100vh; margin-bottom: 20px;" >
+    <div class="afe_right_container">
+        <div class="afe_right_headbox" style="padding-bottom: 50px;">
+            전시회 등록 결제내역 리스트입니다.
+        </div>
+        <div class="exhibition_payment_list_box" style="display: flex; flex-direction: column; border-top: 0px;">
+            <div class="exhibition_payment_list_box" style="border-bottom: 0px; border-top: 1px solid black;">
+                <div class="exhibition_payment_list_box1">
+                    결제번호
+                </div>
+                <div class="exhibition_payment_list_box2">
+                    전시회 번호
+                </div>
+                <div class="exhibition_payment_list_box3">
+                    결제시간
+                </div>
+                <div class="exhibition_payment_list_box1">
+                    결제금액
+                </div>
+                <div class="exhibition_payment_list_box4">
+                    환불여부
+                </div>
+                <div class="exhibition_payment_list_box4">
+                </div>
+            </div>
+            <%for (var i = 0; i < row.length; i ++){%>
+            <div class="exhibition_payment_list_box">
+                <div class="exhibition_payment_list_box1">
+                    <%=row[i].NUMBER%>
+                </div>
+                <div class="exhibition_payment_list_box2">
+                    <%=row[i].EXHIBITION_NUMBER%>
+                </div>
+                <div class="exhibition_payment_list_box3">
+                    <%=register_date[i]%>
+                </div>
+                <div class="exhibition_payment_list_box1">
+                    ₩<%=costarray[i]%>
+                </div>
+                <div class="exhibition_payment_list_box4">
+                    <%=row[i].REFUND%>
+                </div>
+                <div class="exhibition_payment_list_box4">
+                    <button class="exhibition_payment_list_box4_btn">환불</button>
+                </div>
+            </div>
+            <%}%>
+        </div>
+    </div>
+</div>

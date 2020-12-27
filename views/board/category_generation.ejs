@@ -1,0 +1,38 @@
+<div class="category_generation_area">
+    <div class="category_generation_container">
+        <div class="category_generation_title_box">
+            전시회 카테고리 등록
+        </div>
+        <form class="category_generation_container" action="/board/category" method="POST" enctype="multipart/form-data">
+        <div id="exhibition_image_container" style="width: 650px; margin-top: 50px;">
+            <img name="img" src="/uploads/10_Flower Forest Lost, Immersed and Reborn_teamlabBorderless.jpg">
+        </div> 
+        <script> 
+            function setThumbnail(event) { 
+                console.log("ㅎㅇㅎㅇ");
+                if(document.querySelector('#exhibition_image_container').children[0] != undefined){
+                    document.querySelector('#exhibition_image_container').children[0].remove();
+                }
+                var reader = new FileReader(); reader.onload = function(event) { 
+                var img = document.createElement("img"); 
+                img.setAttribute("name",'img');
+                img.setAttribute("src", event.target.result); 
+                document.querySelector("div#exhibition_image_container").appendChild(img); 
+            }; 
+            reader.readAsDataURL(event.target.files[0]);
+            }
+        </script>
+        <div class="sign_box" style="margin-top: 1vh;">
+            <div class="filebox"> 
+                <label for="ex_file">대표 이미지 등록</label> 
+                <input type="file" id="ex_file" accept="image/*" onchange="setThumbnail(event);" name="userfile"> 
+            </div>
+        </div>
+        <input type="text" class="afe_right_exhb_title" placeholder="카테고리 이름" name="name">
+        <textarea class="afe_right_exhb_sub_text_area" name="description" id="" cols="30" rows="10" placeholder="카테고리 설명"></textarea>
+        <div class="afe_right_app_exhibition_btn_container">
+            <button class="afe_right_app_exhibition_btn">카테고리 등록</button>
+        </div>
+        </form>
+    </div>
+</div>

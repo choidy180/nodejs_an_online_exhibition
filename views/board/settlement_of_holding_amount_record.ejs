@@ -1,0 +1,32 @@
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+    </style>
+    <div id="mypage_area">
+        <div id="mypage_container" style="margin-top: 100px; width: 900px;">
+            <div class="book_mark_title">
+                정산 기록
+            </div>
+            <div style="width: 100%; height: 40px; border: 1px solid #777777; border-top: 3px solid red; margin-top: 50px; display: flex; justify-content: flex-start;">
+                <div class="payment_record_box1">정산번호</div>
+                <div class="payment_record_box2">은행</div>
+                <div class="payment_record_box3">계좌번호</div>
+                <div class="payment_record_box4">정산금액</div>
+                <div class="payment_record_box5" style="width: 260px;">정산시간</div>
+            </div> 
+            <% for(var i = 0; i < row.length; i++){ %>
+                <div style="width: 100%; height: 40px; border: 1px solid #777777; display: flex; justify-content: center;">
+                <div class="payment_record_box1"><%=row[i].NUMBER%></div>
+                <div class="payment_record_box2"><%=row[i].BANK%>은행</div>
+                <div class="payment_record_box3"><%=row[i].ACCOUNT_NUMBER%></div>
+                <div class="payment_record_box4"><%=row[i].AMOUNT%></div>
+                <div class="payment_record_box5" style="width: 260px;"><%=time[i]%></div>
+                </div> 
+            <% } %>
+            <div class="book_mark_title" style="margin-top: 100px;">
+                총 정산 금액 : <%=result_amount%>
+            </div>
+        </div>
+    </div>

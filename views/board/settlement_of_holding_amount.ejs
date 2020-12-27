@@ -1,0 +1,16 @@
+<div id="mypage_area">
+    <form action="/board/settlement_of_holding_amount" method="POST">
+    <div id="mypage_container">
+            <p style="font-size: 26px;">현재 보유 금액 : <%=amount%></p>
+        <select name="bank" id="" style="width: 410px; height: 30px;; margin-top: 80px; outline: none;">
+            <option value="국민">KB국민</option>
+            <option value="신한">신한</option>
+            <option value="NH">농협</option>
+            <option value="카카오">카카오</option>
+        </select>
+        <input type="text" placeholder="계좌번호" name="account" style="width: 400px; height: 30px;; margin-top: 20px; outline: none;">
+        <input type="text" placeholder="정산 금액" name="amount" style="width: 400px; height: 30px;; margin-top: 20px; outline: none;">
+        <button style="margin-top: 20px; width: 200px; height: 35px; outline: none; border: none; cursor: pointer; border-radius: 10px;">보유 금액 출금</button>
+    </div>
+</form>
+</div>

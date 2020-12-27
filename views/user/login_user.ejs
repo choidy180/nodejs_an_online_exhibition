@@ -1,0 +1,31 @@
+<div class="login_area">
+  <div class="login_box">
+    <a class="login_title" href="/"
+      ><div class="login_title">온라인 전시회 사이트</div></a
+    >
+    <div class="login_main_area">
+      <div class="login_main_box">
+        <form method="POST" class="login_form" action="/users/login_user">
+          <div class="login_main_title">회원 로그인</div>
+          <input
+            type="text"
+            class="login_main_input"
+            name="id"
+            placeholder="아이디"
+          />
+          <input
+            type="password"
+            class="login_main_input"
+            name="passwd"
+            placeholder="비밀번호"
+          />
+          <button class="login_main_button">로그인</button>
+        </form>
+        <div class="login_sign_title">아직 회원이 아니신가요?</div>
+        <a href="/subscript_join"
+          ><button class="login_sign_button">회원가입</button></a
+        >
+      </div>
+    </div>
+  </div>
+</div>

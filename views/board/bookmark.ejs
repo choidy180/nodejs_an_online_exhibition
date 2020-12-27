@@ -1,0 +1,30 @@
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+</style>
+<div id="mypage_area">
+    <div id="mypage_container" style="margin-top: 100px; width: 900px;">
+        <div class="book_mark_title">
+            즐겨찾기 목록
+        </div>
+        <div class="book_mark_content_box" style="margin-top: 80px;">
+            <%for (var i = 0; i < row.length; i++){%>
+                <div class="book_mark_content">
+                    <div class="book_mark_content_img">
+                        <img src="/public/images/exhibition_title_images/<%=row[i].IMG%>" alt="" onclick="location.href='/exhibition_detail/<%=row[i].NUMBER%>'">
+                    </div>
+                    <div class="bookmark_text_box">
+                        <div class="bookmark_title_text">
+                            <%=row[i].TITLE%>
+                        </div>
+                        <div class="bookmark_start_box">
+                            <button onclick="location.href='/exbigition_category_register_bookmark/<%=row[i].NUMBER%>'">삭제</button>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="app_for_exhibition_container_right" style="height: auto; margin-bottom: 20px;" >
+    <div class="afe_right_container">
+        <% if (row.length == 0){%>
+            <div class="afe_right_headbox" style="padding-bottom: 1000px;">
+                신청중인 전시회가 없습니다.
+            </div>
+        <%} else{ %>
+        <div class="afe_right_headbox">
+            등록 신청중인 전시회를 승인/거절 합니다. 전시회를 선택하세요.
+        </div>
+        <%}%>
+        <% for (var i = 0; i < row.length; i++) {%>
+        <div class="exhibition_approval_area">
+            <p class="exhibition_approval_title"><%=row[i].TITLE%></p>
+            <p class="exhibition_approval_title" style="font-size: 24px;"><%=row[i].CATEGORY%> / <%=row[i].DETAIL_CATEGORY%></p>
+            <div class="exhibition_approval_img_box">
+                <img class="exhibition_approval_img" src="/public/images/exhibition_title_images/<%=row[i].IMG%>" alt="">
+            </div>
+            <p class="exhibition_approval_register_date">등록시간 : <%=register_date[i]%></p>
+            <button class="exhibition_approval_btn" onclick="location.href='approval_exhibition/<%=row[i].NUMBER%>'">상세보기</button>
+        </div>
+        <%}%>
+    </div>
+</div>

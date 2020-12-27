@@ -1,0 +1,76 @@
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+</style>
+<div class="mypage_payment_area">
+    <div class="mypage_payment_box">
+        <div id="mypage_title">
+            <a href="/mypage"><span style="margin-right: 50px;" onclick="location.href='mypage'" style="cursor: pointer;">계정</span></a>
+            <span style="margin-right: 50px; color: red;">결제</span>
+            <a href="/inquiry"><span style="margin-right: 50px;">문의</span></a>
+        </div>
+        <div class="mypage_title_guide_payment_head">요금제&nbsp;&nbsp;&nbsp;&nbsp;안내&nbsp;&nbsp; [ 월 ]</div>
+        <div class="mypage_payment_select_box">
+            <div class="mypage_payment_select_box_title">현재 결제중인 요금제 : 프리미엄</div>
+        </div>
+        <div class="mypage_payment_guide_box"> 
+            <div class="mypage_payment_guide_content_box">
+                <div class="mypage_payment_guide_content_title_box">
+                    베이직
+                </div>
+                <div class="mypage_payment_guide_content_text">
+                    <div class="mypage_payment_guide_content_text_top">
+                        <p class="mypage_payment_guide_content_text_p1">전시가능 전시회수 / 할인율</p>
+                        <p class="mypage_payment_guide_content_text_p2">5</p>
+                    </div>
+                    <div class="mypage_payment_guide_content_text_bottom">
+                        <p class="mypage_payment_guide_content_text_p3">₩ 45,900</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mypage_payment_guide_content_box">
+                <div class="mypage_payment_guide_content_title_box">
+                    스탠다드
+                </div>
+                <div class="mypage_payment_guide_content_text">
+                    <div class="mypage_payment_guide_content_text_top">
+                        <p class="mypage_payment_guide_content_text_p1">전시가능 전시회수 / 할인율</p>
+                        <p class="mypage_payment_guide_content_text_p2" style="color:  #0073e6;">10</p>
+                    </div>
+                    <div class="mypage_payment_guide_content_text_bottom">
+                        <p class="mypage_payment_guide_content_text_p3">₩ 89,900</p>
+                    </div>
+                </div>
+            </div>
+            <div id="mypage_payment_guide_content_box3" class="mypage_payment_guide_content_box">
+                <div class="mypage_payment_guide_content_title_box">
+                    프리미엄
+                </div>
+                <div class="mypage_payment_guide_content_text">
+                    <div class="mypage_payment_guide_content_text_top">
+                        <p class="mypage_payment_guide_content_text_p1">전시가능 전시회수 / 할인율</p>
+                        <p class="mypage_payment_guide_content_text_p2" style="color: red;">20</p>
+                    </div>
+                    <div class="mypage_payment_guide_content_text_bottom">
+                        <p class="mypage_payment_guide_content_text_p3">₩ 169,900</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mypage_payment_select_box" style="justify-content: center">
+            <div class="mypage_payment_select_box_title2">결제하실 요금제를 선택하세요</div>
+            <select class="mypage_payment_select" name="" id="">
+                <option value="basic">베이직</option>
+                <option value="standard">스탠다드</option>
+                <option value="premium">프리미엄</option>
+            </select>
+        </div>
+        <div class="mypage_payment_select_box" style="justify-content: center">
+            <div class="mypage_payment_select_box_next_btn" onclick="location.href='payment_of_charges/'+document.querySelector('.mypage_payment_select').value">다음</div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="/public/stylesheets/main_nav.css">

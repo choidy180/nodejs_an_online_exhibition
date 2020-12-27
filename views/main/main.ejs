@@ -1,0 +1,382 @@
+<div class="main_area">
+  <div class="main_first_box">
+    <img
+      class="main_first_box_img"
+      src="../../public/images/main_background/test_back.jpg"
+    />
+    <div class="main_nav">
+      <div class="main_nav_left">
+        <a href="/"><span class="main_nav_left_text">온라인전시회</span></a>
+        <a href="/"><span class="main_nav_left_text">메뉴1</span></a>
+        <a href="/"><span class="main_nav_left_text">메뉴2</span></a>
+      </div>
+      <div class="main_nav_right">
+        <% if(sess.user) {%> <%}else if (sess.group) {%> <%} else {%>
+        <a href="/subscript_join"
+          ><span class="main_nav_right_text">회원가입</span></a
+        >
+        <%}%>
+        <a href="/"><span class="main_nav_right_text">메뉴2</span></a>
+        <% if(sess.user) {%> <% if(sess.user.type == 1) {%>
+        <a href="/admin_menu_select"
+          ><span class="main_nav_right_text">관리자메뉴</span></a
+        >
+        <%}%> <%}%> <% if(sess.user) {%> <% if(sess.user.type == null) {%>
+        <a href="/user_mypage_main/<%=sess.user.id%>"><span class="main_nav_right_text">마이페이지</span></a>
+        <%}%> <% if(sess.user.type == 1) {%>
+        <span class="main_nav_right_text">관리자로그인</span>
+        <%}%> <%}else if (sess.group) {%>
+        <span class="main_nav_right_text">주최자로그인</span>
+        <%} else {%>
+        <span class="main_nav_right_text">비로그인</span>
+        <%}%>
+      </div>
+    </div>
+    <div class="main_fir_box_text">
+      <p class="main_fir_box_text_text">세상에 단 하나뿐인</p>
+      <p class="main_fir_box_text_text">나만의 온라인 전시회</p>
+      <p class="main_fir_box_text_text_sec">
+        지금 당신이 가지고 있는 특별한 주제로
+      </p>
+      <p class="main_fir_box_text_text_sec" style="margin-bottom: 20px">
+        전시를 시작하세요!
+      </p>
+      <a href="/subscript_join"
+        ><button class="main_fir_box_text_first_box">
+          참가방법 알아보기
+        </button></a
+      >
+      <% if (sess.user) { %>
+      <a href="/logout">
+        <button class="main_fir_box_text_second_box">로그아웃</button>
+      </a>
+      <%}else if (sess.group) {%>
+      <a href="/logout"
+        ><button class="main_fir_box_text_second_box">로그아웃</button>
+      </a>
+      <% } else { %>
+      <a href="/subscript_login"
+        ><button class="main_fir_box_text_second_box">로그인</button>
+      </a>
+      <%}%>
+    </div>
+  </div>
+  <div class="main_hall_area">
+    <div class="main_hall_head_box">
+      <div class="main_hall_head_text">
+        <div class="main_hall_head_text_head">이벤트홀</div>
+        <div class="main_hall_head_text_sub">
+          지금 전시중인 이벤트홀을 관람하세요.
+        </div>
+      </div>
+      <div class="main_hall_box">
+        <div class="main_hall_box_content">
+          <div class="main_hall_img_box">
+            <img
+              class="main_hall_img"
+              src="/public/images/event_hall/dongseo_univercity_uit.jpg"
+              alt=""
+            />
+            <div class="main_hall_img_sub_box">
+              <div class="main_hall_img_sub_box_logo">
+                <img
+                  class="main_hall_img_sub_box_logo_img"
+                  src="/public/images/event_hall/dongseo_ac_logo.jpg"
+                  alt=""
+                />
+                <div class="main_hall_img_sub_box_head_text">
+                  UIT-SIXTH-FLOOR
+                </div>
+                <div class="main_hall_img_sub_box_sub_text">동서대학교</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="main_hall_box_content">
+          <div class="main_hall_img_box">
+            <img
+              class="main_hall_img"
+              src="/public/images/event_hall/dongseo_ac_new.jpg"
+              alt=""
+            />
+            <div class="main_hall_img_sub_box">
+              <div class="main_hall_img_sub_box_logo">
+                <img
+                  class="main_hall_img_sub_box_logo_img"
+                  src="/public/images/event_hall/dongseo_ac_logo.jpg"
+                  alt=""
+                />
+                <div class="main_hall_img_sub_box_head_text">
+                  NM-SECOND_FLOOR
+                </div>
+                <div class="main_hall_img_sub_box_sub_text">동서대학교</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="main_hall_box_content">
+          <div class="main_hall_img_box">
+            <img
+              class="main_hall_img"
+              src="/public/images/event_hall/bexco_game.jpg"
+              alt=""
+            />
+            <div class="main_hall_img_sub_box">
+              <div class="main_hall_img_sub_box_logo">
+                <img
+                  class="main_hall_img_sub_box_logo_img"
+                  src="/public/images/event_hall/bexco.PNG"
+                  alt=""
+                />
+                <div class="main_hall_img_sub_box_head_text">
+                  FIRST-FLOOR-AUDITORIUM
+                </div>
+                <div class="main_hall_img_sub_box_sub_text">BEXCO</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="main_hall_box_content">
+          <div class="main_hall_img_box">
+            <img
+              class="main_hall_img"
+              src="/public/images/event_hall/coex_img.jpg"
+              alt=""
+            />
+            <div class="main_hall_img_sub_box">
+              <div class="main_hall_img_sub_box_logo">
+                <img
+                  class="main_hall_img_sub_box_logo_img"
+                  src="/public/images/event_hall/coex.PNG"
+                  alt=""
+                />
+                <div class="main_hall_img_sub_box_head_text">
+                  FIRST-FLOOR-HALL-D1
+                </div>
+                <div class="main_hall_img_sub_box_sub_text">COEX</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="main_hall_box_content" style="margin-right: 0px">
+          <div class="main_hall_img_box">
+            <img
+              class="main_hall_img"
+              src="/public/images/event_hall/busan_park.jpg"
+              alt=""
+            />
+            <div class="main_hall_img_sub_box">
+              <div class="main_hall_img_sub_box_logo">
+                <img
+                  class="main_hall_img_sub_box_logo_img"
+                  src="/public/images/event_hall/busan_univercity.png"
+                  alt=""
+                />
+                <div class="main_hall_img_sub_box_head_text">JOGAK-PARK</div>
+                <div class="main_hall_img_sub_box_sub_text">부산대학교</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main_content_area">
+    <div class="main_content_box">
+      <div class="main_content_box_head_text">Weekly Best</div>
+      <div class="main_box1_area">
+        <div class="main_box1_box">
+          <div class="main_box1_img_box">
+            <img
+              class="main_box1_img"
+              src="/public/images/main_background/t1.png"
+              alt=""
+            />
+            <div class="main_box1_text_box">
+              <div class="main_box1_text_box_top_underline"></div>
+              <% if(sess.user) { %>
+              <div class="main_box1_text_headtext"><%=sess.user.name%></div>
+              <%} else if (sess.group) {%>
+              <div class="main_box1_text_headtext"><%=sess.group.name%></div>
+              <%} else {%>
+              <div class="main_box1_text_headtext">GAMES</div>
+              <%}%>
+              <div class="main_box1_text_subtext">
+                Take a break and try to complete this visual crossworld
+              </div>
+              <div class="main_box1_text_morebtn">MORE</div>
+            </div>
+          </div>
+        </div>
+        <div class="main_box1_box">
+          <div class="main_box1_img_box">
+            <img
+              class="main_box1_img"
+              src="/public/images/main_background/t2.jpg"
+              alt=""
+            />
+            <div class="main_box1_text_box">
+              <div class="main_box1_text_box_top_underline"></div>
+              <div class="main_box1_text_headtext">Artworks</div>
+              <div class="main_box1_text_subtext">
+                From vikings to chairs, explore 12 must-see museums in
+                Scandinavia
+              </div>
+              <div class="main_box1_text_morebtn">MORE</div>
+            </div>
+          </div>
+        </div>
+        <div class="main_box1_box">
+          <div class="main_box1_img_box">
+            <img
+              class="main_box1_img"
+              src="/public/images/main_background/t3.jpg"
+              alt=""
+            />
+            <div class="main_box1_text_box">
+              <div class="main_box1_text_box_top_underline"></div>
+              <div class="main_box1_text_headtext">Artworks</div>
+              <div class="main_box1_text_subtext">
+                Zoom into Monet's iconic Water Lilies
+              </div>
+              <div class="main_box1_text_morebtn">MORE</div>
+            </div>
+          </div>
+        </div>
+        <div class="main_box1_box" style="margin-right: 0px">
+          <div class="main_box1_img_box">
+            <img
+              class="main_box1_img"
+              src="/public/images/main_background/t4.jpg"
+              alt=""
+            />
+            <div class="main_box1_text_box">
+              <div class="main_box1_text_box_top_underline"></div>
+              <div class="main_box1_text_headtext">Museums</div>
+              <div class="main_box1_text_subtext">
+                From vikings to chairs, explore 12 must-see museums in
+                Scandinavia
+              </div>
+              <div class="main_box1_text_morebtn">MORE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="main_box2_area">
+        <div class="main_box2_head_box">
+          <p class="main_box2_head_text">당신이 좋아하는 이미지를 골라보세요</p>
+        </div>
+        <div class="main_box2_sub_box">
+          <p class="main_box2_sub_text">추천 전시회 카테고리</p>
+        </div>
+        <div class="main_box2_content_box">
+          <div class="main_box2_img_box" id="main_box2_img_box1">
+            <img src="/public/images/main_background/a1.PNG" alt="" />
+            <div class="main_box2_img_text_box">
+              <div class="main_box2_img_text_box_head_box">이웃집 토토로</div>
+              <div class="main_box2_img_text_box_date_box">
+                Release 2001.07.28
+              </div>
+              <div class="main_box2_img_text_box_sub_box">
+                도시를 떠나 시골로 이사 온 '사츠키'와 '메이'는 우연히 숲속에
+                살고 있는 신비로운 생명체 '토토로'를 만나 신비한 모험을 함께
+                한다.
+              </div>
+            </div>
+          </div>
+          <div class="main_box2_img_box" id="main_box2_img_box2">
+            <img src="/public/images/main_background/2.PNG" alt="" />
+            <div class="main_box2_img_text_box">
+              <div class="main_box2_img_text_box_head_box">
+                하울의 움직이는 성
+              </div>
+              <div class="main_box2_img_text_box_date_box">
+                Release 2004.12.23
+              </div>
+              <div class="main_box2_img_text_box_sub_box">
+                어느 날, 영문도 모른 채 마녀의 저주로 인해 할머니가 된 소녀
+                '소피' 절망 속에서 길을 걷다가 거대한 마법의 성에 들어가게 된다.
+              </div>
+            </div>
+          </div>
+          <div class="main_box2_img_box" id="main_box2_img_box3">
+            <img src="/public/images/main_background/a3.PNG" alt="" />
+            <div class="main_box2_img_text_box">
+              <div class="main_box2_img_text_box_head_box">
+                센과 치히로의 행방불명
+              </div>
+              <div class="main_box2_img_text_box_date_box">
+                Release 2002.06.28
+              </div>
+              <div class="main_box2_img_text_box_sub_box">
+                금지된 세계의 문이 열렸다! 이사 가던 날, 수상한 터널을 지나
+                인간에게는 금지된 신들의 세계로 오게 된 치히로..
+              </div>
+            </div>
+          </div>
+          <div class="main_box2_img_box" id="main_box2_img_box4">
+            <img src="/public/images/main_background/a4.PNG" alt="" />
+            <div class="main_box2_img_text_box">
+              <div class="main_box2_img_text_box_head_box">모노노케 히메</div>
+              <div class="main_box2_img_text_box_date_box">
+                Release 2003.04.25
+              </div>
+              <div class="main_box2_img_text_box_sub_box">
+                수백년전 야마토 조정과의 싸움에서 패한 후 북쪽 변방에 숨어서
+                생활하고 있는 에미시 일족, 평화로운 마을 부근의 숲에 어느날
+                갑자기 재앙신이 나타난다.
+              </div>
+            </div>
+          </div>
+          <div class="main_box2_img_box" id="main_box2_img_box1">
+            <img src="/public/images/main_background/a5.PNG" alt="" />
+            <div class="main_box2_img_text_box">
+              <div class="main_box2_img_text_box_head_box">
+                마녀 배달부 키키
+              </div>
+              <div class="main_box2_img_text_box_date_box">
+                Release 2007.11.22
+              </div>
+              <div class="main_box2_img_text_box_sub_box">
+                사랑스러운 초보 마녀 '키키'는 검은 고양이 '지지'와 함께 빗자루를
+                타고 마녀수련을 떠난다. 첫날부터 우여곡절을 겪지만 '배달'에
+                재능이 있다는 걸 발견하고 본격적인 마법 수련을 시작하는데...
+              </div>
+            </div>
+          </div>
+          <div class="main_box2_img_box" id="main_box2_img_box6">
+            <img src="/public/images/main_background/a6.PNG" alt="" />
+            <div class="main_box2_img_text_box">
+              <div class="main_box2_img_text_box_head_box">벼랑 위의 포뇨</div>
+              <div class="main_box2_img_text_box_date_box">
+                Release 2008.12.17
+              </div>
+              <div class="main_box2_img_text_box_sub_box">
+                호기심 많은 물고기 소녀 '포뇨'는 따분한 바다 생활에 싫증을
+                느끼고, 급기야 아빠 몰래 늘 동경하던 육지로 가출을 감행한다.
+              </div>
+            </div>
+          </div>
+          <div class="main_box2_img_box" style="margin-right: 0px">
+            <img src="/public/images/main_background/a7.PNG" alt="" />
+            <div class="main_box2_img_text_box">
+              <div class="main_box2_img_text_box_head_box">추억의 마니</div>
+              <div class="main_box2_img_text_box_date_box">
+                Release 2015.03.19
+              </div>
+              <div class="main_box2_img_text_box_sub_box">
+                마니와 함께 즐거운 시간을 보내는 안나는 마니의 초대로 저택의
+                파티에 참가하지만 신기하게도 다음날 낮에 찾아간 저택은 아무도
+                살지 않은 폐가로 변해있는 등 알 수 없는 일들이 자꾸
+                일어나는데...
+              </div>
+            </div>
+          </div>
+          <script>
+            event.ele;
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

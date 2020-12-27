@@ -1,0 +1,36 @@
+<div class="ex_end_detail_area">
+    <div class="ex_end_detail_box">
+        <div class="ex_end_title">
+            종료 전시회 상세 페이지
+        </div>
+        <div class="ex_end_img">
+            <img src="/public/images/exhibition_title_images/<%=row[0].IMG%>" alt="">
+        </div>
+        <div class="ex_end_title" style="margin-top: 20px; font-weight: 700;">
+            <%=row[0].TITLE%>
+        </div>
+        <div class="ex_end_title" style="width: 600px; margin-top: 20px; font-weight: 700; justify-content: flex-start; height: 30px;">
+            시작일 : <%=start_date%>
+        </div>
+        <div class="ex_end_title" style="width: 600px; margin-top: 0px; font-weight: 700; justify-content: flex-start; height: 30px;">
+            종료일 : <%=end_date%>
+        </div>
+        <div class="ex_end_title" style="width: 600px; margin-top: 20px; font-weight: 700; justify-content: flex-start; height: 30px;">
+            관람료 : ₩ <%=propit%>
+        </div>
+        <div class="ex_end_title" style="width: 600px; margin-top: 0px; font-weight: 700; justify-content: flex-start; height: 30px;">
+            수익 : ₩ <%=count_price%>
+        </div>
+        <div class="ex_end_title" style="width: 600px; margin-top: 0px; font-weight: 700; justify-content: flex-start; height: 30px;">
+            쿠폰 : <%=count_coupon%> 개
+        </div>
+        <% if (row[0].INITIAL_SETTLEMENT == 'Y'){%>
+            <div class="ex_end_title">
+                정산이 완료된 전시회 입니다.
+            </div>
+            <button class="ex_end_detail_box_button" onclick="location.href='/organized_exhibition_end'">뒤로가기</button>
+        <%} else {%>
+            <button class="ex_end_detail_box_button" onclick="location.href='/closing_exhibition_settlement/<%=row[0].NUMBER%>'">정산하기</button>
+        <%}%>
+    </div>
+</div>

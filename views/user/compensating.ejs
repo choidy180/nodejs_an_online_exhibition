@@ -1,0 +1,57 @@
+<style>
+    a{
+        color: black;
+    }
+    .compen_input{
+        border: none;
+        outline: none;
+        color: transparent;
+    }
+</style>
+<form action="/board/post_compensating" method="POST">
+    <div id="mypage_area" style="margin-bottom: 100px;">
+        <div id="mypage_container" style="margin-top: 100px; width: 700px; font-family:'Noto Sans KR', sans-serif; height: auto;">
+            <div class="book_mark_title">
+                환불신청
+            </div>
+            <div class="book_mark_title" style="margin-top: 20px; justify-content: flex-start; margin-top: 80px; font-size: 20px; height: 26px;">
+                결제번호 : <%=row[0].NUMBER%> <input class="compen_input" name="account_number" type="text" value="<%=row[0].NUMBER%>" readonly>
+            </div>
+            <div class="book_mark_title" style="margin-top: 20px; justify-content: flex-start; margin-top: 0px; font-size: 20px; height: 26px;">
+                전시회번호 : <%=row[0].EXHIBITION_NUMBER%> 
+            </div>
+            <div class="book_mark_title" style="margin-top: 20px; justify-content: flex-start; margin-top: 0px; font-size: 20px; height: 26px;">
+                결제시간 : <%=time[0]%> 
+            </div>
+            <div class="book_mark_title" style="margin-top: 20px; justify-content: flex-start; margin-top: 0px; font-size: 20px; height: 26px;">
+                결제유형 : <%=row[0].PAYMENT_TYPE%> <input class="compen_input" name="account_type" type="text" value="<%=row[0].PAYMENT_TYPE%>" readonly>
+            </div>
+            <% if (row[0].PAYMENT_TYPE == '카드'){%>
+                <div class="book_mark_title" style="margin-top: 20px; justify-content: flex-start; margin-top: 0px; font-size: 20px; height: 26px;">
+                    카드번호 : <%=row[0].CARD_NUMBER%> 
+                </div>
+                <div class="book_mark_title" style="margin-top: 20px; justify-content: flex-start; margin-top: 0px; font-size: 20px; height: 26px;">
+                    결제금액 : <%=row[0].PAYMENT_AMOUNT%> <input class="compen_input" name="amount" type="text" value="<%=row[0].PAYMENT_AMOUNT%>" readonly>
+                </div>
+                <div class="book_mark_title" style="margin-top: 20px; justify-content: flex-start; margin-top: 0px; font-size: 20px; height: 26px;">
+                    관람 여부 : <%=row[0].VIEW_STATUS%> <input class="compen_input" name="view_status" type="text" value="<%=row[0].VIEW_STATUS%>" readonly>
+                </div>
+            <%} else {%>
+                <div class="book_mark_title" style="margin-top: 20px; justify-content: flex-start; margin-top: 0px; font-size: 20px; height: 26px;">
+                    결제금액 : <%=row[0].PAYMENT_AMOUNT%> <input class="compen_input" name="amount" type="text" value="<%=row[0].PAYMENT_AMOUNT%>" readonly>
+                </div>
+                <div class="book_mark_title" style="margin-top: 20px; justify-content: flex-start; margin-top: 0px; font-size: 20px; height: 26px;">
+                    관람 여부 : <%=row[0].VIEW_STATUS%> <input class="compen_input" name="view_status" type="text" value="<%=row[0].VIEW_STATUS%>" readonly>
+                </div>
+            <%}%>
+            <select style="width: calc(100% - 10px); height: 40px; margin-top: 30px; padding-left: 10px; font-size: 20px;" name="type" id="">
+                <option value="부적절한 내용의 전시회">부적절한 내용의 전시회</option>
+                <option value="부적절한 내용의 전시작품">부적절한 내용의 전시작품</option>
+                <option value="부실한 내용의 전시회">부실한 내용의 전시회</option>
+                <option value="결제오류">결제오류</option>
+            </select>
+            <textarea name="content" id="" cols="30" rows="10" style="width: calc(100% - 24px); height: 40px; margin-top: 20px; padding-left: 10px; font-size: 20px; outline: none; height: 200px; font-family:'Noto Sans KR', sans-serif;" placeholder="환불 내용 입력"></textarea>
+            <button style="width: 300px; height: 40px; margin-top: 20px; border: none; outline: none; background-color: #1387fc; color: white; font-family:'Noto Sans KR', sans-serif; font-size: 22px; border-radius: 5px; cursor: pointer;">환불하기</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,53 @@
+<div class="app_for_exhibition_area">
+    <div class="app_for_exhibition_container" style="width: 1000px; flex-direction: column;">
+        <div class="organized_exhibition_title">
+            현재 진행중인 전시회입니다.
+        </div>
+        <div class="organized_exhibition_nav">
+            <div class="organized_exhibition_nav_p_choice">PRESENT</div>
+            <div class="organized_exhibition_nav_p" onclick="location.href='/organized_exhibition_prepare'">PREPARE</div>
+            <div class="organized_exhibition_nav_p" onclick="location.href='/organized_exhibition_ready_app'">READY-APP</div>
+            <div class="organized_exhibition_nav_p" onclick="location.href='/organized_exhibition_approval'">APPROVAL</div>
+            <div class="organized_exhibition_nav_p" onclick="location.href='/organized_exhibition_rebuff'">REBUFF</div>
+            <div class="organized_exhibition_nav_p" onclick="location.href='/organized_exhibition_end'">END</div>
+        </div>
+        <%if(row[0] != undefined){%>
+            <div class="organized_exhibition_present_navbox">
+                <div class="organized_exhibition_present_box1"></div>
+                <div class="organized_exhibition_present_box2">TITLE & IMG</div>
+                <div class="organized_exhibition_present_box3">DATE</div>
+                <div class="organized_exhibition_present_box4">COST</div>
+                <div class="organized_exhibition_present_box5">HIT</div>
+                <div class="organized_exhibition_present_box6"></div>
+            </div>
+            <% for (var i = 0; i < row.length; i++) {%>
+                <div class="organized_exhibition_present_box">
+                    <div class="organized_exhibition_present_content_box1"><%=row[i].NUMBER%></div>
+                    <div class="organized_exhibition_present_content_box2">
+                        <div class="organized_exhibition_present_content_imgbox">
+                            <img src="/public/images/exhibition_title_images/<%=row[i].IMG%>" alt="">
+                        </div>
+                        <P style="margin-top: 10px;"><%=row[i].TITLE.slice(0,30)%></P>
+                    </div>
+                    <div class="organized_exhibition_present_content_box3">
+                        <p><%=start_date[i]%></p>
+                        <p><%=end_date[i]%></p>
+                    </div>
+                    <div class="organized_exhibition_present_content_box4">
+                        <p>₩<%=row[i].PRODUCTION_COST%></p>
+                    </div>
+                    <div class="organized_exhibition_present_content_box5">
+                        <p><%=row[i].HIT%></p>
+                    </div>
+                    <div class="organized_exhibition_present_content_box6">
+                        <button onclick="location.href='/organized_present_detail/<%=row[i].NUMBER%>'">상세 보기</button>
+                    </div>
+                </div>
+            <%}%>
+        <%} else {%>
+        <div class="organized_exhibition_non">
+            전시회가 존재하지 않습니다.
+        </div>
+        <%}%>
+    </div>
+</div>

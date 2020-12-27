@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../public/stylesheets/style.css" />
+    <link href="../public/stylesheets/style.css" media="screen and (min-width: 512px) and (max-width: 1024px)" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400&display=swap" rel="stylesheet">
+    <title><%= title%></title>
+  </head>
+  <style>
+    body {
+      margin: 0px;
+      animation: fadein 1000ms ease-out;
+      background-color: white;
+    }
+  </style>
+  <body>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+    <%- include('main_nav.ejs')%>
+    <div class="app_for_exhibition_area">
+        <div class="app_for_exhibition_container">
+            <div class="app_for_exhibition_container_left">
+                <div class="app_for_exhibition_user_info">
+                    <div class="afe_user_info_imgbox">
+                        <img class="afe_user_info_img" src="/uploads/<%=sess.user.IMG%>" alt="">
+                    </div>
+                    <p class="afe_user_info_name"><%= sess.user.NAME%></p>
+                    <p class="afe_user_info_name" style="font-weight: 500; letter-spacing: -0.5px;"><%= sess.user.EMAIL%></p>
+                </div>
+                <div class="app_for_exhibition_user_info_bottom">
+                    <p class="app_for_exhibition_user_info_bottom_text" onclick="location.href='/exhibition_approval'">전시회 승인/거절</p>
+                    <p class="app_for_exhibition_user_info_bottom_text" onclick="location.href='/approval_exhibition_yeslist'">승인한 전시회</p>
+                    <p class="app_for_exhibition_user_info_bottom_text" style="margin-top: -10px;"onclick="location.href='/approval_exhibition_nolist'">거절한 전시회</p>
+                    <p class="app_for_exhibition_user_info_bottom_text" onclick="location.href='/exhibition_payment_list'">전시회 결제 리스트</p>
+                    <p class="app_for_exhibition_user_info_bottom_text" onclick="location.href='/inquiry_answer'">문의 답변</p>
+                </div>
+            </div>
+            <%- include(page) %>
+        </div>
+    </div>
+  </body>
+</html>

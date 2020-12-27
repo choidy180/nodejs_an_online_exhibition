@@ -1,0 +1,41 @@
+<div class="search_exhibition_area">
+    <div class="search_exhibition_container" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; margin-bottom: 100px;">
+        <div class="supportable_exhibition_title">
+            지원가능한 전시회 목록입니다.
+        </div>
+        <div class="supportable_exhibition_title" style="margin-top: 0px; margin-bottom: 30px;">
+            원하는 전시회에 전시작품 등록 신청을 해보세요.
+        </div>
+        <% for (var i = 0 ; i < row.length; i++){%>
+        <div class="supportable_exhibition_box">
+            <div class="supportable_exhibition_imgbox">
+                <img src="/public/images/exhibition_title_images/<%=row[i].IMG%>" alt="">
+            </div>
+            <div class="supportable_exhibition_text_box">
+                <div class="supportable_exhibition_text_title">
+                    <%=row[i].TITLE%>
+                </div>
+                <div class="supportable_exhibition_text_category">
+                    <%=row[i].CATEGORY%> / <%=row[i].DETAIL_CATEGORY%>
+                </div>
+                <div class="supportable_exhibition_text_category">
+                    HOST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=row[i].USER_ID%>
+                </div>
+                <div class="supportable_exhibition_text_category">
+                    DEADLINE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=deadline[i]%>
+                </div>
+                <div class="supportable_exhibition_text_category">
+                    START&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=start_date[i]%>
+                </div>
+                <div class="supportable_exhibition_text_category">
+                    BOOTH COUNT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=row[i].BOOTH_COUNT%>
+                </div>
+                <div class="supportable_exhibition_text_category" style="margin-top: 14px;">
+                    <button style="margin-right: 20px;" onclick="location.href='/supportable_exhibition_detail/<%=row[i].NUMBER%>'">상세보기</button>
+                    <button>바로지원</button>
+                </div>
+            </div>
+        </div>
+        <%}%>
+    </div>
+</div>

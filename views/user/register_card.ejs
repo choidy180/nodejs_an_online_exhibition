@@ -1,0 +1,55 @@
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+<div class="app_for_exhibition_area">
+    <div class="app_for_exhibition_container">
+        <div class="app_for_exhibition_container_right">
+            <div class="afe_right_container" style="padding-top: 20px; padding-bottom: 20px">
+                <div style="border: 3px solid #999; padding: 30px;" >
+                <div class="afe_right_headbox">
+                    회원 카드를 등록합니다.
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 50px; height: 30px;;justify-content: flex-start; ">
+                    카드 번호
+                </div>
+                <form action="/users/user_register_card" method="POST">
+                <div class="afe_right_headbox" style="margin-top: 0px;">
+                    <input class="card_input_box_first" type="text" name="c1" id="">
+                    <div class="card_input_box_blank" style="width: 30px; height: 100%;">-</div>
+                    <input class="card_input_box_first" type="text" name="c2" id="">
+                    <div class="card_input_box_blank" style="width: 30px; height: 100%;">-</div>
+                    <input class="card_input_box_first" type="text" name="c3" id="">
+                    <div class="card_input_box_blank" style="width: 30px; height: 100%;">-</div>
+                    <input class="card_input_box_first" type="text" name="c4" id="">
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 10px; height: 30px;;justify-content: flex-start; ">
+                    카드 유효 기간
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px; justify-content: flex-start;">
+                    <input class="card_input_box_first" type="text" name="d1" id="" style="width: calc(50% - 15px);">
+                    <div class="card_input_box_blank" style="width: 30px; height: 100%;">-</div>
+                    <input class="card_input_box_first" type="text" name="d2" id="" style="width: calc(50% - 15px);">
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 10px; height: 30px;;justify-content: flex-start; ">
+                    CVC
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px; justify-content: flex-start;">
+                    <input class="card_input_box_first" type="text" name="cvc" id="" style="width: 100%;">
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 10px; height: 30px;;justify-content: flex-start; ">
+                    비밀번호
+                </div>
+                <div class="afe_right_headbox" style="margin-top: 0px; justify-content: flex-start;">
+                    <input class="card_input_box_first" type="text" name="pwd" id="" style="width: 100%;">
+                </div>
+                <div class="exhibition_approval_area" style="align-items: flex-start; border: none;">
+                    <div class="afe_right_app_exhibition_btn_container" style="margin-top: 10px; display: flex;">
+                        <button class="afe_right_app_exhibition_btn" style="width: 200px; margin-right: 50px;">등록하기</button>
+                    </form>
+                        <button class="afe_right_app_exhibition_btn" style="width: 200px;">취소하기</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

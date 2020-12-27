@@ -1,0 +1,40 @@
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+</style>
+<div id="mypage_area">
+    <div id="mypage_container">
+        <div id="mypage_title">
+            <a href="/mypage"><span style="margin-right: 50px;">계정</span></a>
+            <a href="/mypage_payment"><span style="margin-right: 50px;">결제</span></a>
+            <span style="color: red;">문의</span>
+        </div>
+        <form action="/board/upload_inquiry" method="POST">
+            <div class="inquiry_nav_container">
+                <div class="inquiry_nav_box_choice">
+                    전시 문의
+                </div>
+                <div class="inquiry_nav_box" onclick="location.href='/inquiry_payment'">
+                    결제
+                </div>
+            </div>
+            <div class="inquiry_title_container">
+                <select class="inquiry_select" name="category" id="">
+                    <option value="1">전시회 등록에 문제가 있습니다.</option>
+                    <option value="2">전시작품 등록에 문제가 있습니다.</option>
+                    <option value="3">전시회에 문제가 있습니다.</option>
+                    <option value="4">전시작품에 문제가 있습니다.</option>
+                </select>
+                <p>작성자 아이디 : <%=sess.user.ID%></p>
+                <input name="title" class="inquiry_title" type="text" placeholder="문의 제목 입력">
+                <textarea class="inquiry_content" name="content" id="" cols="30" rows="10" placeholder="문의 내용 입력"></textarea>
+                <button>등록하기</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<link rel="stylesheet" href="/public/stylesheets/main_nav.css">

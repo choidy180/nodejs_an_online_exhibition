@@ -1,0 +1,48 @@
+<style>
+    a{
+        color: black;
+    }
+</style>
+<form action="/board/inquiry_answer_admin" method="POST">
+    <div class="app_for_exhibition_container_right" style="height: auto; margin-bottom: 20px;" >
+        <div id="mypage_area" style="width: 100%; padding-left: 20px; justify-content: flex-start; background-color: white;">
+            <div id="mypage_container" style="width: 870px; padding-left: 30px; height: auto;">
+                    <div class="inquiry_list_title">
+                        문의번호
+                        <input name="number" class="answer_number" type="text" value="<%=row[0].NUMBER%>" readonly>
+                    </div>
+                    <div class="answer_title">
+                        <div class="inquiry_list_title_left">문의자</div> <%=row[0].USER_ID%>
+                    </div>
+                    <div class="answer_title" style="margin-top: 5px;">
+                        <div class="inquiry_list_title_left">문의시간</div><%=register_date[0]%>
+                    </div>
+                    <div class="answer_title" style="margin-top: 5px;">
+                        <div class="inquiry_list_title_left">카테고리</div>
+                        <% if(row[0].CATEGORY == 1){%>
+                            전시회 주최에 문제가 있습니다.
+                        <%}%>
+                        <% if(row[0].CATEGORY == 2){%>
+                            전시작품 등록에 문제가 있습니다.
+                        <%}%>
+                        <% if(row[0].CATEGORY == 3){%>
+                            전시회에 문제가 있습니다.
+                        <%}%>
+                        <% if(row[0].CATEGORY == 4){%>
+                            전시작품에 문제가 있습니다.
+                        <%}%>
+                    </div>
+                    <div class="answer_content_box" style="height: auto;">
+                        <div class="answer_title" style="margin-top: 5px;">
+                            문의제목 - <%=row[0].TITLE%>
+                        </div>
+                        <div class="answer_title" style="height: auto;">
+                            <%=row[0].CONTENT%>1
+                        </div>
+                    </div>
+                    <textarea class="answer_textarea" name="answer" id="" cols="30" rows="10" placeholder="답변 내용 입력"></textarea>
+                    <button class="answer_btn">등록하기</button>
+            </div>
+        </div>
+    </div>
+</form>

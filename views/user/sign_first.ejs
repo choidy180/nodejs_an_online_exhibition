@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/public/stylesheets/intro.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Nanum+Gothic+Coding:wght@700&family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+    <title>회원가입</title>
+</head>
+<style>
+    body{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+</style>
+<body>
+    <div class="sign_box" style="font-size: 30px; font-weight: 700;">
+        <span>회원가입</span>
+    </div>
+    <form action="/users/sign1" method="POST">
+        <div class="sign_box" style="margin-top: 5vh;">
+            <input id="id" class="sign_box_input" type="text" placeholder="아이디" name="id">
+        </div>
+        <div class="sign_box" style="margin-top: 1vh;">
+            <input id="pwd" class="sign_box_input" type="password" placeholder="비밀번호" name="pwd">
+        </div>
+        <div class="sign_box" style="margin-top: 1vh;">
+            <input id="name" class="sign_box_input" type="text" placeholder="이름" name="name">
+        </div>
+        <div class="sign_box" style="margin-top: 1vh;">
+            <input id="tel" class="sign_box_input" type="text" placeholder="전화번호" name="tel">
+        </div>
+        <div class="sign_box" style="margin-top: 3vh;">
+            <button style="width: 21vw; min-width: 412px; height: 72px; font-size: 21px; border-radius: 3px; outline: none; border: none; background: linear-gradient(
+                to right,
+                #f867b0,
+                #e36acc,
+                #d264ce,
+                #be66d3,
+                #b96dc5,
+                #b462df,
+                #ae6ce0,
+                #9d66ec,
+                #986de2,
+                #856bd3,
+                #806bec,
+                #8173e7,
+                #716be8,
+                #6b72de,
+                #6476ec
+            ); font-weight: 500; color: white; font-weight: 700; cursor: pointer;">다음 단계로</button>
+        </div>
+    </form>
+    <img src="/public/images/icon/title_text_icon.png" alt="" style="position: fixed; top: 20px; left: 20px;; z-index: 10; width: 200px; cursor: pointer;">
+</body>
+</html>

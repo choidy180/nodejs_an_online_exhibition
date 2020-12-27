@@ -1,0 +1,61 @@
+<div class="exhibition_purchase_card_arae">
+    <div class="exhibition_purchase_card_container">
+        <div class="purchase_card_title" onclick="console.log('<%=sess.user.VIEWING_AVA_COUNT%>')">
+            전시회 결제를 진행합니다.
+        </div>
+        <div class="purchase_card_content_box" style="height: auto;">
+            <div class="purchase_card_content_box1">
+                <img src="/public/images/exhibition_title_images/<%=row2[0].IMG%>" alt="">
+            </div>
+            <div class="purchase_card_content_box2">
+                <p class="purchase_card_content_title"><%=row2[0].TITLE%></p>
+                <p class="purchase_card_content_title" style="font-size: 18px;"><%=row2[0].CATEGORY%> / <%=row2[0].DETAIL_CATEGORY%></p>
+                <p class="purchase_card_content_title" style="font-size: 18px; margin-top: 15px;">시작일 / <%=start_date%></p>
+                <p class="purchase_card_content_title" style="font-size: 18px;">종료일 / <%=end_date%></p>
+                <p class="purchase_card_content_title" style="font-size: 18px; margin-top: 15px;">부스수 / <%=row2[0].BOOTH_COUNT%></p>
+                <p class="purchase_card_content_title" style="font-size: 18px;">작품수 / <%=row3.length%></p>
+                <p class="purchase_card_content_title" style="font-size: 18px;">관람금액 : <%=row2[0].PRODUCTION_COST%></p>
+            </div>
+        </div>
+        <div class="purchase_card_title" style="margin-top: 20px;">
+            결제수단 선택
+        </div>
+        <select class="purchase_card_content_box3">
+            <option value="card">카드</option>
+            <option value="coupon">쿠폰</option>
+        </select>
+        <script>
+            payment_2 = () => {
+                console.log(document.querySelector('.purchase_card_content_box3').value)
+                if(document.querySelector('.purchase_card_content_box3').value == 'card'){
+                    alert("카드 결제 페이지로 이동합니다.");
+                    location.href='/exhibition_purchase_card_second/<%=row2[0].NUMBER%>'
+                }
+                if(document.querySelector('.purchase_card_content_box3').value == 'coupon'){
+                    if('<%=sess.user.VIEWING_AVA_COUNT%>' == 0){
+                        var c = confirm("쿠폰이 0개 입니다. 결제페이지로 이동하시겠습니까?")
+                        if(c){
+                            location.href='/mypage_payment';
+                            return;
+                        } else {
+                            location.href='/main';
+                            return
+                        }
+                    }
+                    var a = confirm("쿠폰을 사용하겠습니까? 현재 남은 횟수 : <%=sess.user.VIEWING_AVA_COUNT%>개");
+                    if(a){
+                        var b = confirm("바로 관람하시겠습니까?")
+                        if (b){
+                            location.href='/exhibition_purchase_coupon/<%=row2[0].NUMBER%>=yes'
+                        } else {
+                            location.href='/exhibition_purchase_coupon/<%=row2[0].NUMBER%>=no'
+                        }
+                    } else {
+                        alert("다른 결제수단을 선택해주세요.");
+                    }
+                }
+            }
+        </script>
+        <button style="width: 120px; height: 35px; margin-top: 30px; background-color: #1387fc; outline: none; border: none; border-radius: 5px; cursor: pointer; color: white; font-size: 18px; font-weight: 500;" onclick="payment_2()">결제진행</button>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<style>
+    a{
+        color: black;
+    }
+</style>
+<div id="mypage_area" style="margin-bottom: 100px;">
+    <div id="mypage_container" style="margin-top: 100px; width: 400px;">
+        <div class="book_mark_title">
+            전시회 관람 기록
+        </div>
+        <div class="view_record_box" style="height: auto; margin-bottom: 50px;">
+            <div class="inquiry_list_nav" style="border-top: 0; width: 100%; border: 1px solid #999; border-top: 2px solid red; margin-top: 50px;">
+                <div class="view_record_box1">NO</div>
+                <div class="view_record_box2">TIME</div>
+            </div>
+            <%for (var i = 0; i < row.length; i++){%>
+                <div class="inquiry_list_nav_box2" style="justify-content: flex-start; width: 100%;  height: 40px; border: 1px solid #999; border-top: 0px;">
+                    <div class="view_record_box1"><%=row[i].EXHIBITION_NUMBER%></div>
+                    <div class="view_record_box2"><a href="/exhibition_detail/<%=row[i].EXHIBITION_NUMBER%>"><%=view_time[i]%></a></div>
+                </div>
+            <%}%>
+        </div>
+    </div>
+</div>

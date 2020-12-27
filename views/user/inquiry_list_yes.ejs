@@ -1,0 +1,56 @@
+<style>
+    a{
+        color: black;
+    }
+</style>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+<div class="app_for_exhibition_area">
+    <div class="app_for_exhibition_container">
+        <div class="app_for_exhibition_container_right" style="height: auto; margin-bottom: 20px;" >
+            <div id="mypage_area" style="width: 100%; padding-left: 20px; justify-content: flex-start; background-color: white;">
+                <div id="mypage_container" style="width: 870px; padding-left: 30px; height: auto;">
+                    <div class="inquiry_list_title">
+                        답변이 완료된 문의입니다.
+                    </div>
+                    <div class="answer_title">
+                        <div class="inquiry_list_title_left">문의자</div> <%=row[0].USER_ID%>
+                    </div>
+                    <div class="answer_title" style="margin-top: 0px;">
+                        <div class="inquiry_list_title_left">답변자</div> <%=row[0].ADMIN_ID%>
+                    </div>
+                    <div class="answer_title" style="margin-top: 5px;">
+                        <div class="inquiry_list_title_left">문의시간</div> <%=register_date[0]%>
+                    </div>
+                    <div class="answer_title" style="margin-top: 5px;">
+                        <div class="inquiry_list_title_left">카테고리</div>
+                        <% if(row[0].CATEGORY == 1){%>
+                            전시회 주최에 문제가 있습니다.
+                        <%}%>
+                        <% if(row[0].CATEGORY == 2){%>
+                            전시작품 등록에 문제가 있습니다.
+                        <%}%>
+                        <% if(row[0].CATEGORY == 3){%>
+                            전시회에 문제가 있습니다.
+                        <%}%>
+                        <% if(row[0].CATEGORY == 4){%>
+                            전시작품에 문제가 있습니다.
+                        <%}%>
+                    </div>
+                    <div class="answer_content_box" style="height: auto;">
+                        <div class="answer_title" style="margin-top: 5px;">
+                            문의제목 - <%=row[0].TITLE%>
+                        </div>
+                        <div class="answer_title" style="height: auto;">
+                            <%=row[0].CONTENT%>1
+                        </div>
+                    </div>
+                    <div class="answer_textarea">
+                        <%=row[0].ANSWER%>
+                    </div>
+                    <button class="answer_btn" onclick="location.href='/inquiry_list'">뒤로가기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<style>
+    a{
+        color: black;
+    }
+</style>
+<div class="public_area">
+    <div class="public_container">
+        <div class="public_box_top" style="margin-top: 50px;">
+            공지사항
+        </div>
+        <% if (sess.user.ID == 'IU'){%>
+        <div class="public_box_top" style="justify-content: flex-end; padding-right: 20px; width: calc(100% - 20px);">
+            <button class="public_box_btn" onclick="location.href='/public_register'">공지사항 등록</button>
+        </div>
+        <%}%>
+        <div class="public_box2" style="border-top: 1px solid #999;">
+            <div class="public_box2_box1"></div>
+            <div class="public_box2_box2">제목</div>
+            <div class="public_box2_box4">글쓴이</div>
+            <div class="public_box2_box4">날짜</div>
+            <div class="public_box2_box3">조회수</div>
+        </div>
+        <% for(var i = 0; i < row.length; i++){%>
+        <div class="public_box2" >
+            <div class="public_box2_box1"><%=row[i].NUMBER%></div>
+            <div class="public_box2_box2"><a href="/public_post/<%=row[i].NUMBER%>"><%=row[i].TITLE%></a></div>
+            <div class="public_box2_box4"><%=row[i].USER_ID%></div>
+            <div class="public_box2_box4"><%=register_date[0]%></div>
+            <div class="public_box2_box3"><%=row[i].HIT%></div>
+        </div>
+        <%}%>
+    </div>
+</div>

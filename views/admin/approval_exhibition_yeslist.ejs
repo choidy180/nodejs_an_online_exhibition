@@ -1,0 +1,29 @@
+<div class="app_for_exhibition_container_right" style="height: 100%; padding-bottom: 50px;">
+    <div class="afe_right_container" style="align-items: center;">
+        <div class="afe_right_headbox">
+            승인된 전시회 리스트
+        </div>
+        <script>
+            function addComma(num) {
+                var regexp = /\B(?=(\d{3})+(?!\d))/g;
+                return num.toString().replace(regexp, ',');
+            }
+        </script>
+        <% for (var i = 0; i < row.length; i++){%>
+        <div class="app_yes_exhibition_box" style="height: auto;">
+            <div class="app_yes_exhibition_box1">
+                <img class="app_yes_exhibition_img" src="/public/images/exhibition_title_images/<%=row[i].IMG%>" alt="">
+            </div>
+            <div class="app_yes_exhibition_box2">
+                <p class="app_yes_exhibition_title"><%=row[i].TITLE%></p>
+                <p class="app_yes_exhibition_category"><%=row[i].CATEGORY%> / <%=row[i].DETAIL_CATEGORY%></p>
+                <div class="app_yes_exhibition_register_time">REGISTER : <%=register_date[i]%></div>
+                <div class="app_yes_exhibition_register_time">STARTTIME : <%=start_date[i]%></div>
+                <div class="app_yes_exhibition_register_time">ENDTIME : <%=end_date[i]%></div>
+                <div class="app_yes_exhibition_register_time">BOOTHCOUNT : <%=row[i].BOOTH_COUNT%></div>
+                <div class="app_yes_exhibition_register_time" style="margin-top: 0px;">REGISTER_COST : <%=costarray[i]%></div>
+            </div>
+        </div>
+        <%}%>
+    </div>
+</div>

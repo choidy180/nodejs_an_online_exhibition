@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../public/stylesheets/style.css" />
+    <link href="../public/stylesheets/style.css" media="screen and (min-width: 512px) and (max-width: 1024px)" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400&display=swap" rel="stylesheet">
+    <title><%= title%></title>
+  </head>
+  <style>
+    body {
+      margin: 0px;
+      animation: fadein 1000ms ease-out;
+      background-color: white;
+    }
+  </style>
+  <body>
+    <%- include('main_nav.ejs')%>
+    <%- include(page) %>
+  </body>
+</html>

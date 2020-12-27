@@ -1,0 +1,130 @@
+<script>
+    window.onload = () => {
+        function addComma(num) {
+            var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return num.toString().replace(regexp, ',');
+        }
+        let count = parseInt(document.getElementById('booth_count_value').textContent);
+        price_change = () => {
+            if (count > 19){
+                result = count * 30000 * 0.8;
+                document.querySelector('.afe_right_app_exhibition_price').value = addComma(result);
+                } else if (count > 9 ) {
+                    result = count * 30000 * 0.9;
+                    console.log(result);
+                    document.querySelector('.afe_right_app_exhibition_price').value = addComma(result);
+                } else {
+                    document.querySelector('.afe_right_app_exhibition_price').value = addComma(count * 30000);
+                    }
+                }
+        console.log("ㅎㅇㅎㅇ");
+        price_change();
+    }
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+<div class="app_for_exhibition_area">
+    <div class="app_for_exhibition_container">
+        <div class="app_for_exhibition_container_left">
+            <div class="app_for_exhibition_user_info">
+                <div class="afe_user_info_imgbox">
+                    <img class="afe_user_info_img" src="/uploads/<%=sess.user.IMG%>" alt="">
+                </div>
+                <p class="afe_user_info_name"><%= sess.user.NAME%></p>
+                <p class="afe_user_info_name" style="font-weight: 500; letter-spacing: -0.5px;"><%= sess.user.EMAIL%></p>
+            </div>
+            <div class="app_for_exhibition_user_info_bottom">
+                <p class="app_for_exhibition_user_info_bottom_text">전시회 승인</p>
+                <p class="app_for_exhibition_user_info_bottom_text" style="margin-bottom: 30px; margin-top: -10px;">전시작품 승인</p>
+                <p class="app_for_exhibition_user_info_bottom_text" style="color: #4B97FD; font-weight: 700;">전시회 등록</p>
+                <p class="app_for_exhibition_user_info_bottom_text" style="margin-bottom: 30px; margin-top: -10px;">전시작품 등록</p>
+            </div>
+        </div>
+        <div class="app_for_exhibition_container_right">
+            <div class="afe_right_container">
+                <div class="afe_right_headbox">
+                    전시회 등록 결제를 진행합니다.
+                </div>
+                <div class="afe_right_headbox" style="margin-top: -13px;">
+                    정보를 확인한 후에 결제를 진행하세요.
+                </div>
+                <script>
+                    function addComma(num) {
+                        var regexp = /\B(?=(\d{3})+(?!\d))/g;
+                        return num.toString().replace(regexp, ',');
+                    }
+                    function handleClick() {
+                        var priceup = document.querySelector('.checkpriceup');
+                        console.log(priceup);
+                        if(priceup.checked){
+                            price = parseInt(document.getElementById('payment_afe').value.replaceAll(',',''));
+                            price = price + 1000000;
+                            document.getElementById('payment_afe').value = addComma(price);
+                            document.querySelector('.additional_money').value = "(추가금 지불 됨)";
+                        } else {
+                            price = parseInt(document.getElementById('payment_afe').value.replaceAll(',',''));
+                            console.log(price);
+                            price = price - 1000000;
+                            document.getElementById('payment_afe').value = addComma(price);
+                            document.querySelector('.additional_money').value = "";
+                        }
+                    }
+                </script>
+                <div class="exhibition_approval_area" style="align-items: flex-start;">
+                    <div class="exhibition_approval_title" style="font-size: 24px;">제목 : <%=row[0].TITLE%> <input type="text" class="additional_money" readonly></div>
+                    <p class="exhibition_approval_title" style="font-size: 20px;">카테고리: <%=row[0].CATEGORY%> / <%=row[0].DETAIL_CATEGORY%></p>
+                    <p class="exhibition_approval_title" style="font-size: 20px;">전시작품 등록자: <%=row[0].USER_ID%></p>
+                    <p class="exhibition_approval_title" style="font-size: 20px;">관람금액: <%=row[0].PRODUCTION_COST%></p>
+                    <p class="exhibition_approval_title" style="font-size: 20px;">부스 개수: <span id="booth_count_value"><%=row[0].BOOTH_COUNT%></span></p>
+                    <p class="exhibition_approval_register_date" style="font-size: 18px;">등록시간 : <%=register_date%></p>
+                    <p class="exhibition_approval_register_date" style="font-size: 18px; margin-top: -2px;">전시회 시작시간 : <%=start_time%></p>
+                    <p class="exhibition_approval_register_date" style="font-size: 18px; margin-top: -2px;">전시회 마감시간 : <%=end_time%></p>
+                    <p class="exhibition_approval_register_date" style="font-size: 18px; margin-top: -2px;">전시작품 등록 마감시간 : <%=daealine%></p>
+                    <div class="exhibition_approval_img_box" style="margin-top: 5px;">
+                        <img class="exhibition_approval_img" src="/public/images/exhibition_title_images/<%=row[0].IMG%>" alt="">
+                    </div>
+                    <div class="exhibition_approval_explain_text">
+                        <%=row[0].EXPLAIN_TEXT%>
+                    </div>
+                    <script>
+                        function addComma(num) {
+                            var regexp = /\B(?=(\d{3})+(?!\d))/g;
+                            return num.toString().replace(regexp, ',');
+                        }
+                        function handleClick() {
+                            var priceup = document.querySelector('.checkpriceup');
+                            console.log(priceup);
+                            if(priceup.checked){
+                                price = parseInt(document.getElementById('payment_afe').value.replaceAll(',',''));
+                                price = price + 1000000;
+                                document.getElementById('payment_afe').value = addComma(price);
+                                document.querySelector('.additional_money').value = "(추가금 지불 됨)";
+                            } else {
+                                price = parseInt(document.getElementById('payment_afe').value.replaceAll(',',''));
+                                console.log(price);
+                                price = price - 1000000;
+                                document.getElementById('payment_afe').value = addComma(price);
+                                document.querySelector('.additional_money').value = "";
+                            }
+                        }
+                    </script>
+                    <div class="exhibition_approval_explain_checkbox" style="margin-top: 10px; height: 40px;">
+                        <div style="display: flex; cursor: pointer;">
+                            <input type="checkbox" class="checkpriceup" style="margin-right: 5px; width: 15px; height: 15px; cursor: pointer;" onclick='handleClick(this);'>상단 노출 여부
+                        </div>
+                    </div>
+                    <div class="afe_right_app_exhibition_btn_container" style="margin-top: 0px;">
+                        <div class="check_btn_change">
+                            <p class="afe_right_app_exhibition_text">결제금액 : <span style="color: red;">₩ 
+                                <label><input type="text" name="checkValue" readonly id="payment_afe" class="afe_right_app_exhibition_price" value="" onclick='handleClick();'></label></p>
+                        </div>
+                    </div>
+                    <div class="afe_right_app_exhibition_btn_container" style="margin-top: 10px; display: flex;">
+                        <button class="afe_right_app_exhibition_btn" style="width: 200px; margin-right: 50px;" onclick="location.href='/application_for_exhibition_third/'+'<%=row[0].NUMBER%>='+document.getElementById('payment_afe').value + '=' + document.querySelector('.additional_money').value">결제하기</button>
+                        <button class="afe_right_app_exhibition_btn" style="width: 200px;">취소하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

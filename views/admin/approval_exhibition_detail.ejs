@@ -1,0 +1,42 @@
+<div class="app_for_exhibition_container_right" style="height: 100%;">
+    <div class="afe_right_container">
+        <div class="afe_right_headbox">
+            등록 신청중인 전시회를 승인/거절 합니다.
+        </div>
+        <div class="exhibition_approval_area" style="align-items: flex-start;">
+            <input class="exhibition_approval_title" type="text" value="<%=row[0].NUMBER%>" readonly style="border: none; height: 30px; background-color: transparent;" name="exhibition_number">
+            <p class="exhibition_approval_title" style="font-size: 24px;">제목 : <%=row[0].TITLE%></p>
+            <p class="exhibition_approval_title" style="font-size: 20px;">카테고리: <%=row[0].CATEGORY%> / <%=row[0].DETAIL_CATEGORY%></p>
+            <p class="exhibition_approval_title" style="font-size: 20px;">전시작품 등록자: <%=row[0].USER_ID%></p>
+            <p class="exhibition_approval_title" style="font-size: 20px;">부스 개수: <%=row[0].BOOTH_COUNT%></p>
+            <p class="exhibition_approval_title" style="font-size: 20px;">결제 금액: <%=row[0].REGISTER_COST%></p>
+            <p class="exhibition_approval_register_date" style="font-size: 18px;">등록시간 : <%=register_date%></p>
+            <p class="exhibition_approval_register_date" style="font-size: 18px; margin-top: -2px;">전시회 시작시간 : <%=start_time%></p>
+            <p class="exhibition_approval_register_date" style="font-size: 18px; margin-top: -2px;">전시회 마감시간 : <%=end_time%></p>
+            <p class="exhibition_approval_register_date" style="font-size: 18px; margin-top: -2px;">전시작품 등록 마감시간 : <%=daealine%></p>
+            <div class="exhibition_approval_img_box">
+                <img class="exhibition_approval_img" src="/public/images/exhibition_title_images/<%=row[0].IMG%>" alt="">
+            </div>
+        </div>
+        <script>
+            exhibi_yes = () => {
+                var result = confirm("전시회를 승인합니다.");
+                if(result){
+                    location.href='/yes_exhibition/<%=row[0].NUMBER%>'
+                } else {
+                }
+            }
+            exhibi_no = () => {
+                var result = confirm("전시회를 거절합니다.");
+                if(result){
+                    location.href='/no_exhibition/<%=row[0].NUMBER%>'
+                } else {
+                }
+            }
+        </script>
+        <div class="exhibition_yes_or_no_box">
+            <button style="margin-right: 50px;" onclick="exhibi_yes()">승인</button>
+            <button onclick="exhibi_no()">거절</button>
+        </div>
+    </div>
+</div>

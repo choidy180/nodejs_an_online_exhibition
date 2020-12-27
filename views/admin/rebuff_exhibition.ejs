@@ -1,0 +1,19 @@
+<div class="app_for_exhibition_container_right" style="height: 100%;">
+    <div class="afe_right_container" style="align-items: center;">
+        <div class="afe_right_headbox">
+            등록 신청중인 전시회를 거절 합니다.
+        </div>
+        <form action="/board/no_reason" method="POST">
+        <div class="exhibition_approval_area" style="align-items: flex-start;">
+            <input class="exhibition_approval_title" name="number" type="text" value="<%=number%>" readonly style="border: none; height: 30px; background-color: transparent;" name="exhibition_number">
+            <p style="margin-top: 20px; font-size: 20px; font-weight: 700;">거절사유 등록</p>
+            <div class="exhibino_box" style="margin-top:5px;">
+                <textarea class="exhibino_box_textarea" name="reason" id="" cols="30" rows="10" placeholder="전시회 거절 사유"></textarea>
+            </div>
+        </div>
+        <div class="exhibition_yes_or_no_box">
+            <button style="width: 180px;">거절사유 등록</button>
+        </div>
+        </form>
+    </div>
+</div>

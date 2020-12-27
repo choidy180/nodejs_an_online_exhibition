@@ -1,0 +1,20 @@
+<div class="category_generation_area">
+    <div class="category_generation_container">
+        <div class="category_generation_title_box">
+            전시회 카테고리 리스트
+        </div>
+        <div class="category_list_box">
+            <% for (var i = 0; i < row.length; i++){%>
+            <div class="category_list">
+                <div class="category_list_img_box">
+                    <img class="category_list_img" src="/category_img/<%=row[i].IMG%>" alt="">
+                </div>
+                <div class="category_list_text_box">
+                    <p class="category_list_text_box_title"><%=row[i].NAME%></p>
+                    <p class="category_list_text_box_sub"><%=row[i].DESCRIPTION%></p>
+                </div>
+            </div>
+            <%}%>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,371 @@
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Nanum Gothic", sans-serif;
+  overflow: hidden;
+}
+/* 인트로 페이지 */
+.area1 {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  background-size: cover;
+  background-color: black;
+}
+.background {
+  width: 100vw;
+  max-width: 100%;
+  height: 100vh;
+  background-color: red;
+  padding-top: calc (300 / 1000 * 100%);
+  background: url(/public/images/start/1.jpg) center center / cover no-repeat;
+  filter: brightness(30%);
+  position: relative;
+  z-index: 1;
+}
+.intro_content_box {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  min-width: 100%;
+  color: white;
+  font-size: 100px;
+  z-index: 2;
+  margin-top: -63vh;
+}
+.intro_content_box_button {
+  position: absolute;
+  color: white;
+  width: 100%;
+  height: 4vh;
+  font-size: 100px;
+  z-index: 2;
+  margin-top: -54vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.intro_content_button_box {
+  width: 100vw;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.intro_content_button {
+  width: 250px;
+  height: 80px;
+  font-size: 30px;
+  font-weight: 500;
+  background: linear-gradient(
+    to right,
+    #f867b6,
+    #e36acc,
+    #d264ce,
+    #be66d3,
+    #b96dc5,
+    #b462df,
+    #ae6ce0,
+    #9d66ec,
+    #986de2,
+    #856bd3,
+    #806bec,
+    #8173e7,
+    #716be8,
+    #6b72de,
+    #6476ec
+  );
+  color: white;
+  outline: none;
+  top: -1vh;
+  border-radius: 1rem;
+  border: none;
+  transition: all ease 0.3s;
+  cursor: pointer;
+  font-family: "Nanum Gothic", sans-serif;
+  font-weight: 700;
+}
+.intro_content_button:hover {
+  transform: scale(1.1);
+}
+.intro_content_title {
+  color: white;
+  font-weight: 400;
+  font-size: 80px;
+}
+.intro_content_sub_title {
+  opacity: 0.5;
+  font-size: 60px;
+}
+.start_under_arrow {
+  margin-top: 37vh;
+  width: 70px;
+  bottom: -100px;
+  margin-left: calc(50% - 35px);
+  cursor: pointer;
+}
+@media (max-width: 1700px) {
+  .intro_content_title {
+    font-size: 60px;
+  }
+  .intro_content_sub_title {
+    font-size: 50px;
+  }
+  .intro_content_button {
+    width: 200px;
+    height: 70px;
+    font-size: 24px;
+  }
+  .start_under_arrow {
+    margin-top: 40vh;
+  }
+}
+@media (max-width: 1300px) {
+  .intro_content_title {
+    font-size: 50px;
+  }
+  .intro_content_sub_title {
+    font-size: 40px;
+  }
+  .intro_content_button {
+    width: 200px;
+    font-size: 24px;
+  }
+  .start_under_arrow {
+    margin-top: 43vh;
+  }
+}
+@media (max-width: 1130px) {
+  .intro_content_title {
+    font-size: 40px;
+  }
+  .intro_content_sub_title {
+    font-size: 36px;
+  }
+  .intro_content_button {
+    width: 180px;
+    height: 60px;
+    font-size: 20px;
+  }
+  .start_under_arrow {
+    margin-top: 46vh;
+  }
+}
+@media (max-width: 870px) {
+  .intro_content_title {
+    font-size: 30px;
+  }
+  .intro_content_sub_title {
+    font-size: 26px;
+  }
+  .start_under_arrow {
+    margin-top: 43vh;
+  }
+}
+/* 시작 페이지 */
+.start_logo_box {
+  width: 100vw;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #f00;
+}
+.start_logo {
+  width: 400px;
+  margin-bottom: 10vh;
+}
+.start_button_box {
+  margin-top: 2vh;
+  width: 100vw;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.start_button {
+  width: 400px;
+  min-width: 215px;
+  height: 4.5vh;
+  border-radius: 2vh;
+  outline: none;
+  background-color: transparent;
+  border: 1px solid silver;
+  color: white;
+  font-size: 24px;
+  font-family: "Nanum Gothic", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+.start_button:hover {
+  background-color: white;
+  color: black;
+}
+.start_button_login_box {
+  margin-top: 2vh;
+  width: 100vw;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.start_login_button {
+  width: 400px;
+  min-width: 195px;
+  height: 4.5vh;
+  border-radius: 2vh;
+  outline: none;
+  background-color: #f00;
+  border: 1px solid #f00;
+  color: white;
+  font-size: 26px;
+  font-family: "Nanum Gothic", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+@media (max-width: 1700px) {
+  .intro_content_title {
+    font-size: 60px;
+  }
+  .intro_content_sub_title {
+    font-size: 50px;
+  }
+  .intro_content_button {
+    width: 200px;
+    height: 70px;
+    font-size: 24px;
+  }
+  .start_under_arrow {
+    margin-top: 40vh;
+  }
+}
+
+/* 로그인 */
+.login_box {
+  width: 100vw;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 20;
+  top: 47vh;
+}
+.login_box_input {
+  width: 400px;
+  min-width: 200px;
+  height: 40px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  z-index: 30;
+  color: lightgray;
+  border-bottom: 1px solid white;
+  font-size: 1.33rem;
+  font-family: "Nanum Gothic", sans-serif;
+}
+.login_box_input::placeholder {
+  font-size: 20px;
+  font-family: "Nanum Gothic", sans-serif;
+}
+.login_page_login_button {
+  width: 400px;
+  height: 60px;
+  outline: none;
+  border: none;
+  font-size: 30px;
+  font-weight: 700;
+  border-radius: 30px;
+  font-family: "Nanum Gothic", sans-serif;
+  background: linear-gradient(
+    to right,
+    #f867b0,
+    #e36acc,
+    #d264ce,
+    #be66d3,
+    #b96dc5,
+    #b462df,
+    #ae6ce0,
+    #9d66ec,
+    #986de2,
+    #856bd3,
+    #806bec,
+    #8173e7,
+    #716be8,
+    #6b72de,
+    #6476ec
+  );
+  color: white;
+  cursor: pointer;
+}
+
+/* 회원가입 2 */
+.sign2_user_id {
+  font-size: 30px;
+  font-weight: 500;
+  text-align: center;
+  border: none;
+  outline: none;
+}
+/* 로그인 */
+.sign_box {
+  width: 100vw;
+  height: auto;
+  text-align: center;
+  margin-top: 200px;
+}
+#image_container img {
+  width: 260px;
+  height: 260px;
+}
+.sign_box_title {
+  font-size: 20px;
+  margin: 0;
+  margin-bottom: 5px;
+  padding-right: 20vw;
+}
+.sign_box_input {
+  width: 20vw;
+  min-width: 390px;
+  outline: none;
+  font-size: 18px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.filebox label {
+  width: 20vw;
+  min-width: 390px;
+  text-align: center;
+  display: inline-block;
+  padding: 0.5em 0.75em;
+  color: black;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  border: 1px solid black;
+  border-bottom-color: black;
+  padding: 10px;
+}
+/* 파일 필드 숨기기 */
+.filebox input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

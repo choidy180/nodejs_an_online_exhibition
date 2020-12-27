@@ -1,0 +1,374 @@
+<style>
+    body {
+      margin: 0px;
+      animation: fadein 1000ms ease-out;
+      background-color: #212121;
+    }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<div class="top_main_area"></div>
+<div class="top_main_blur"></div>
+<div class="top_recommendation_area">
+    <!-- 최상단 박스 -->
+    <div class="top_recommendation_box1">
+        <div class="top_recommendation_content_box">
+            <div class="top_recommendation_content" onclick="location.href='/exhibition_detail/<%=row[0].NUMBER%>'">
+                <img class="top_recommendation_img" src="/public/images/exhibition_title_images/<%=row[0].IMG%>" alt="">
+            </div>
+            <div class="top_recommendation_textbox">
+                <p class="top_recommendation_title"><%=row[0].TITLE%></p>
+                <p class="top_recommendation_sub"><%=start_date[0]%> - <%=end_date[0]%></p>
+            </div>
+        </div>
+        <div class="top_recommendation_content_box" style=" left: calc(25%);">
+            <div class="top_recommendation_content" onclick="location.href='/exhibition_detail/<%=row[1].NUMBER%>'">
+                <img class="top_recommendation_img" src="/public/images/exhibition_title_images/<%=row[1].IMG%>" alt="">
+            </div>
+            <div class="top_recommendation_textbox">
+                <p class="top_recommendation_title"><%=row[1].TITLE%></p>
+                <p class="top_recommendation_sub"><%=start_date[1]%> - <%=end_date[1]%></p>
+            </div>
+        </div>
+        <div class="top_recommendation_content_box" style=" left: calc(50%);">
+            <div class="top_recommendation_content" onclick="location.href='/exhibition_detail/<%=row[2].NUMBER%>'">
+                <img class="top_recommendation_img" src="/public/images/exhibition_title_images/<%=row[2].IMG%>" alt="">
+            </div>
+            <div class="top_recommendation_textbox">
+                <p class="top_recommendation_title">미국의 도시들</p>
+                <p class="top_recommendation_sub"><%=start_date[2]%> - <%=end_date[2]%></p>
+            </div>
+        </div>
+        <div class="top_recommendation_content_box" style="left: calc(75%);">
+            <div class="top_recommendation_content" onclick="location.href='/exhibition_detail/<%=row[3].NUMBER%>'">
+                <img class="top_recommendation_img" src="/public/images/exhibition_title_images/2624d40fed2c0b1512ec160223dae034bf341156.jpg" alt="">
+            </div>
+            <div class="top_recommendation_textbox">
+                <p class="top_recommendation_title">MÜNCHEN</p>
+                <p class="top_recommendation_sub"><%=start_date[3]%> - <%=end_date[3]%></p>
+            </div>
+        </div>
+    </div>
+    <div class="main_area_text" style="height: calc(5vh + 20px); font-size: 2.333rem; margin-bottom: calc(1vh + 5px); margin-top: calc(1vh + 2px); font-weight: 700; color: white; padding-left: 1vw;">ORIGINAL EXHIBITION</div>
+    <div class="top_recommendation_box2" style="padding-bottom: 20%;">
+        <div class="box2_content_box">
+            <p class="box2_content_box_title">ORIGINAL</p>
+            <p class="box2_content_box_sub">CHERNOBYL</p>
+        </div>
+        <div class="box2_content_imgbox">
+            <img id="box2_3" class="box2_content_img" src="/public/images/101.jpg">
+        </div>
+        <div class="box2_content_box"  style="left: calc(14.28571428571429%);">
+            <p class="box2_content_box_title">ORIGINAL</p>
+            <p class="box2_content_box_sub">조제</p>
+        </div>
+        <div class="box2_content_imgbox"  style="left: calc(14.28571428571429%);">
+            <img id="box2_1" class="box2_content_img" src="/public/images/test100.PNG">
+        </div>
+        <div class="box2_content_box" style="left: calc(28.57142857142858%);">
+            <p class="box2_content_box_title">ORIGINAL</p>
+            <p class="box2_content_box_sub">ABOUT TIME</p>
+        </div>
+        <div class="box2_content_imgbox" style="left: calc(28.57142857142858%);">
+            <img id="box2_2" class="box2_content_img" src="/public/images/test101.PNG">
+        </div>
+        <div class="box2_content_box" style="left: calc(42.85714285714287%);">
+            <p class="box2_content_box_title">ORIGINAL</p>
+            <p class="box2_content_box_sub">EXTRACURRICULAR</p>
+        </div>
+        <div class="box2_content_imgbox" style="left: calc(42.85714285714287%);">
+            <img id="box2_4" class="box2_content_img" src="/public/images/104.PNG" onclick="location.href='http://localhost:3000/exhibition_detail/32'">
+        </div>
+        <div class="box2_content_box" style="left: calc(57.14285714285716%);">
+            <p class="box2_content_box_title">ORIGINAL</p>
+            <p class="box2_content_box_sub">WITCH</p>            
+        </div>
+        <div class="box2_content_imgbox" style="left: calc(57.14285714285716%);">
+            <img id="box2_5" class="box2_content_img" src="/public/images/108.jpg">
+        </div>
+        <div class="box2_content_box" style="left: calc(71.42857142857145%);">
+            <p class="box2_content_box_title">ORIGINAL</p>
+            <p class="box2_content_box_sub">LIFE</p>
+        </div>
+        <div class="box2_content_imgbox" style="left: calc(71.42857142857145%);">
+            <img id="box2_6" class="box2_content_img" src="/public/images/106.PNG">
+        </div>
+        <div class="box2_content_box" style="left: calc(85.71428571428574%);">
+            <p class="box2_content_box_title">ORIGINAL</p>
+            <p class="box2_content_box_sub">MOONCHANGHEE</p>
+        </div>
+        <div class="box2_content_imgbox" style="left: calc(85.71428571428574%);">
+            <img id="box2_7" class="box2_content_img" src="/public/images/107.jpg">
+        </div>
+        <style>
+            #box2_1:hover{
+                content: url("/public/images/100.webp");
+                position: relative;
+                z-index: 5000;
+                filter: brightness(100%);
+            }
+            #box2_4:hover{
+                content: url("/public/images/104_1.PNG");
+                position: relative;
+                z-index: 5000;
+            }
+            #box2_5:hover{
+                content: url("/public/images/106_1.jpg");
+                position: relative;
+                z-index: 5000;
+            }
+        </style>
+    </div>
+    <!-- 세번째 박스 시작 -->
+    <div class="main_area_text" style="height: calc(5vh + 20px); font-size: 2.333rem; margin-bottom: calc(1vh + 5px); margin-top: calc(1vh + 2px); font-weight: 700; color: white; padding-left: 1vw;">CATEGORY_1</div>
+    <div class="main_box3">
+        <div class="main_box3_contentbox">
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d1.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d2.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
+                <div class="main_box3_line_box_sub">
+                    <div class="main_box3_line_box_sub_box">
+                        YOU ARE
+                    </div>
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d3.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d4.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d5.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d6.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
+                <div class="main_box3_line_box_sub">
+                    <div class="main_box3_line_box_sub_box">
+                        FAVORITE
+                    </div>
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d7.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d8.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d9.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d10.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
+                <div class="main_box3_line_box_sub">
+                    <div class="main_box3_line_box_sub_box">
+                        EXHIBITION
+                    </div>
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d11.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d12.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d13.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d14.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end; margin-right: 0px;">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d15.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d16.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_area_text" style="height: calc(5vh + 20px); font-size: 2.333rem; margin-bottom: calc(1vh + 5px); margin-top: calc(1vh + 2px); font-weight: 700; color: white; padding-left: 1vw;">CATEGORY_2</div>
+    <div class="main_box3">
+        <div class="main_box3_contentbox">
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d1.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d2.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
+                <div class="main_box3_line_box_sub">
+                    <div class="main_box3_line_box_sub_box">
+                        YOU ARE
+                    </div>
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d3.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d4.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d5.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d6.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
+                <div class="main_box3_line_box_sub">
+                    <div class="main_box3_line_box_sub_box">
+                        FAVORITE
+                    </div>
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d7.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d8.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d9.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d10.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
+                <div class="main_box3_line_box_sub">
+                    <div class="main_box3_line_box_sub_box">
+                        EXHIBITION
+                    </div>
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d11.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d12.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d13.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d14.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end; margin-right: 0px;">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d15.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d16.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_area_text" style="height: calc(5vh + 20px); font-size: 2.333rem; margin-bottom: calc(1vh + 5px); margin-top: calc(1vh + 2px); font-weight: 700; color: white; padding-left: 1vw;">CATEGORY_3</div>
+    <div class="main_box3">
+        <div class="main_box3_contentbox">
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d1.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d2.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
+                <div class="main_box3_line_box_sub">
+                    <div class="main_box3_line_box_sub_box">
+                        YOU ARE
+                    </div>
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d3.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d4.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d5.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d6.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
+                <div class="main_box3_line_box_sub">
+                    <div class="main_box3_line_box_sub_box">
+                        FAVORITE
+                    </div>
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d7.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d8.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d9.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d10.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
+                <div class="main_box3_line_box_sub">
+                    <div class="main_box3_line_box_sub_box">
+                        EXHIBITION
+                    </div>
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d11.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d12.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d13.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d14.jpg" alt="">
+                </div>
+            </div>
+            <div class="main_box3_contentbox_line" style="justify-content: flex-end; margin-right: 0px;">
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d15.jpg" alt="">
+                </div>
+                <div class="main_box3_line_box">
+                    <img class="main_box3_line_img" src="/public/images/exbox1/d16.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

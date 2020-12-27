@@ -1,0 +1,25 @@
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+</style>
+<div id="mypage_area">
+    <div id="mypage_container" style="margin-top: 50px; width: 900px; height: auto; width: 100px;">
+        <form action="/board/post_review" method="POST" style="width: 100%; height: auto; display: flex; flex-direction: column; align-items: center;">
+            <div class="regist_review_title">
+                <div style="width:200px; height: 30px; text-align: center;">리뷰작성</div> 
+                <input name="number" type="text" value="<%=number%>" readonly>
+            </div>
+            <div class="rating" style="margin-top: 50px;"> 
+                <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label> 
+                <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label> 
+                <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label> 
+                <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label> 
+                <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+            </div>
+            <textarea name="content" class="review_content" placeholder="리뷰 내용 입력"></textarea>
+            <button class="review_btn">리뷰 등록</button>
+        </form>
+    </div>
+</div>

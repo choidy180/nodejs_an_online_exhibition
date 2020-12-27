@@ -1,0 +1,132 @@
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+</style>
+<div id="mypage_area">
+    <div id="mypage_container">
+        <div id="mypage_title" style="cursor: pointer;">
+            <span style="margin-right: 50px; color: red;">계정</span>
+            <a href="/mypage_payment"><span style="margin-right: 50px;">결제</span></a>
+            <a href="/inquiry"><span style="margin-right: 50px;">문의</span></a>
+        </div>
+        <div class="mypage_main_top">
+            <div class="mypage_main_box_left">
+                <p class="mypage_main_box_left_title">프로필</p>
+            </div>
+            <div class="mypage_main_box_right">
+                <img class="mypage_main_profile_img" src="/uploads/<%=sess.user.IMG%>" alt="">
+                <div class="mypage_main_box_right_right">
+                    <div class="mypage_main_box_right_right_top">
+                        <div class="mypage_main_box_right_right_top_textbox">
+                            <div class="mypage_main_box_right_right_top_textbox_title">ID</div>
+                            <div class="mypage_main_box_right_right_top_textbox_sub"><%= sess.user.ID%>
+                                <%if(sess.user.ID == 'IU'){%>
+                                    [ 관리자 ]
+                                <%}%>
+                            </div>
+                        </div>
+                        <div class="mypage_main_box_right_right_top_textbox">
+                            <div class="mypage_main_box_right_right_top_textbox_title">NAME</div>
+                            <div class="mypage_main_box_right_right_top_textbox_sub"><%= sess.user.NAME%></div>
+                        </div>
+                        <div class="mypage_main_box_right_right_top_textbox">
+                            <div class="mypage_main_box_right_right_top_textbox_title">EMAIL</div>
+                            <div class="mypage_main_box_right_right_top_textbox_sub"><%= sess.user.EMAIL%></div>
+                        </div>
+                        <div class="mypage_main_box_right_right_top_textbox">
+                            <div class="mypage_main_box_right_right_top_textbox_title">TEL</div>
+                            <div class="mypage_main_box_right_right_top_textbox_sub"><%= sess.user.TEL%></div>
+                        </div>
+                        <div class="mypage_main_box_right_right_top_textbox2">
+                            <div class="mypage_main_box_right_right_top_textbox2_box">
+                                <div class="mypage_main_box_right_right_top_textbox2_box_box" style="border-right: 1px solid gray;">
+                                    <p class="mypage_main_box_right_right_top_textbox2_box_title">등록전시작품 수</p>
+                                    <p class="mypage_main_box_right_right_top_textbox2_box_sub"><%=row.length%></p>
+                                </div>
+                            </div>
+                            <div class="mypage_main_box_right_right_top_textbox2_box">
+                                <div class="mypage_main_box_right_right_top_textbox2_box_box "  style="border-right: 1px solid gray;">
+                                    <p class="mypage_main_box_right_right_top_textbox2_box_title">관람 가능 전시회수</p>
+                                    <p class="mypage_main_box_right_right_top_textbox2_box_sub"><%=sess.user.VIEWING_AVA_COUNT%></p>
+                                </div>
+                            </div>
+                            <div class="mypage_main_box_right_right_top_textbox2_box">
+                                <div class="mypage_main_box_right_right_top_textbox2_box_box">
+                                    <p class="mypage_main_box_right_right_top_textbox2_box_title">보유 금액</p>
+                                    <p class="mypage_main_box_right_right_top_textbox2_box_sub"><%=result%></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mypage_main_profile_img_button_box">
+                        <div class="filebox"> 
+                            <label for="ex_file">사진 변경</label> 
+                            <input type="file" id="ex_file"> 
+                        </div>
+                        <div class="filebox"> 
+                            <label for="ex_file"  style="margin-right: 0px;">사진 삭제</label> 
+                            <input type="file" id="ex_file"> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mypage_main_bottom">
+            <div class="mypage_main_box_left" style="border-top: none;">
+                <p class="mypage_main_box_left_title">결제중인 이용권</p>
+            </div>
+            <div class="mypage_main_box_right" style="flex-direction: column;">
+                <div style="display: flex; width: 100%;">
+                    <div class="mypage_main_box_box"><%= sess.user.GRADE%></div>
+                    <div class="mypage_main_box_box" style="justify-content: flex-end; font-weight: 500; font-size: 24px; color: #0073e6; cursor: pointer;" onclick="location.href='/user_card'">결제 정보 변경</div>
+                </div>
+                <% if (row2[0] != undefined){%>
+                    <div class="mypage_main_box_box_title">다음 결제일은 <strong>12월 25일 </strong> 입니다.</div>
+                    <div class="mypage_main_box_box_title"><strong>신용카드 •••• •••• •••• <%=row2[0].NUMBER.slice(15,19)%></strong></div>
+                <%} else {%>
+                    <div class="mypage_main_box_box_title">등록된 카드가 존재하지않습니다.</div>
+                <%}%>
+            </div>
+        </div>
+        <div class="mypage_main_bottom" style="border-top: 1px solid #999; height: auto;">
+            <div class="mypage_main_box_left" style="border-top: none;">
+                <p class="mypage_main_box_left_title">추가 정보 관리</p>
+            </div>
+            <div id="mypage_main_box_right" class="mypage_main_box_right" style="flex-direction: column; height: auto;">
+                <% if(sess.user.TYPE === 'N') {%>
+                    <div class="mypage_main_box_right_textbox" onclick="location.href='application_for_exhibition'">전시회 신청</div>
+                <%}%>
+                <% if(sess.user.TYPE === 'A') {%>
+                    <div class="mypage_main_box_right_textbox" onclick="location.href='application_for_exhibition'">전시회 신청</div>
+                <%}%>
+                <div class="mypage_main_box_right_textbox" onclick="location.href='/bookmark'">즐겨찾는 전시회</div>
+                <div class="mypage_main_box_right_textbox" onclick="location.href='/bookmark_user'">즐겨찾는 회원</div>
+                <div class="mypage_main_box_right_textbox" onclick="location.href='/organized_exhibition_present'">주최한 전시회</div>
+                <div class="mypage_main_box_right_textbox" onclick="location.href='/payment_record'">요금제 결제기록 보기</div>
+                <div class="mypage_main_box_right_textbox" onclick="location.href='/viewing_record'">전시회 관람기록</div>
+                <div class="mypage_main_box_right_textbox" onclick="location.href='/purchase_record'">결제 내역보기</div>
+                <div class="mypage_main_box_right_textbox" onclick="location.href='/settlement_of_holding_amount'">보유 금액 정산</div>
+                <div class="mypage_main_box_right_textbox" onclick="location.href='/settlement_of_holding_amount_record'">정산 내역 확인</div>
+            </div>
+        </div>
+        <%if(sess.user.ID == 'IU'){%>
+            <div class="mypage_main_bottom" style="border-top: 1px solid #999; height: auto; align-items: flex-start;">
+                <div class="mypage_main_box_left" style="border-top: none; height: auto;">
+                    <p class="mypage_main_box_left_title">관리자 추가 기능</p>
+                </div>
+                <div id="mypage_main_box_right" class="mypage_main_box_right" style="flex-direction: column; height: auto;">
+                    <div class="mypage_main_box_right_textbox" style="cursor: pointer;" onclick="location.href='/category_list'">카테고리 리스트</div>
+                    <div class="mypage_main_box_right_textbox" style="cursor: pointer;" onclick="location.href='/category_generation'">카테고리 등록</div>
+                    <div class="mypage_main_box_right_textbox" style="cursor: pointer;" onclick="location.href='/public_register'">공지사항 등록</div>
+                    <div class="mypage_main_box_right_textbox" style="cursor: pointer;" onclick="location.href='/category_generation'">보상 신청 조회</div>
+                    <div class="mypage_main_box_right_textbox" style="cursor: pointer;" onclick="location.href='/inquiry_list'">문의 목록</div>
+                </div>
+            </div>
+        <%}%>
+    </div>
+</div>
+
+
+<link rel="stylesheet" href="/public/stylesheets/main_nav.css">

@@ -1,0 +1,68 @@
+<div class="search_exhibition_area">
+    <div class="search_exhibition_container" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; margin-bottom: 100px;">
+        <div class="supportable_exhibition_title">
+            지원가능한 전시회 상세페이지입니다.
+        </div>
+        <div class="sp_exhibi_container">
+            <div class="sp_exhibi_title">
+                <%=row[0].TITLE%>
+            </div>
+            <div class="sp_exhibi_imgbox">
+                <img src="/public/images/exhibition_title_images/<%=row[0].IMG%>" alt="">
+            </div>
+            <div class="sp_exhibi_title" style="margin-top: 20px;">
+                <%=row[0].CATEGORY%>&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;<%=row[0].DETAIL_CATEGORY%>
+            </div>
+            <div class="sp_exhibi_title" style="margin-top: 10px;">
+                <div class="sp_exhibi_container_left">
+                    HOST
+                </div>
+                <%=row[0].USER_ID%>
+            </div>
+            <div class="sp_exhibi_title" style="margin-top: 10px;">
+                <div class="sp_exhibi_container_left">
+                    DEADLINE
+                </div>
+                <%=deadline%>
+            </div>
+            <div class="sp_exhibi_title" style="margin-top: 10px;">
+                <div class="sp_exhibi_container_left">
+                    START
+                </div>
+                <%=start_date%>
+            </div>
+            <div class="sp_exhibi_title" style="margin-top: 10px;">
+                <div class="sp_exhibi_container_left">
+                    END
+                </div>
+                <%=end_date%>
+            </div>
+            <div class="sp_exhibi_title" style="margin-top: 10px;">
+                <div class="sp_exhibi_container_left">
+                    BOOTH
+                </div>
+                <%=row[0].BOOTH_COUNT%>
+            </div>
+            <textarea class="sp_exhibi_container_textarea" name="" id="" cols="30" rows="10" readonly><%=row[0].EXPLAIN_TEXT%></textarea>
+            <% if (row[0].BOOTH_COUNT == row2.length){%>
+                <p style="margin-top: 20px;">이미 등록이 완료된 전시회입니다.</p>
+            <%}%>
+            <script>
+                login = () => {
+                    alert("로그인 페이지로 이동합니다.");
+                    location.href='/login'
+                }
+            </script>
+            <div class="supportable_exhibition_text_category" style="margin-top: 14px; display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                <% if(sess.user) {%>
+                    <% if (row[0].BOOTH_COUNT != row2.length){%>
+                        <button style="margin-right: 20px; width: 150px; height: 37px;" onclick="location.href='/exhibition_support_registration/<%=row[0].NUMBER%>'">작품등록</button>
+                    <%}%>
+                <%} else {%>
+                    <button style="margin-right: 20px; width: 150px; height: 37px;" onclick="login()">로그인하기</button>
+                <%}%>
+                <button style="width: 150px; height: 37px;" onclick="location.href='/supportable_exhibition'">뒤로가기</button>
+            </div>
+        </div>
+    </div>
+</div>

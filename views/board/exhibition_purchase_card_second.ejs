@@ -1,0 +1,47 @@
+<div class="exhibi_purchase_area">
+    <div class="exhibi_purchase_box">
+        <script>
+            exhibi_payment_card = () => {
+                if(document.getElementById('cvc').value == '<%=row2[0].CVC%>'){
+                    if(document.getElementById('pwd').value == '<%=row2[0].PWD%>'){
+                        location.href='/exhibition_purchase_card_final/<%=row[0].NUMBER%>=<%=row[0].PRODUCTION_COST%>=<%=row2[0].NUMBER%>';
+                    }
+                    else {
+                        alert("CVC 또는 비밀번호가 일치하지 않습니다.");
+                    }
+                } else {
+                    alert("CVC 또는 비밀번호가 일치하지 않습니다.");
+                }
+            }
+        </script>
+        <div class="exhibi_purchase_title">
+            전시회 결제 [카드]
+        </div>
+        <div class="exhibi_purchase_head">
+            카드번호
+        </div>
+        <div class="exhibi_purchase_number">
+            <%=row2[0].NUMBER%>
+        </div>
+        <div class="exhibi_purchase_head" style="margin-top: 15px;">
+            유효기간
+        </div>
+        <div class="exhibi_purchase_number">
+            <%=row2[0].DATE%>
+        </div>
+        <div class="exhibi_purchase_head" style="margin-top: 15px;">
+            CVC
+        </div>
+        <input class="exhibi_purchase_number" type="text" id="cvc">
+        <div class="exhibi_purchase_head" style="margin-top: 15px;">
+            비밀번호
+        </div>
+        <input class="exhibi_purchase_number" type="text" id="pwd">
+        <div class="exhibi_purchase_head" style="margin-top: 15px; justify-content: center; font-size: 22px;">
+            결제금액 : <span id="price_cost" style="color: red;">&nbsp;<%=row[0].PRODUCTION_COST%></span>₩
+        </div>
+        <div class="exhibi_purchase_head" style="margin-top: 15px; justify-content: center; font-size: 22px; margin-top: 30px;">
+            <button class="answer_btn" onclick="exhibi_payment_card()">결제하기</button>
+        </div>
+    </div>
+</div>
