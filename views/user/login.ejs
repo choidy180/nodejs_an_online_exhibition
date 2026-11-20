@@ -8,6 +8,20 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
     <link rel="stylesheet" href="/public/stylesheets/typography.css" />
+    <link rel="preload" href="/public/images/start/login.jpg" as="image">
+    <script>
+        // 시작 화면의 로그인 버튼(page-transition.js 전환)을 거쳐 넘어온 경우에만 입장 효과를 켠다.
+        // 배경은 전환의 마지막 장면과 같으므로 그대로 두고, 패널의 글과 입력칸만 차례로 드러낸다.
+        // 첫 화면이 그려지기 전에 클래스를 붙여야 패널이 먼저 보였다 사라지지 않는다.
+        (function () {
+            try {
+                if (sessionStorage.getItem("stage_transition") !== "1") return;
+                sessionStorage.removeItem("stage_transition");
+                if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+                document.documentElement.classList.add("stage-enter");
+            } catch (e) {}
+        })();
+    </script>
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/public/images/icon/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/public/images/icon/apple-touch-icon.png">
@@ -39,5 +53,13 @@
             <a class="mono_btn" href="/sign_first">회원가입 하기</a>
         </form>
     </main>
+    <script>
+        // 입장 효과가 끝나면 클래스를 떼서 clip-path가 남지 않게 한다
+        if (document.documentElement.classList.contains("stage-enter")) {
+            setTimeout(function () {
+                document.documentElement.classList.remove("stage-enter");
+            }, 1000);
+        }
+    </script>
 </body>
 </html>

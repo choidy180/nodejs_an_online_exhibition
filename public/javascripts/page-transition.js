@@ -1,29 +1,39 @@
 /* =========================================================
-   StartToMain — 시작 화면 → 메인 화면 전환 (WebGL)
+   PageTransition — 시작 화면에서 다른 화면으로 넘어가는 전환 (WebGL)
 
-   인트로 → 시작 화면과 같은 반짝이는 원형 디졸브로, 시작 화면 배경에서
-   메인 화면의 첫 장면까지 넘어간 뒤 이동한다.
-   마지막 프레임은 메인 화면 첫 화면과 똑같이 그린다:
-     - 위 70px 내비게이션 띠 (검정 80%)
-     - 최상단 이미지(wall2.png): 화면 폭(스크롤바 제외) × max(70vh, 600px), 위로 70px,
-       cover 배치 + 검정 50% + 왼쪽 막 + 아래로 #141414 까지 짙어지는 그라데이션 (style.css 와 같은 값)
-     - 그 아래는 #141414
-   그래서 이동하는 순간 끊기지 않고, 메인 화면은 배경 위로 글과 카드만 차례로 드러낸다.
+   인트로 → 시작 화면과 같은 반짝이는 원형 디졸브로, 지금 화면 배경에서
+   다음 화면의 "첫 장면"까지 넘어간 뒤 이동한다. 마지막 프레임을 다음 화면의
+   첫 화면과 똑같이 그리기 때문에 이동하는 순간 끊기지 않는다.
+
+   다음 화면 첫 장면의 모양(toLayout):
+     "cover" — 화면 전체를 덮는 배경 이미지 × 밝기 (로그인처럼 .background 한 장인 화면)
+     "main"  — 메인 화면 최상단 (style.css 와 같은 값):
+               위 70px 내비게이션 띠(검정 80%) +
+               wall2.png: 화면 폭(스크롤바 제외) × max(70vh, 600px), 위로 70px,
+               cover 배치 + 검정 50% + 왼쪽 막 + 아래로 #141414 까지 짙어지는 그라데이션,
+               그 아래는 #141414
 
    사용:
-     StartToMain.play({ from, fromBrightness, to, duration }) → 끝나면 resolve (못 쓰면 reject)
-     StartToMain.preload([url]) / StartToMain.reset()
+     PageTransition.play({
+       from, fromBrightness,          // 지금 화면 배경 이미지와 밝기 (filter: brightness 값)
+       to, toBrightness, toLayout,    // 다음 화면 첫 장면
+       duration                       // ms
+     }) → 끝나면 resolve (WebGL·이미지를 못 쓰면 reject → 호출한 쪽에서 그냥 이동)
+     PageTransition.preload([url]) / PageTransition.reset()
    ========================================================= */
 (function () {
   "use strict";
 
   var MAX_TEXTURE_SIDE = 2048;
   var LOAD_TIMEOUT_MS = 2500;
+  var DECODE_WAIT_MS = 300;
   // style.css 의 메인 최상단 값과 같아야 한다
   var NAV_H = 70;
   var HERO_TOP = -70;
   var HERO_VH = 0.7;
   var HERO_MIN_H = 600;
+
+  var LAYOUTS = { cover: 0, main: 1 };
 
   var VERTEX_SHADER = [
     "attribute vec2 aPos;",
@@ -43,6 +53,8 @@
     "uniform vec2 uFromSize;",
     "uniform vec2 uToSize;",
     "uniform float uFromBright;",
+    "uniform float uToBright;",
+    "uniform float uToLayout;", // 0: cover, 1: main
     "uniform float uP;",
     "uniform float uTime;",
     "uniform float uPx;",
@@ -57,6 +69,9 @@
     "  float s = max(uRes.x / img.x, uRes.y / img.y);",
     "  vec2 disp = img * s;",
     "  return (uv * uRes - (uRes - disp) * 0.5) / disp;",
+    "}",
+    "vec2 coverTexel(vec2 img) {",
+    "  return vec2(1.1 * uPx) / (img * max(uRes.x / img.x, uRes.y / img.y));",
     "}",
     "float hash(vec2 p) {",
     "  p = fract(p * vec2(123.34, 456.21));",
@@ -145,11 +160,18 @@
     "  if (x <= 0.60) return mix(0.25, 0.0, (x - 0.35) / 0.25);",
     "  return 0.0;",
     "}",
-    // 메인 화면 첫 장면 (ft: 왼쪽 위 기준 픽셀 좌표)
-    "vec3 mainFrame(vec2 ft, out vec2 tuv, out vec2 texel, out float inHero) {",
+    // 다음 화면 첫 장면 ① 화면 전체 배경 이미지 × 밝기
+    "vec3 coverFrame(vec2 uv, out vec2 tuv, out vec2 texel, out float inImg) {",
+    "  tuv = coverUv(uv, uToSize);",
+    "  texel = coverTexel(uToSize);",
+    "  inImg = 1.0;",
+    "  return texture2D(uTo, tuv).rgb * uToBright;",
+    "}",
+    // 다음 화면 첫 장면 ② 메인 화면 최상단 (ft: 왼쪽 위 기준 픽셀 좌표)
+    "vec3 mainFrame(vec2 ft, out vec2 tuv, out vec2 texel, out float inImg) {",
     "  tuv = vec2(0.0);",
     "  texel = vec2(0.0);",
-    "  inHero = 0.0;",
+    "  inImg = 0.0;",
     "  vec3 col = BG;",
     "  if (ft.x > uContentW) return col;", // 오른쪽 스크롤바 자리
     "  float yIn = ft.y - uHeroTop;",
@@ -163,7 +185,7 @@
     "    vec3 img = texture2D(uTo, tuv).rgb * 0.5;",
     "    img *= 1.0 - veilAt(local.x / box.x);",
     "    col = mix(img, BG, fadeAt(local.y / box.y));",
-    "    inHero = 1.0;",
+    "    inImg = 1.0;",
     "  }",
     "  if (ft.y < uNavH) col *= 0.2;", // 내비게이션 띠 (검정 80%)
     "  return col;",
@@ -182,11 +204,16 @@
     "  }",
     "  vec2 tuv;",
     "  vec2 texT;",
-    "  float inHero;",
-    "  vec3 toCol = mainFrame(ft, tuv, texT, inHero);",
+    "  float inImg;",
+    "  vec3 toCol;",
+    "  if (uToLayout > 0.5) {",
+    "    toCol = mainFrame(ft, tuv, texT, inImg);",
+    "  } else {",
+    "    toCol = coverFrame(uv, tuv, texT, inImg);",
+    "  }",
     "  vec3 toRaw = texture2D(uTo, tuv).rgb;",
-    "  vec3 toXray = inHero > 0.5 ? xray(uTo, tuv, texT, toRaw) : toCol * 0.6;",
-    "  vec2 texF = vec2(1.1 * uPx) / (uFromSize * max(uRes.x / uFromSize.x, uRes.y / uFromSize.y));",
+    "  vec3 toXray = inImg > 0.5 ? xray(uTo, tuv, texT, toRaw) : toCol * 0.6;",
+    "  vec2 texF = coverTexel(uFromSize);",
     "",
     "  vec2 aspect = vec2(uRes.x / uRes.y, 1.0);",
     "  vec2 c = (uv - 0.5) * aspect;",
@@ -227,7 +254,13 @@
       imageCache[url] = new Promise(function (resolve, reject) {
         var img = new Image();
         img.onload = function () {
-          (img.decode ? img.decode().catch(function () {}) : Promise.resolve()).then(function () {
+          // decode()는 미리 풀어 두면 첫 프레임이 덜 끊겨서 기다리지만, 탭이 그려지지 않는 동안에는
+          // 끝나지 않을 수 있으므로 오래 기다리지 않는다 (다 받은 이미지는 decode 없이도 쓸 수 있다)
+          var decoded = img.decode ? img.decode().catch(function () {}) : Promise.resolve();
+          var capped = new Promise(function (done) {
+            setTimeout(done, DECODE_WAIT_MS);
+          });
+          Promise.race([decoded, capped]).then(function () {
             resolve(img);
           });
         };
@@ -308,6 +341,7 @@
 
   function play(options) {
     var duration = options.duration || 1700;
+    var layout = LAYOUTS[options.toLayout] !== undefined ? LAYOUTS[options.toLayout] : LAYOUTS.cover;
     reset();
     return withTimeout(Promise.all([loadImage(options.from), loadImage(options.to)]), LOAD_TIMEOUT_MS)
       .then(function (images) {
@@ -344,14 +378,16 @@
         function loc(name) {
           return gl.getUniformLocation(program, name);
         }
-        var contentW = window.innerWidth - scrollbarWidth();
+        var contentW = window.innerWidth - (layout === LAYOUTS.main ? scrollbarWidth() : 0);
         var heroH = Math.max(window.innerHeight * HERO_VH, HERO_MIN_H);
         gl.uniform1i(loc("uFrom"), 0);
         gl.uniform1i(loc("uTo"), 1);
         gl.uniform2f(loc("uRes"), canvas.width, canvas.height);
         gl.uniform2f(loc("uFromSize"), fromTex.width, fromTex.height);
         gl.uniform2f(loc("uToSize"), toTex.width, toTex.height);
-        gl.uniform1f(loc("uFromBright"), options.fromBrightness);
+        gl.uniform1f(loc("uFromBright"), options.fromBrightness == null ? 1 : options.fromBrightness);
+        gl.uniform1f(loc("uToBright"), options.toBrightness == null ? 1 : options.toBrightness);
+        gl.uniform1f(loc("uToLayout"), layout);
         gl.uniform1f(loc("uPx"), dpr);
         gl.uniform1f(loc("uContentW"), contentW * dpr);
         gl.uniform1f(loc("uHeroH"), heroH * dpr);
@@ -366,7 +402,7 @@
           gl.uniform1f(uTime, seconds);
           gl.drawArrays(gl.TRIANGLES, 0, 3);
         }
-        draw(0, 0); // 첫 프레임(= 지금 시작 화면 배경)을 그린 뒤 붙여서 깜빡이지 않게
+        draw(0, 0); // 첫 프레임(= 지금 화면 배경)을 그린 뒤 붙여서 깜빡이지 않게
         document.body.appendChild(canvas);
         activeCanvas = canvas;
 
@@ -394,5 +430,5 @@
     });
   }
 
-  window.StartToMain = { play: play, preload: preload, reset: reset };
+  window.PageTransition = { play: play, preload: preload, reset: reset };
 })();

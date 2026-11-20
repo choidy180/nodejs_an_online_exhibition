@@ -217,6 +217,7 @@ html.stage-enter {
 .stage-enter .start_panel > :nth-child(4) { animation-delay: 320ms; }
 .stage-enter .start_panel > :nth-child(5) { animation-delay: 370ms; }
 .stage-enter .start_panel > :nth-child(6) { animation-delay: 410ms; }
+.stage-enter .start_panel > :nth-child(7) { animation-delay: 450ms; } /* 로그인 패널 */
 @keyframes stage_panel_in {
   from {
     opacity: 0;
@@ -224,9 +225,9 @@ html.stage-enter {
 }
 
 /* ---------------------------------------------------------
-   페이지 전환 ③ 시작 화면 → 메인 (start-to-main.js)
+   페이지 전환 ③ 시작 화면 → 메인 · 로그인 (page-transition.js)
    패널 안의 글과 버튼이 차례로 걷히고 패널이 사라지는 동안,
-   뒤의 캔버스가 메인 화면 첫 장면까지 디졸브한다. 캔버스는 배경 위, 패널 아래
+   뒤의 캔버스가 다음 화면 첫 장면까지 디졸브한다. 캔버스는 배경 위, 패널 아래
    --------------------------------------------------------- */
 body.is-leaving .start_panel > * {
   animation: stage_block_out 280ms cubic-bezier(0.32, 0, 0.67, 0) forwards;
