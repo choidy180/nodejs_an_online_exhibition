@@ -246,7 +246,13 @@
     return new Promise(function (resolve, reject) {
       var img = new Image();
       img.onload = function () {
-        (img.decode ? img.decode().catch(function () {}) : Promise.resolve()).then(function () {
+        // decode()는 탭이 그려지지 않는 동안 끝나지 않을 수 있으므로 최대 300ms만 기다린다
+        // (다 받은 이미지는 decode 없이도 텍스처로 쓸 수 있다 — page-transition.js 와 같은 처리)
+        var decoded = img.decode ? img.decode().catch(function () {}) : Promise.resolve();
+        var capped = new Promise(function (done) {
+          setTimeout(done, 300);
+        });
+        Promise.race([decoded, capped]).then(function () {
           resolve(img);
         });
       };
