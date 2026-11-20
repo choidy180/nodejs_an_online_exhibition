@@ -5776,8 +5776,8 @@ html.modal-open {
   box-sizing: border-box;
   display: flex;
   align-items: flex-end;
-  min-height: clamp(620px, 82vh, 860px);
-  padding: calc(70px + 56px) var(--xd-gutter) 64px; /* 70px = 고정 내비게이션 높이 */
+  /* 높이는 내용(포스터)만큼만 — 위쪽에 빈 흐림 영역이 크게 남지 않게 */
+  padding: calc(70px + 40px) var(--xd-gutter) 48px; /* 70px = 고정 내비게이션 높이 */
   overflow: hidden;
 }
 .xd_hero_bg {
@@ -5938,7 +5938,7 @@ html.modal-open {
   outline-offset: 4px;
 }
 .xd_poster {
-  width: clamp(220px, 24vw, 340px);
+  width: clamp(200px, 20vw, 300px);
   margin: 0;
 }
 .xd_poster img {
