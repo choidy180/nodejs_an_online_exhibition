@@ -1053,14 +1053,24 @@ router.get("/supportable_exhibition", function(req, res, next){
 })
 
 // 지원 가능한 전시회 - 상세 O
-router.get("/supportable_exhibition_detail/:number", function(req, res){
+router.get("/supportable_exhibition_detail/:number", function(req, res, next){
     var sess = req.session;
     var number = req.params.number;
     var exhibition_detail_sql = "select * from exhibition where NUMBER=?"
     var work_count = "select * from work where EXHIBITION_NUMBER =?"
     pool.getConnection((err, conn) => {
+        if (err) return next(err);
         conn.query(exhibition_detail_sql, [number], function(err, row){
+            // 없는 번호면 500 대신 404 화면으로
+            if (err || !row || !row[0]) {
+                conn.release();
+                if (err) return next(err);
+                var notFound = new Error("전시회를 찾을 수 없습니다.");
+                notFound.status = 404;
+                return next(notFound);
+            }
             conn.query(work_count, [number], function(err, row2){
+                row2 = row2 || [];
                 var deadline = new Array();
                     for (var edc = 0; edc < row.length; edc ++){
                         deadline[edc] = row[edc].DEADLINE.format('yyyy-MM-dd a/p hh:mm:ss');;

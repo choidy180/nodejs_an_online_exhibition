@@ -7291,3 +7291,23 @@ a.notice_modal_button {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* 작품 지원 · 전시회 상세 (supportable_exhibition_detail.ejs) — .xd 틀에 더하는 부분 */
+.xd_back {
+  margin-bottom: 22px;
+}
+.xd_hero_text > :nth-child(5) {
+  animation-delay: 0.38s;
+}
+.xd_closed {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.75);
+}
+.xd_category {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--nav-muted);
+}
