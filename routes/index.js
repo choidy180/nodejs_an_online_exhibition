@@ -913,12 +913,17 @@ router.get("/exhibition_payment_list", function(req, res){
 })
 
 /* 공지사항 O */ 
-router.get("/public", function(req, res){
+router.get("/public", function(req, res, next){
     console.log("공지사항 메인");
     var sess = req.session;
     var sql = "select * from public"
     pool.getConnection((err, conn)=> {
+        if (err) return next(err);
         conn.query(sql, function(err, row){
+            if (err) {
+                conn.release();
+                return next(err);
+            }
             var register_date = new Array();
                 for (var rdc = 0; rdc < row.length; rdc ++){
                     register_date[rdc] = row[rdc].CREATE_TIME.format('yyyy-MM-dd a/p hh:mm:ss');;
@@ -947,7 +952,7 @@ router.get("/public_register", function(req, res){
 })
 
 // 공지사항 게시글 O
-router.get("/public_post/:number", function(req, res){
+router.get("/public_post/:number", function(req, res, next){
     console.log("공지사항");
     var sess = req.session;
     var number = req.params.number;
@@ -955,7 +960,16 @@ router.get("/public_post/:number", function(req, res){
     var sql2 = "select * from user where ID = ?"
     var hit_sql = "update public set HIT=? where NUMBER=?"
     pool.getConnection((err, conn)=>{
+        if (err) return next(err);
         conn.query(sql, [number], function(err, row){
+            // 없는 번호면 500 대신 404 화면으로
+            if (err || !row || !row[0]) {
+                conn.release();
+                if (err) return next(err);
+                var notFound = new Error("공지사항을 찾을 수 없습니다.");
+                notFound.status = 404;
+                return next(notFound);
+            }
             var register_date = new Array();
                 for (var rdc = 0; rdc < row.length; rdc ++){
                     register_date[rdc] = row[rdc].CREATE_TIME.format('yyyy-MM-dd a/p hh:mm:ss');;

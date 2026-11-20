@@ -8,7 +8,7 @@
         <div class="public_box_top" style="margin-top: 50px;">
             공지사항
         </div>
-        <% if (sess.user.ID == 'IU'){%>
+        <% if (sess.user && sess.user.ID == 'IU'){%>
         <div class="public_box_top" style="justify-content: flex-end; padding-right: 20px; width: calc(100% - 20px);">
             <button class="public_box_btn" onclick="location.href='/public_register'">공지사항 등록</button>
         </div>
@@ -25,7 +25,7 @@
             <div class="public_box2_box1"><%=row[i].NUMBER%></div>
             <div class="public_box2_box2"><a href="/public_post/<%=row[i].NUMBER%>"><%=row[i].TITLE%></a></div>
             <div class="public_box2_box4"><%=row[i].USER_ID%></div>
-            <div class="public_box2_box4"><%=register_date[0]%></div>
+            <div class="public_box2_box4"><%=register_date[i]%></div>
             <div class="public_box2_box3"><%=row[i].HIT%></div>
         </div>
         <%}%>

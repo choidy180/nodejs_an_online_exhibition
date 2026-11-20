@@ -3,7 +3,9 @@
         <div class="public_post_title"><%=row[0].TITLE%></div>
         <div class="public_post_info">
             <div class="public_upload_user_imgbox">
-                <img src="/uploads/<%=row2[0].IMG%>" alt="">
+                <% if (row2 && row2[0] && row2[0].IMG) { %>
+                    <img src="/uploads/<%=row2[0].IMG%>" alt="">
+                <% } %>
             </div>
             <span><%=row[0].USER_ID%>&nbsp;&nbsp;&nbsp;&nbsp;조회 <%=row[0].HIT%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=register_date%></span>
         </div>
