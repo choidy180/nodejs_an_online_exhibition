@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- EXHIBITION 로고의 "O"(필름 릴)를 따온 파비콘: 검은 바탕 + 흰 릴 + 빨간 중심점 -->
+  <rect width="64" height="64" rx="14" fill="#111111"/>
+  <!-- 필름 구멍처럼 둘러싼 점선 링 -->
+  <circle cx="32" cy="32" r="25.2" fill="none" stroke="#FFFFFF" stroke-width="2.6"
+          stroke-linecap="round" stroke-dasharray="3.96 11.87" transform="rotate(-90 32 32)"/>
+  <!-- 릴 본체 -->
+  <circle cx="32" cy="32" r="21" fill="#FFFFFF"/>
+  <!-- 구멍 5개 (로고와 같은 각도) -->
+  <g fill="#111111">
+    <circle cx="34.04" cy="17.64" r="5"/>
+    <circle cx="46.28" cy="29.48" r="5"/>
+    <circle cx="38.83" cy="44.80" r="5"/>
+    <circle cx="21.92" cy="42.43" r="5"/>
+    <circle cx="18.99" cy="25.62" r="5"/>
+  </g>
+  <!-- 가운데 축 + 빨간 점 -->
+  <circle cx="32" cy="32" r="3.3" fill="#111111"/>
+  <circle cx="32" cy="32" r="1.7" fill="#FF0000"/>
+</svg>

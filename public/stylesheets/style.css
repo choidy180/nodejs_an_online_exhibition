@@ -1,3 +1,5 @@
+/* 메인 화면 공통 값(--nav-*)은 tokens.css 에 있다 */
+@import url("tokens.css");
 a {
   text-decoration: none;
 }
@@ -1561,20 +1563,6 @@ body {
 }
 
 /* 메인 nav */
-/* 내비게이션 바의 규칙을 메인 화면 전체에서 같이 쓰기 위한 값
-   - 가는 글씨(Light 300) 대문자, 흑백
-   - 빨강은 마우스를 올렸을 때만, 1px 밑줄과 함께
-   - 반투명 검정 막, 0.5초 부드러운 전환 */
-:root {
-  --nav-ink: #fff;
-  --nav-muted: #8c8c8c;
-  --nav-accent: #f00;
-  --nav-veil: rgba(0, 0, 0, 0.8);
-  --nav-hairline: rgba(255, 255, 255, 0.18);
-  --nav-weight: 300;
-  --nav-line: 1px;
-  --nav-motion: 0.5s ease;
-}
 .main_nav_area {
   width: 100%;
   min-width: calc(500px + 10vw);

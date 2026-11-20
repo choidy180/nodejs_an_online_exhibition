@@ -28,9 +28,11 @@ body {
 }
 .intro_content_box {
   position: absolute;
+  box-sizing: border-box;
   width: 100%;
   height: auto;
   min-width: 100%;
+  padding: 0 6vw; /* 메인 화면 최상단 소개처럼 왼쪽 정렬 */
   color: white;
   font-size: 100px;
   z-index: 2;
@@ -50,93 +52,96 @@ body {
   align-items: center;
 }
 .intro_content_button_box {
-  width: 100vw;
-  height: auto;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  margin-top: 30px;
 }
 /* ---------------------------------------------------------
-   인트로 문구 / 버튼 — 브루탈리즘
-   각진 모서리, 두꺼운 테두리, 번지지 않는 하드 섀도우, 원색 블록
+   인트로 버튼 — 메인 화면의 "전시회 보러가기"와 같은 버튼
+   투명 + 1px 흰 선 + 가는 글씨, 오른쪽 화살표. 마우스를 올리면 빨강 + 화살표가 살짝 움직인다
    --------------------------------------------------------- */
 .intro_content_button {
-  height: 72px;
-  padding: 0 36px;
-  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  height: 50px;
+  padding: 0 26px;
   font-family: var(--font-sans);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: #fff;
-  background: #f00;
-  border: 3px solid #111;
-  border-radius: 6px;
-  box-shadow: 3px 3px 0 #fff;
+  font-size: 16px;
+  font-weight: var(--nav-weight);
+  letter-spacing: var(--ls-body);
   white-space: nowrap;
+  color: var(--nav-ink);
+  background-color: transparent;
+  border: var(--nav-line) solid rgba(255, 255, 255, 0.7);
+  border-radius: 0;
   outline: none;
   cursor: pointer;
-  transition: transform 0.08s linear, box-shadow 0.08s linear;
+  transition: color var(--nav-motion), border-color var(--nav-motion);
 }
 .intro_content_button::after {
   content: "→";
-  margin-left: 0.6em;
+  transition: transform var(--nav-motion);
 }
 .intro_content_button:hover {
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0 #fff;
+  color: var(--nav-accent);
+  border-color: var(--nav-accent);
 }
-.intro_content_button:active {
-  transform: translate(3px, 3px);
-  box-shadow: 0 0 0 #fff;
+.intro_content_button:hover::after {
+  transform: translateX(4px);
 }
 .intro_content_button:focus-visible {
-  outline: 3px dashed #fff;
-  outline-offset: 8px;
+  outline: var(--nav-line) dashed var(--nav-ink);
+  outline-offset: 4px;
 }
-/* 오른쪽 위 로그인 버튼 — 시작 페이지 보조 버튼과 같은 규칙을 작게
-   (검은 면 + 흰 테두리 + 흰 하드 섀도우, 호버하면 흰 면) */
-.intro_login_button {
+/* 메인 화면과 같은 내비게이션 바: 반투명 검정 70px, 로고 34px, 가는 글씨 링크(마우스를 올리면 빨강 + 밑줄) */
+.intro_nav {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 10;
-  height: 38px;
-  padding: 0 16px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  padding: 0 20px 0 10px;
+  background-color: var(--nav-veil);
+}
+.intro_nav_logo img {
+  display: block;
+  height: 34px;
+}
+.intro_nav_link {
+  padding: 4px 0;
   font-family: var(--font-sans);
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: #fff;
-  background-color: #111;
-  border: 2px solid #fff;
-  border-radius: 6px;
-  box-shadow: 3px 3px 0 #fff;
-  outline: none;
-  cursor: pointer;
-  transition: transform 0.08s linear, box-shadow 0.08s linear,
-    background-color 0.08s linear, color 0.08s linear;
+  font-size: 19px;
+  font-weight: var(--nav-weight);
+  letter-spacing: var(--ls-body);
+  color: var(--nav-ink);
+  text-decoration: none;
+  border-bottom: var(--nav-line) solid transparent;
+  transition: color var(--nav-motion), border-color var(--nav-motion);
 }
-.intro_login_button:hover {
-  color: #111;
-  background-color: #fff;
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0 #fff;
+.intro_nav_link:hover {
+  color: var(--nav-accent);
+  border-bottom-color: var(--nav-accent);
 }
-.intro_login_button:active {
-  transform: translate(3px, 3px);
-  box-shadow: 0 0 0 #fff;
-}
-.intro_login_button:focus-visible {
-  outline: 2px dashed #fff;
-  outline-offset: 5px;
+.intro_nav_link:focus-visible,
+.intro_nav_logo:focus-visible {
+  outline: var(--nav-line) dashed var(--nav-ink);
+  outline-offset: 4px;
 }
 /* ---------------------------------------------------------
    페이지 전환 ① 인트로 퇴장 (body.is-leaving)
    제목 → 부제 → 버튼 순으로 블록이 아래에서 위로 걷히고, 그 사이
-   WebGL 캔버스(stage-transition.js)가 배경을 시작 페이지 배경으로
+   배경 캔버스(intro-stage.js)가 배경을 시작 페이지 배경으로
    반짝이며 디졸브한다. 캔버스는 배경 위, 문구 아래에 깔린다.
    --------------------------------------------------------- */
+body.is-leaving .intro_kicker,
 body.is-leaving .intro_content_title,
 body.is-leaving .intro_content_sub_title,
 body.is-leaving .intro_content_button_box {
@@ -157,13 +162,28 @@ body.is-leaving .intro_fixed {
 body.is-leaving .intro_content_button {
   pointer-events: none;
 }
-.stage_transition_canvas {
+/* TOP: 마지막 섹션에서 맨 위로 바로 올라갈 때(intro-stage.js 의 jumpToSection)
+   글을 잠깐 흐리게 했다가, 스크롤을 옮긴 뒤 다시 보이게 한다 */
+.intro_content_box {
+  transition: opacity 0.26s ease;
+}
+body.is-jumping .intro_content_box {
+  opacity: 0;
+}
+/* 인트로 배경 캔버스(intro-stage.js)가 준비되면 CSS 배경 대신 캔버스가 그린다.
+   캔버스는 배경 위, 문구(.intro_content_box) 아래 */
+.has-stage .background {
+  background-image: none !important;
+  background-color: transparent;
+  filter: none !important;
+}
+.intro_stage_canvas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1; /* .background(1)보다 뒤에 붙으므로 그 위, .intro_content_box(2) 아래 */
+  z-index: 1;
   pointer-events: none;
 }
 /* 끝 상태는 bottom을 100% + 12px로 둬서 보이는 영역 높이를 0으로 만든다
@@ -180,20 +200,28 @@ body.is-leaving .intro_content_button {
 /* ---------------------------------------------------------
    페이지 전환 ② 시작 페이지 입장 (html.stage-enter)
    인트로의 캔버스가 시작 페이지 배경 그대로 끝나므로 배경은 움직이지 않고,
-   로고와 버튼만 위에서부터 차례로 드러난다.
+   패널이 서서히 나타나며 그 안의 글과 버튼이 위에서부터 차례로 드러난다.
    --------------------------------------------------------- */
 html.stage-enter {
   background: #000; /* 배경 이미지가 그려지기 전 한 프레임이 흰색으로 튀지 않게 */
 }
-.stage-enter .intro_content_box > * {
+.stage-enter .start_panel {
+  animation: stage_panel_in 0.5s ease both;
+}
+.stage-enter .start_panel > * {
   animation: stage_block_in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.stage-enter .intro_content_box > :nth-child(1) { animation-delay: 60ms; }
-.stage-enter .intro_content_box > :nth-child(2) { animation-delay: 160ms; }
-.stage-enter .intro_content_box > :nth-child(3) { animation-delay: 220ms; }
-.stage-enter .intro_content_box > :nth-child(4) { animation-delay: 280ms; }
-.stage-enter .intro_content_box > :nth-child(5) { animation-delay: 320ms; }
-.stage-enter .intro_content_box > :nth-child(6) { animation-delay: 360ms; }
+.stage-enter .start_panel > :nth-child(1) { animation-delay: 120ms; }
+.stage-enter .start_panel > :nth-child(2) { animation-delay: 190ms; }
+.stage-enter .start_panel > :nth-child(3) { animation-delay: 260ms; }
+.stage-enter .start_panel > :nth-child(4) { animation-delay: 320ms; }
+.stage-enter .start_panel > :nth-child(5) { animation-delay: 370ms; }
+.stage-enter .start_panel > :nth-child(6) { animation-delay: 410ms; }
+@keyframes stage_panel_in {
+  from {
+    opacity: 0;
+  }
+}
 @keyframes stage_block_in {
   from {
     clip-path: inset(-12px -12px calc(100% + 12px) -12px);
@@ -205,42 +233,60 @@ html.stage-enter {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .stage-enter .intro_content_box > * {
+  .stage-enter .start_panel,
+  .stage-enter .start_panel > * {
     animation: none;
   }
 }
 
-/* 문구는 .intro_label에 배경을 깔아 줄 단위 블록(라벨)으로 보이게 한다 */
+/* 인트로 문구 — 메인 화면 최상단 소개와 같은 가는 글씨, 왼쪽 정렬 */
+.intro_kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 18px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: var(--nav-weight);
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.7);
+}
+.intro_kicker::before {
+  content: "";
+  width: 28px;
+  height: var(--nav-line);
+  background-color: currentColor;
+}
 .intro_content_title,
 .intro_content_sub_title {
-  padding: 0 16px;
+  margin: 0;
+  text-align: left;
+  font-family: var(--font-sans);
 }
-.intro_content_title .intro_label,
-.intro_content_sub_title .intro_label {
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
+/* 밝은 배경(예: 2번째 그래피티)에서도 가는 글씨가 읽히도록 은은한 그림자.
+   배경 자체를 어둡게 하면 인트로→시작 전환의 첫 장면과 달라져서 글씨에만 준다 */
+.intro_kicker,
+.intro_content_title,
+.intro_content_sub_title {
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55);
 }
 .intro_content_title {
-  font-size: 80px;
-  font-weight: 900;
-  line-height: 1.32;
+  max-width: min(1000px, 84vw);
+  font-size: clamp(36px, 4.4vw, 72px);
+  font-weight: var(--nav-weight);
+  line-height: 1.18;
+  color: var(--nav-ink);
 }
 .intro_content_title .intro_label {
-  padding: 0.02em 0.22em;
-  color: #111;
-  background: #fff;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.03em;
 }
 .intro_content_sub_title {
-  font-size: 30px;
-  font-weight: 700;
+  max-width: min(720px, 84vw);
+  margin-top: 18px;
+  font-size: clamp(16px, 1.4vw, 22px);
+  font-weight: var(--nav-weight);
   line-height: 1.6;
-}
-.intro_content_sub_title .intro_label {
-  padding: 0.08em 0.4em;
-  color: #fff;
-  background: #111;
-  border: 2px solid #fff;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 /* ---------------------------------------------------------
@@ -296,7 +342,7 @@ html.stage-enter {
   height: 0.86em;
   margin-left: 0.05em;
   vertical-align: -0.1em;
-  background: #111;
+  background: var(--nav-ink);
   animation: type_caret_blink 1s steps(1) infinite;
 }
 .type_box.is-typing .type_caret {
@@ -496,83 +542,137 @@ html.stage-enter {
     opacity: 1;
   }
 }
-@media (max-width: 1700px) {
-  .intro_content_title {
-    font-size: 64px;
-  }
-  .intro_content_sub_title {
-    font-size: 28px;
-  }
-  .intro_content_button {
-    height: 66px;
-    font-size: 22px;
-  }
+/* ---------------------------------------------------------
+   시작 페이지 — 메인 화면 스타일 (tokens.css 의 --nav-* 값)
+   가는 글씨, 흑백, 1px 선, 반투명 검정 패널, 빨강은 마우스를 올렸을 때만.
+   배경(#back1)은 인트로 전환 효과의 마지막 프레임과 같아야 해서 그대로 둔다
+   --------------------------------------------------------- */
+.start_stage {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: 24px;
 }
-@media (max-width: 1300px) {
-  .intro_content_title {
-    font-size: 54px;
-  }
-  .intro_content_sub_title {
-    font-size: 26px;
-  }
+.start_panel {
+  box-sizing: border-box;
+  width: min(440px, 100%);
+  padding: 44px 40px 40px;
+  font-family: var(--font-sans);
+  color: var(--nav-ink);
+  background-color: rgba(12, 12, 12, 0.72);
+  border: var(--nav-line) solid var(--nav-hairline);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
-@media (max-width: 1130px) {
-  .intro_content_title {
-    font-size: 46px;
-  }
-  .intro_content_sub_title {
-    font-size: 24px;
-  }
-  .intro_content_button {
-    height: 60px;
-    padding: 0 28px;
-    font-size: 20px;
-  }
-}
-@media (max-width: 870px) {
-  .intro_content_title {
-    font-size: 30px;
-  }
-  .intro_content_sub_title {
-    font-size: 18px;
-  }
-  .intro_content_button {
-    height: 54px;
-    padding: 0 22px;
-    font-size: 18px;
-  }
-}
-/* 시작 페이지 */
-.start_logo_box {
-  width: 100vw;
-  height: auto;
+.start_kicker {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
-  color: #f00;
+  gap: 12px;
+  margin: 0 0 18px;
+  font-size: 12px;
+  font-weight: var(--nav-weight);
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.7);
+}
+.start_kicker::before {
+  content: "";
+  width: 28px;
+  height: var(--nav-line);
+  background-color: currentColor;
+}
+.start_logo_wrap {
+  margin: 0;
+  line-height: 0;
+}
+.start_logo_wrap a {
+  display: inline-block;
 }
 .start_logo {
-  width: 440px;
-  margin-bottom: 10vh;
-}
-.start_button_box {
-  margin-top: 2vh;
-  width: 100vw;
+  display: block;
+  width: 100%;
+  max-width: 300px;
   height: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
 }
-.start_button_login_box {
-  margin-top: 2vh;
-  width: 100vw;
-  height: auto;
+.start_desc {
+  margin: 18px 0 0;
+  font-size: 15px;
+  font-weight: var(--nav-weight);
+  line-height: 1.7;
+  word-break: keep-all;
+  color: rgba(255, 255, 255, 0.7);
+}
+.start_actions {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 32px;
+}
+.start_divider {
+  display: flex;
   align-items: center;
+  gap: 12px;
+  margin: 26px 0 14px;
+  font-size: 12px;
+  font-weight: var(--nav-weight);
+  white-space: nowrap;
+  color: var(--nav-muted);
+}
+.start_divider::before,
+.start_divider::after {
+  content: "";
+  flex: 1;
+  height: var(--nav-line);
+  background-color: var(--nav-hairline);
+}
+
+/* 메인 화면의 "전시회 보러가기"와 같은 버튼: 투명 + 1px 흰 선, 오른쪽 끝에 화살표.
+   마우스를 올리면 빨강 + 화살표가 살짝 움직인다 */
+.mono_btn {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50px;
+  padding: 0 20px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: var(--nav-weight);
+  letter-spacing: var(--ls-body);
+  color: var(--nav-ink);
+  text-decoration: none;
+  background-color: transparent;
+  border: var(--nav-line) solid rgba(255, 255, 255, 0.7);
+  transition: color var(--nav-motion), border-color var(--nav-motion);
+}
+.mono_btn::after {
+  content: "→";
+  transition: transform var(--nav-motion);
+}
+.mono_btn:hover {
+  color: var(--nav-accent);
+  border-color: var(--nav-accent);
+}
+.mono_btn:hover::after {
+  transform: translateX(4px);
+}
+.mono_btn:focus-visible {
+  outline: var(--nav-line) dashed var(--nav-ink);
+  outline-offset: 4px;
+}
+/* 주 버튼(로그인): 흰 면 + 검은 글씨. 마우스를 올리면 글씨만 빨강 */
+.mono_btn--solid {
+  font-weight: 500;
+  color: #111;
+  background-color: var(--nav-ink);
+  border-color: var(--nav-ink);
+}
+.mono_btn--solid:hover {
+  color: var(--nav-accent);
+  border-color: var(--nav-ink);
 }
 
 /* =========================================================

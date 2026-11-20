@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/public/stylesheets/tokens.css">
     <link rel="stylesheet" href="/public/stylesheets/intro.css">
     <title>온라인 전시회 플랫폼</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -12,90 +13,96 @@
         // 스크립트가 준비를 마치면(실패해도) 이 클래스를 뗀다.
         document.documentElement.classList.add("typing-pending");
     </script>
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/public/images/icon/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/public/images/icon/apple-touch-icon.png">
 </head>
 <body>
-    <div class="background" id="back1">
+    <div class="background" id="back1" data-stage-image="/public/images/start/1.jpg" data-stage-brightness="0.3" style="background-image: url(/public/images/start/1.jpg); filter: brightness(30%);">
     </div>
     <div class="intro_content_box">
-        <p class="intro_content_title" style="margin: 0px; text-align: center; margin-bottom: 1vh;"><span class="intro_label">평소에 보고싶었지만 가지 못했던 전시회가 있나요</span></p>
-        <p class="intro_content_sub_title" style="margin: 0px; text-align: center; margin-bottom: 2vh;"><span class="intro_label">언제 어디서든 편안하게 전시회를 관람하세요</span></p>
+        <p class="intro_kicker">01 / 04</p>
+        <p class="intro_content_title"><span class="intro_label">평소에 보고싶었지만 가지 못했던 전시회가 있나요</span></p>
+        <p class="intro_content_sub_title"><span class="intro_label">언제 어디서든 편안하게 전시회를 관람하세요</span></p>
         <div class="intro_content_button_box">
             <button type="button" class="intro_content_button" data-href="/start">전시회 관람하기</button>
         </div>
         <button type="button" class="scroll_cue" onclick="scroll_1()" aria-label="다음 화면으로 이동"><span class="scroll_cue_mouse"><span class="scroll_cue_wheel"></span></span><span class="scroll_cue_arrows"><i></i><i></i></span><span class="scroll_cue_label">SCROLL</span></button>
     </div>
-    <div class="background" id="back2" style="background: url(/public/images/start/start2.jpg) center center / cover no-repeat;">
+    <div class="background" id="back2" data-stage-image="/public/images/start/intro_archive.jpg" data-stage-brightness="0.42" style="background-image: url(/public/images/start/intro_archive.jpg); filter: brightness(42%);">
     </div>
     <div class="intro_content_box">
-        <p class="intro_content_title" style="margin: 0px; text-align: center; margin-bottom: 1vh;"><span class="intro_label">이미 끝났지만 보고 싶었던 전시회가 있나요</span></p>
-        <p class="intro_content_sub_title" style="margin: 0px; text-align: center; margin-bottom: 2vh;"><span class="intro_label">언제든지 저렴한 가격으로 보고싶었던 전시회를 관람하세요</span></p>
+        <p class="intro_kicker">02 / 04</p>
+        <p class="intro_content_title"><span class="intro_label">이미 끝났지만 보고 싶었던 전시회가 있나요</span></p>
+        <p class="intro_content_sub_title"><span class="intro_label">언제든지 저렴한 가격으로 보고싶었던 전시회를 관람하세요</span></p>
         <div class="intro_content_button_box">
             <button type="button" class="intro_content_button" data-href="/start">지난 전시회 보기</button>
         </div>
         <button type="button" class="scroll_cue" onclick="scroll_2()" aria-label="다음 화면으로 이동"><span class="scroll_cue_mouse"><span class="scroll_cue_wheel"></span></span><span class="scroll_cue_arrows"><i></i><i></i></span><span class="scroll_cue_label">SCROLL</span></button>
     </div>
-    <div class="background" id="back3" style="background: url(/public/images/start/start3.jpg) center center / cover no-repeat;">
+    <div class="background" id="back3" data-stage-image="/public/images/start/intro_gallery.jpg" data-stage-brightness="0.5" style="background-image: url(/public/images/start/intro_gallery.jpg); filter: brightness(50%);">
     </div>
     <div class="intro_content_box">
-        <p class="intro_content_title" style="margin: 0px; text-align: center; margin-bottom: 1vh;"><span class="intro_label">나만의 전시회를 차려보고 싶진 않나요</span></p>
-        <p class="intro_content_sub_title" style="margin: 0px; text-align: center; margin-bottom: 2vh;"><span class="intro_label">당신만의 전시회를 개최해 보세요</span></p>
+        <p class="intro_kicker">03 / 04</p>
+        <p class="intro_content_title"><span class="intro_label">나만의 전시회를 차려보고 싶진 않나요</span></p>
+        <p class="intro_content_sub_title"><span class="intro_label">당신만의 전시회를 개최해 보세요</span></p>
         <div class="intro_content_button_box">
             <button type="button" class="intro_content_button" data-href="/start">전시회 개최하기</button>
         </div>
         <button type="button" class="scroll_cue" onclick="scroll_3()" aria-label="다음 화면으로 이동"><span class="scroll_cue_mouse"><span class="scroll_cue_wheel"></span></span><span class="scroll_cue_arrows"><i></i><i></i></span><span class="scroll_cue_label">SCROLL</span></button>
     </div>
-    <div class="background" id="back4" style="background: url(/public/images/start/start4.jpg) center center / cover no-repeat;">
+    <div class="background" id="back4" data-stage-image="/public/images/start/intro_fluid.jpg" data-stage-brightness="0.35" style="background-image: url(/public/images/start/intro_fluid.jpg); filter: brightness(35%);">
     </div>
     <div class="intro_content_box">
-        <p class="intro_content_title" style="margin: 0px; text-align: center; margin-bottom: 1vh;"><span class="intro_label">저렴한 금액으로 전시회를 관람하세요</span></p>
-        <p class="intro_content_sub_title" style="margin: 0px; text-align: center; margin-bottom: 2vh;"><span class="intro_label">보고 싶은 전시회를 마음껏 관람하세요</span></p>
+        <p class="intro_kicker">04 / 04</p>
+        <p class="intro_content_title"><span class="intro_label">저렴한 금액으로 전시회를 관람하세요</span></p>
+        <p class="intro_content_sub_title"><span class="intro_label">보고 싶은 전시회를 마음껏 관람하세요</span></p>
         <div class="intro_content_button_box">
             <button type="button" class="intro_content_button" data-href="/start">작품 관람하기</button>
         </div>
         <button type="button" class="scroll_cue scroll_cue--top" onclick="scroll_4()" aria-label="처음 화면으로 이동"><span class="scroll_cue_mouse"><span class="scroll_cue_wheel"></span></span><span class="scroll_cue_arrows"><i></i><i></i></span><span class="scroll_cue_label">TOP</span></button>
         <script>
-            // 스크롤이동
-            scroll_1 = () => {
-                var location1 = document.getElementById("back2").offsetTop;
-                window.scrollTo(0, location1)
+            // 스크롤 이동: 배경 캔버스(intro-stage.js)가 있으면 천천히 스크롤하며 이미지가 디졸브된다
+            function scrollToSection(index) {
+                if (window.IntroStage) {
+                    window.IntroStage.scrollToSection(index);
+                } else {
+                    window.scrollTo(0, document.querySelectorAll(".background")[index].offsetTop);
+                }
             }
-            scroll_2 = () => {
-                var location1 = document.getElementById("back3").offsetTop;
-                window.scrollTo(0, location1)
-            }
-            scroll_3 = () => {
-                var location1 = document.getElementById("back4").offsetTop;
-                window.scrollTo(0, location1)
-            }
+            scroll_1 = () => scrollToSection(1);
+            scroll_2 = () => scrollToSection(2);
+            scroll_3 = () => scrollToSection(3);
+            // TOP: 3 → 2 → 1 을 거치지 않고 맨 위 이미지로 한 번에 디졸브
             scroll_4 = () => {
-                var location1 = document.getElementById("back1").offsetTop;
-                window.scrollTo(0, location1)
-            }
+                if (window.IntroStage) {
+                    window.IntroStage.jumpToSection(0);
+                } else {
+                    window.scrollTo(0, 0);
+                }
+            };
         </script>
     </div>
-    <img class="intro_fixed" src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION" style="position: fixed; top: 20px; left: 20px; z-index: 10; width: 240px; cursor: pointer;" onclick="location.href='/'">
-    <button type="button" class="intro_fixed intro_login_button" onclick="location.href='/login'">로그인</button>
+    <!-- 메인 화면과 같은 내비게이션 바: 반투명 검정, 로고 + 가는 글씨 링크 -->
+    <header class="intro_nav intro_fixed">
+        <a class="intro_nav_logo" href="/"><img src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION"></a>
+        <a class="intro_nav_link" href="/login">LOGIN</a>
+    </header>
     <script src="/public/javascripts/intro-typing.js"></script>
-    <script src="/public/javascripts/stage-transition.js"></script>
+    <script src="/public/javascripts/intro-stage.js"></script>
     <script>
         // 인트로 → 시작 페이지 전환
-        // 문구/버튼이 블록 단위로 걷히는 동안, 화면 가운데에서 빛이 맺혀 반짝이는 원형 디졸브로
-        // 시작 페이지 배경까지 넘어간 뒤 이동한다. (효과 본체: /public/javascripts/stage-transition.js)
+        // 문구/버튼이 블록 단위로 걷히는 동안, 배경 캔버스(intro-stage.js)가 반짝이는 원형 디졸브로
+        // 시작 페이지 배경까지 넘어간 뒤 이동한다. 움직임은 끝에서 0이 되어 시작 페이지 배경과 똑같이 끝난다
         (function () {
             // 시작 페이지(start.ejs)의 #back1 배경과 반드시 같아야 이동 순간이 이어져 보인다
             var START_BACKGROUND = "/public/images/start/start5.png";
             var START_BRIGHTNESS = 0.2; // start.ejs #back1: filter: brightness(20%)
-            var INTRO_BRIGHTNESS = 0.3; // intro.css .background: filter: brightness(30%)
             var TEXT_OUT_MS = 420;      // WebGL을 못 쓸 때는 문구가 걷힌 뒤 바로 이동
 
             var leaving = false;
             var fallbackTimer = null;
             var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-            function backgroundUrl(element) {
-                var match = element && /url\(["']?(.*?)["']?\)/.exec(getComputedStyle(element).backgroundImage);
-                return match ? match[1] : null;
-            }
 
             document.querySelectorAll(".intro_content_button[data-href]").forEach(function (button) {
                 button.addEventListener("click", function () {
@@ -118,33 +125,24 @@
                         fallbackTimer = setTimeout(go, TEXT_OUT_MS);
                     }
 
-                    var section = button.closest(".intro_content_box");
-                    var from = backgroundUrl(section && section.previousElementSibling);
-                    if (!from || !window.StageTransition) {
+                    if (!window.IntroStage) {
                         goAfterTextOut();
                         return;
                     }
-                    window.StageTransition.play({
-                        from: from,
-                        fromBrightness: INTRO_BRIGHTNESS,
-                        to: START_BACKGROUND,
-                        toBrightness: START_BRIGHTNESS,
-                        duration: 1700
-                    }).then(go, goAfterTextOut);
+                    window.IntroStage.leave(START_BACKGROUND, START_BRIGHTNESS, 1700).then(go, goAfterTextOut);
                 });
             });
 
             // 다음 배경을 미리 받아 둔다
             window.addEventListener("load", function () {
-                if (window.StageTransition) window.StageTransition.preload([START_BACKGROUND]);
+                if (window.IntroStage) window.IntroStage.preload([START_BACKGROUND]);
             });
 
-            // 뒤로가기로 bfcache에서 복원되면 퇴장 상태를 되돌린다
+            // 뒤로가기로 bfcache에서 복원되면 퇴장 상태를 되돌린다 (캔버스 쪽은 intro-stage.js 가 되돌린다)
             window.addEventListener("pageshow", function (event) {
                 if (!event.persisted) return;
                 clearTimeout(fallbackTimer);
                 leaving = false;
-                if (window.StageTransition) window.StageTransition.reset();
                 document.body.classList.remove("is-leaving");
             });
         })();
