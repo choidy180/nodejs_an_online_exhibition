@@ -6754,3 +6754,540 @@ a.notice_modal_button {
     animation: none;
   }
 }
+
+/* =========================================================
+   마이페이지 (계정 · 결제 · 문의) — .mp 위에 얹는 부분
+   탭은 가는 글씨 + 지금 탭만 흰 1px 밑줄, 빨강은 마우스를 올렸을 때만
+   ========================================================= */
+.mp_section--first {
+  margin-top: 40px;
+}
+.my_tabs {
+  display: flex;
+  gap: 32px;
+  margin-top: 28px;
+  border-bottom: var(--nav-line) solid var(--nav-hairline);
+}
+.my_tab {
+  position: relative;
+  padding: 0 0 14px;
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.55);
+  transition: color var(--nav-motion);
+}
+.my_tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: var(--nav-line);
+  background-color: transparent;
+  transition: background-color var(--nav-motion);
+}
+.my_tab.is-current {
+  color: var(--nav-ink);
+}
+.my_tab.is-current::after {
+  background-color: var(--nav-ink);
+}
+.my_tab:hover {
+  color: var(--nav-accent);
+}
+.my_tab:hover::after {
+  background-color: var(--nav-accent);
+}
+.my_tab:focus-visible,
+.my_subtab:focus-visible,
+.my_menu_link:focus-visible {
+  outline: var(--nav-line) dashed var(--nav-ink);
+  outline-offset: 4px;
+}
+
+/* 프로필 */
+.my_profile {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+  padding: 40px 0;
+  border-bottom: var(--nav-line) solid var(--nav-hairline);
+}
+.my_avatar {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  overflow: hidden;
+  font-size: 40px;
+  color: var(--nav-ink);
+  background-color: #222;
+  border-radius: 50%;
+  outline: var(--nav-line) solid var(--nav-hairline);
+}
+.my_avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.my_info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 40px;
+  margin: 0;
+}
+.my_info div {
+  min-width: 0;
+}
+.my_info dt {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--nav-muted);
+}
+.my_info dd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 0;
+  font-size: 17px;
+  overflow-wrap: anywhere;
+}
+.my_badge {
+  flex: none;
+  padding: 1px 8px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--nav-ink);
+  border: var(--nav-line) solid rgba(255, 255, 255, 0.55);
+}
+
+/* 숫자 요약 */
+.my_stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-bottom: var(--nav-line) solid var(--nav-hairline);
+}
+.my_stat {
+  padding: 26px 24px 24px;
+}
+.my_stat:first-child {
+  padding-left: 0;
+}
+.my_stat + .my_stat {
+  border-left: var(--nav-line) solid var(--nav-hairline);
+}
+.my_stat_label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--nav-muted);
+}
+.my_stat_value {
+  margin-top: 12px;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.my_stat_value small {
+  margin-right: 4px;
+  font-size: 0.5em;
+  color: var(--nav-muted);
+}
+
+/* 이용권 */
+.my_plan {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px 32px;
+}
+.my_plan_label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--nav-muted);
+}
+.my_plan_name {
+  margin-top: 8px;
+  font-size: clamp(24px, 2.4vw, 32px);
+  letter-spacing: -0.02em;
+}
+.my_plan_card {
+  margin-top: 8px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.7);
+}
+.my_plan_actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* 메뉴 목록: 3칸, 1px 선, 오른쪽 화살표 */
+.my_menu {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.my_menu_link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 56px;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.85);
+  border-bottom: var(--nav-line) solid var(--nav-hairline);
+  transition: color var(--nav-motion), border-color var(--nav-motion);
+}
+.my_menu_link::after {
+  content: "→";
+  color: var(--nav-muted);
+  transition: transform var(--nav-motion), color var(--nav-motion);
+}
+.my_menu_link:hover {
+  color: var(--nav-accent);
+  border-bottom-color: var(--nav-accent);
+}
+.my_menu_link:hover::after {
+  color: var(--nav-accent);
+  transform: translateX(4px);
+}
+
+/* 결제: 요금제 고르기 */
+.my_plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.my_plan_option {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  padding: 26px 24px 24px;
+  border: var(--nav-line) solid var(--nav-hairline);
+  cursor: pointer;
+  transition: border-color var(--nav-motion), background-color var(--nav-motion);
+}
+.my_plan_option:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+.my_plan_option:has(input:checked) {
+  border-color: var(--nav-ink);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+.my_plan_option:has(input:focus-visible) {
+  outline: var(--nav-line) dashed var(--nav-ink);
+  outline-offset: 4px;
+}
+.my_plan_option_head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.my_plan_option_name {
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+.my_plan_option_count {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.my_plan_option_count strong {
+  font-size: 44px;
+  font-weight: var(--nav-weight);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--nav-ink);
+}
+.my_plan_option_price {
+  padding-top: 14px;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  border-top: var(--nav-line) solid var(--nav-hairline);
+}
+.my_plan_option_price small {
+  font-size: 13px;
+  color: var(--nav-muted);
+}
+.my_plans_foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px 28px;
+  margin-top: 28px;
+}
+.my_plans_choice {
+  font-size: 14px;
+  color: var(--nav-muted);
+}
+.my_plans_choice strong {
+  margin-left: 8px;
+  font-weight: 400;
+  color: var(--nav-ink);
+}
+
+/* 문의 */
+.my_subtabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+}
+.my_subtab {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 14px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  border: var(--nav-line) solid var(--nav-hairline);
+  transition: color var(--nav-motion), border-color var(--nav-motion);
+}
+.my_subtab.is-current {
+  color: var(--nav-ink);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+.my_subtab:hover {
+  color: var(--nav-accent);
+  border-color: var(--nav-accent);
+}
+.my_subtabs_end {
+  margin-left: auto;
+  font-size: 14px;
+}
+.my_inquiry {
+  max-width: 880px;
+}
+.my_select_wrap {
+  position: relative;
+}
+.my_select_wrap::after {
+  content: "↓";
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--nav-muted);
+  pointer-events: none;
+}
+.my_select {
+  width: 100%;
+  height: 52px;
+  padding: 0 28px 0 2px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: var(--nav-weight);
+  color: var(--nav-ink);
+  background: transparent;
+  border: none;
+  border-bottom: var(--nav-line) solid rgba(255, 255, 255, 0.3);
+  border-radius: 0;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color var(--nav-motion);
+}
+.my_select:focus {
+  border-bottom-color: var(--nav-ink);
+}
+.my_select option {
+  color: var(--nav-ink);
+  background-color: #141414;
+}
+.my_writer {
+  margin-right: auto;
+  font-size: 13px;
+  color: var(--nav-muted);
+}
+.my_writer strong {
+  margin-left: 6px;
+  font-weight: 400;
+  color: var(--nav-ink);
+}
+
+@media (max-width: 900px) {
+  .my_menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .my_plans {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 620px) {
+  .my_profile {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+  .my_info,
+  .my_menu {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .my_stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .my_stat,
+  .my_stat:first-child {
+    padding-left: 0;
+  }
+  .my_stat + .my_stat {
+    border-left: none;
+    border-top: var(--nav-line) solid var(--nav-hairline);
+  }
+}
+
+/* =========================================================
+   종료된 전시회 · 작품 지원 (TERMINATION · SUPPORT) — .mp 위에 얹는 부분
+   ========================================================= */
+.nt_count + .mp_grid {
+  margin-top: 16px;
+}
+/* 끝난 전시는 평소엔 흐린 흑백, 마우스를 올리면 원래 색으로 */
+.mp_grid--ended .now_card_img {
+  filter: grayscale(0.85) brightness(65%);
+}
+.mp_grid--ended .now_card:hover .now_card_img,
+.mp_grid--ended .now_card:focus-visible .now_card_img {
+  filter: grayscale(0) brightness(95%);
+}
+
+/* 작품 지원: 포스터 + 정보, 넓은 화면에서는 두 줄 */
+.sp_list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 40px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--nav-line) solid var(--nav-hairline);
+}
+.sp_item {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 24px;
+  padding: 28px 0;
+  border-bottom: var(--nav-line) solid var(--nav-hairline);
+}
+.sp_poster {
+  display: block;
+  overflow: hidden;
+  align-self: start;
+  background-color: #000;
+  outline: var(--nav-line) solid var(--nav-hairline);
+  outline-offset: -1px;
+}
+.sp_poster img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: brightness(85%);
+  transition: transform var(--nav-motion), filter var(--nav-motion);
+}
+.sp_item:hover .sp_poster img {
+  transform: scale(1.05);
+  filter: brightness(100%);
+}
+.sp_body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.sp_kicker {
+  margin-bottom: 10px;
+  font-size: 11px;
+}
+.sp_title {
+  margin: 0;
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: var(--nav-weight);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+}
+.sp_title a {
+  color: var(--nav-ink);
+  text-decoration: underline var(--nav-line) transparent;
+  text-underline-offset: 5px;
+  transition: color var(--nav-motion), text-decoration-color var(--nav-motion);
+}
+.sp_title a:hover {
+  color: var(--nav-accent);
+  text-decoration-color: var(--nav-accent);
+}
+.sp_title a:focus-visible {
+  outline: var(--nav-line) dashed var(--nav-ink);
+  outline-offset: 4px;
+}
+.sp_category {
+  margin-top: 6px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.sp_meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 20px;
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: var(--nav-line) solid var(--nav-hairline);
+}
+.sp_meta div {
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+}
+.sp_meta dt,
+.sp_meta dd {
+  margin: 0;
+  font-size: 13px;
+}
+.sp_meta dt {
+  flex: none;
+  color: var(--nav-muted);
+}
+.sp_meta dd {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.sp_actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px 24px;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+@media (max-width: 1000px) {
+  .sp_list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .sp_item {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 16px;
+  }
+  .sp_meta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,40 +1,37 @@
-<style>
-    a{
-        text-decoration: none;
-        color: black;
-    }
-</style>
-<div id="mypage_area">
-    <div id="mypage_container">
-        <div id="mypage_title">
-            <a href="/mypage"><span style="margin-right: 50px;">계정</span></a>
-            <a href="/mypage_payment"><span style="margin-right: 50px;">결제</span></a>
-            <span style="color: red;">문의</span>
-        </div>
-        <form action="/board/upload_inquiry" method="POST">
-            <div class="inquiry_nav_container">
-                <div class="inquiry_nav_box_choice">
-                    전시 문의
-                </div>
-                <div class="inquiry_nav_box" onclick="location.href='/inquiry_payment'">
-                    결제
-                </div>
-            </div>
-            <div class="inquiry_title_container">
-                <select class="inquiry_select" name="category" id="">
-                    <option value="1">전시회 등록에 문제가 있습니다.</option>
-                    <option value="2">전시작품 등록에 문제가 있습니다.</option>
-                    <option value="3">전시회에 문제가 있습니다.</option>
-                    <option value="4">전시작품에 문제가 있습니다.</option>
-                </select>
-                <p>작성자 아이디 : <%=sess.user.ID%></p>
-                <input name="title" class="inquiry_title" type="text" placeholder="문의 제목 입력">
-                <textarea class="inquiry_content" name="content" id="" cols="30" rows="10" placeholder="문의 내용 입력"></textarea>
-                <button>등록하기</button>
-            </div>
-        </form>
+<%
+    // 마이페이지 · 문의 (전시회 문의) — 메인 화면 스타일
+    var categories = [
+        { value: "1", label: "전시회 등록에 문제가 있습니다." },
+        { value: "2", label: "전시작품 등록에 문제가 있습니다." },
+        { value: "3", label: "전시회에 문제가 있습니다." },
+        { value: "4", label: "전시작품에 문제가 있습니다." }
+    ];
+%>
+<main class="mp" aria-labelledby="mp_title">
+    <%- include('mypage_head.ejs', { tab: 'inquiry' }) %>
+
+    <div class="my_subtabs">
+        <a class="my_subtab is-current" href="/inquiry" aria-current="page">전시회 문의</a>
+        <a class="my_subtab" href="/inquiry_payment">결제 문의</a>
+        <a class="mp_text_link my_subtabs_end" href="/inquiry_list">내 문의 내역</a>
     </div>
-</div>
 
-
-<link rel="stylesheet" href="/public/stylesheets/main_nav.css">
+    <form class="nr_form my_inquiry" action="/board/upload_inquiry" method="POST">
+        <label class="nr_label" for="iq_category">분류</label>
+        <div class="my_select_wrap">
+            <select class="my_select" id="iq_category" name="category">
+                <% categories.forEach(function (item) { %>
+                    <option value="<%= item.value %>"><%= item.label %></option>
+                <% }) %>
+            </select>
+        </div>
+        <label class="nr_label" for="iq_title">제목</label>
+        <input class="nr_input" id="iq_title" name="title" type="text" maxlength="100" required placeholder="문의 제목">
+        <label class="nr_label" for="iq_content">내용</label>
+        <textarea class="nr_textarea" id="iq_content" name="content" rows="10" required placeholder="어떤 문제가 있는지 자세히 적어 주세요"></textarea>
+        <div class="nr_actions">
+            <p class="my_writer">작성자 <strong><%= sess.user.ID %></strong></p>
+            <button type="submit" class="mp_button">문의 등록</button>
+        </div>
+    </form>
+</main>

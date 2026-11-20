@@ -1,41 +1,68 @@
-<div class="search_exhibition_area">
-    <div class="search_exhibition_container" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; margin-bottom: 100px;">
-        <div class="supportable_exhibition_title">
-            지원가능한 전시회 목록입니다.
+<%
+    // 작품 지원 (SUPPORT) — 작품을 받고 있는 전시회 목록, 메인 화면 스타일
+    var items = row || [];
+    var IMG_DIR = "/public/images/exhibition_title_images/";
+    var DAY = 24 * 60 * 60 * 1000;
+    var today = new Date();
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function ymd(value) {
+        var d = new Date(value);
+        if (isNaN(d)) return "";
+        return d.getFullYear() + "." + pad(d.getMonth() + 1) + "." + pad(d.getDate());
+    }
+    function dday(value) {
+        var days = Math.ceil((new Date(value) - today) / DAY);
+        return days > 0 ? "D-" + days : "오늘 마감";
+    }
+    function category(item) {
+        if (!item.DETAIL_CATEGORY || item.DETAIL_CATEGORY === item.CATEGORY) return item.CATEGORY || "";
+        return item.CATEGORY + " / " + item.DETAIL_CATEGORY;
+    }
+%>
+<style>
+    body {
+        background-color: #141414;
+    }
+</style>
+<main class="mp" aria-labelledby="mp_title">
+    <header class="mp_head">
+        <div class="mp_head_text">
+            <p class="mp_kicker">SUPPORT</p>
+            <h1 class="mp_title" id="mp_title">작품 지원</h1>
+            <p class="mp_desc">작품을 받고 있는 전시회입니다. 원하는 전시회에 작품 등록을 신청해 보세요.</p>
         </div>
-        <div class="supportable_exhibition_title" style="margin-top: 0px; margin-bottom: 30px;">
-            원하는 전시회에 전시작품 등록 신청을 해보세요.
-        </div>
-        <% for (var i = 0 ; i < row.length; i++){%>
-        <div class="supportable_exhibition_box">
-            <div class="supportable_exhibition_imgbox">
-                <img src="/public/images/exhibition_title_images/<%=row[i].IMG%>" alt="">
-            </div>
-            <div class="supportable_exhibition_text_box">
-                <div class="supportable_exhibition_text_title">
-                    <%=row[i].TITLE%>
-                </div>
-                <div class="supportable_exhibition_text_category">
-                    <%=row[i].CATEGORY%> / <%=row[i].DETAIL_CATEGORY%>
-                </div>
-                <div class="supportable_exhibition_text_category">
-                    HOST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=row[i].USER_ID%>
-                </div>
-                <div class="supportable_exhibition_text_category">
-                    DEADLINE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=deadline[i]%>
-                </div>
-                <div class="supportable_exhibition_text_category">
-                    START&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=start_date[i]%>
-                </div>
-                <div class="supportable_exhibition_text_category">
-                    BOOTH COUNT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=row[i].BOOTH_COUNT%>
-                </div>
-                <div class="supportable_exhibition_text_category" style="margin-top: 14px;">
-                    <button style="margin-right: 20px;" onclick="location.href='/supportable_exhibition_detail/<%=row[i].NUMBER%>'">상세보기</button>
-                    <button>바로지원</button>
-                </div>
-            </div>
-        </div>
-        <%}%>
-    </div>
-</div>
+    </header>
+
+    <p class="nt_count">모집 중 <strong><%= items.length %></strong>건 · 마감이 가까운 순</p>
+    <% if (!items.length) { %>
+        <p class="mp_empty">지금 작품을 받는 전시회가 없습니다.</p>
+    <% } else { %>
+        <ol class="sp_list">
+            <% items.forEach(function (item) {
+                var detail = "/supportable_exhibition_detail/" + item.NUMBER;
+                var apply = sess.user ? "/exhibition_support_registration/" + item.NUMBER : "/login";
+            %>
+                <li class="sp_item">
+                    <a class="sp_poster" href="<%= detail %>" tabindex="-1" aria-hidden="true">
+                        <img src="<%= IMG_DIR + item.IMG %>" alt="" loading="lazy">
+                    </a>
+                    <div class="sp_body">
+                        <p class="mp_kicker sp_kicker"><span>모집 중</span><span><%= dday(item.DEADLINE) %></span></p>
+                        <h2 class="sp_title"><a href="<%= detail %>"><%= item.TITLE %></a></h2>
+                        <% if (category(item)) { %><p class="sp_category"><%= category(item) %></p><% } %>
+                        <dl class="sp_meta">
+                            <div><dt>주최</dt><dd><%= item.USER_ID %></dd></div>
+                            <div><dt>모집 마감</dt><dd><%= ymd(item.DEADLINE) %></dd></div>
+                            <div><dt>전시 시작</dt><dd><%= ymd(item.START_TIME) %></dd></div>
+                            <div><dt>부스</dt><dd><%= item.BOOTH_COUNT %>개</dd></div>
+                        </dl>
+                        <div class="sp_actions">
+                            <a class="mp_text_link" href="<%= detail %>">상세 보기</a>
+                            <a class="mp_button" href="<%= apply %>"><%= sess.user ? "바로 지원" : "로그인하고 지원" %></a>
+                        </div>
+                    </div>
+                </li>
+            <% }) %>
+        </ol>
+    <% } %>
+</main>

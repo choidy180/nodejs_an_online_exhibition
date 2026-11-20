@@ -1,11 +1,48 @@
-<div id="mypage_area">
-    <div id="mypage_container" style="margin-top: 50px; width: 1200px; height: auto; flex-wrap: wrap; flex-direction: row;">
-        <% for (var i = 0; i < row.length; i++){%>
-        <div class="end_exhibi_box">
-            <div class="end_exhibi_img">
-                <img src="/public/images/exhibition_title_images/<%=row[i].IMG%>" alt="">
-            </div>
+<%
+    // 종료된 전시회 (TERMINATION) — 메인 화면 스타일
+    var items = row || [];
+    var IMG_DIR = "/public/images/exhibition_title_images/";
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function ymd(value) {
+        var d = new Date(value);
+        if (isNaN(d)) return "";
+        return d.getFullYear() + "." + pad(d.getMonth() + 1) + "." + pad(d.getDate());
+    }
+%>
+<style>
+    body {
+        background-color: #141414;
+    }
+</style>
+<main class="mp" aria-labelledby="mp_title">
+    <header class="mp_head">
+        <div class="mp_head_text">
+            <p class="mp_kicker">TERMINATION</p>
+            <h1 class="mp_title" id="mp_title">종료된 전시회</h1>
+            <p class="mp_desc">막을 내린 전시회를 모았습니다. 전시 소개와 관람평은 지금도 볼 수 있습니다.</p>
         </div>
-        <%}%>
-    </div>
-</div>
+    </header>
+
+    <p class="nt_count">전체 <strong><%= items.length %></strong>건</p>
+    <% if (!items.length) { %>
+        <p class="mp_empty">아직 종료된 전시회가 없습니다.</p>
+    <% } else { %>
+        <!-- 메인 화면의 전시 카드(.now_card)와 같은 카드, 끝난 전시라 평소엔 흐린 흑백 -->
+        <div class="mp_grid mp_grid--ended">
+            <% items.forEach(function (item) { %>
+                <a class="now_card" href="/exhibition_detail/<%= item.NUMBER %>">
+                    <img class="now_card_img" src="<%= IMG_DIR + item.IMG %>" alt="" loading="lazy">
+                    <span class="now_card_arrow" aria-hidden="true">→</span>
+                    <div class="now_card_caption">
+                        <p class="now_card_kicker">
+                            <span>CLOSED</span>
+                            <% if (item.CATEGORY) { %><span><%= item.CATEGORY %></span><% } %>
+                        </p>
+                        <p class="now_card_title"><%= item.TITLE %></p>
+                        <p class="now_card_period"><%= ymd(item.START_TIME) %> — <%= ymd(item.END_TIME) %></p>
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+    <% } %>
+</main>

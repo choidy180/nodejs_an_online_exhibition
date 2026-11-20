@@ -332,21 +332,25 @@ router.post("/exhibition_support_registration", work_imgs.array('userfile'), fun
 })
 
 // 문의 등록
-router.post("/upload_inquiry", function(req, res){
+router.post("/upload_inquiry", function(req, res, next){
     var body = req.body;
     var sess = req.session;
     var now = new Date();
     var sql = "insert into inquiry (USER_ID, REGISTER_TIME, TITLE, CONTENT, CATEGORY) values(?, ?, ?, ?, ?)";
+    if (!sess.user) return res.redirect("/login");
+    var title = String(body.title || "").trim();
+    var content = String(body.content || "").trim();
+    if (!title || !content) return res.redirect("/inquiry");
     pool.getConnection((err, conn) => {
-        conn.query(sql, [sess.user.ID, now, body.title, body.content, body.category], function(err, row){
+        if (err) return next(err);
+        conn.query(sql, [sess.user.ID, now, title, content, body.category], function(err, row){
+            conn.release();
             if(err){
                 console.log(sql);
                 console.log(err);
+                return next(err);
             }
-            if(row){
-                res.redirect("/inquiry_list")
-                conn.release();
-            }
+            res.redirect("/inquiry_list")
         })
     })
 })

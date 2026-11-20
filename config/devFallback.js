@@ -25,11 +25,68 @@ const SAMPLE_EXHIBITIONS = [
   { TITLE: "MÜNCHEN", IMG: "2624d40fed2c0b1512ec160223dae034bf341156.jpg", CATEGORY: "여행" },
   { TITLE: "색의 온도", IMG: "826e660dfde5cd1b7fa2dd28d67f61d91b292e6b.jpg", CATEGORY: "회화" },
   { TITLE: "기억의 조각", IMG: "a36f81c417464bff9bf2096170fb11f9dab61936.jpg", CATEGORY: "회화" },
+  // 작품을 받고 있는 전시 (SUPPORT 화면 확인용) — 마감 · 시작이 앞으로
+  { TITLE: "작은 방의 기록", IMG: "84c62e60-a6a2-4c1e-a066-44d24d7c4bc1.jpg", CATEGORY: "사진", phase: "recruit" },
+  { TITLE: "여름의 색", IMG: "b259fe249a50e23759ef8d0ad96db86ddc4f4903.jpg", CATEGORY: "회화", phase: "recruit" },
+  // 이미 끝난 전시 (TERMINATION 화면 확인용)
+  { TITLE: "지난 계절", IMG: "c416adcb1648aecbf9348e0edcc8c2ffedbdec2c.jpg", CATEGORY: "사진", phase: "ended" },
+  { TITLE: "오래된 골목", IMG: "875a3e72-1bea-47de-8edf-e12553456d13.jpg", CATEGORY: "여행", phase: "ended" },
 ];
+
+// 진행 중(기본) · 모집 중 · 종료 에 맞는 날짜
+function sampleTimes(phase, i, j, now) {
+  if (phase === "recruit") {
+    return {
+      REGISTER_TIME: new Date(now - (5 + j) * DAY),
+      DEADLINE: new Date(now + (10 + j * 5) * DAY),
+      START_TIME: new Date(now + (25 + j * 5) * DAY),
+      END_TIME: new Date(now + (60 + j * 5) * DAY),
+    };
+  }
+  if (phase === "ended") {
+    return {
+      REGISTER_TIME: new Date(now - (120 + j) * DAY),
+      DEADLINE: new Date(now - (100 + j) * DAY),
+      START_TIME: new Date(now - (90 + j * 10) * DAY),
+      END_TIME: new Date(now - (15 + j * 20) * DAY),
+    };
+  }
+  return {
+    REGISTER_TIME: new Date(now - (40 + i) * DAY),
+    DEADLINE: new Date(now - (20 + i) * DAY),
+    START_TIME: new Date(now - (10 + i) * DAY),
+    END_TIME: new Date(now + (20 + i * 3) * DAY),
+  };
+}
+
+// "END_TIME < ?" 처럼 날짜·숫자를 비교하는 조건은 샘플에도 적용한다 (진행 중 · 종료 · 모집 중 구분)
+function applyComparisons(rows, text, values) {
+  if (!values || !values.length) return rows;
+  const toNumber = (v) => (v instanceof Date ? v.getTime() : typeof v === "number" ? v : new Date(v).getTime());
+  const conditions = [];
+  const re = /(\w+)\s*(<=|>=|<|>)\s*\?/g;
+  let m;
+  while ((m = re.exec(text))) {
+    const index = (text.slice(0, m.index + m[0].length).match(/\?/g) || []).length - 1;
+    conditions.push({ key: m[1].toUpperCase(), op: m[2], value: values[index] });
+  }
+  return rows.filter((row) =>
+    conditions.every((c) => {
+      if (row[c.key] === undefined || c.value === undefined) return true;
+      const a = toNumber(row[c.key]);
+      const b = toNumber(c.value);
+      if (c.op === "<") return a < b;
+      if (c.op === ">") return a > b;
+      if (c.op === "<=") return a <= b;
+      return a >= b;
+    })
+  );
+}
 
 function sampleExhibitions() {
   const now = Date.now();
-  return SAMPLE_EXHIBITIONS.map((item, i) => ({
+  const seen = {};
+  return SAMPLE_EXHIBITIONS.map((item, i) => Object.assign({
     NUMBER: i + 1,
     TITLE: item.TITLE,
     IMG: item.IMG,
@@ -44,11 +101,12 @@ function sampleExhibitions() {
     VIEWING_AVA_COUNT: 100,
     REGISTER_COST: 100000,
     PRODUCTION_COST: 0,
-    REGISTER_TIME: new Date(now - (40 + i) * DAY),
-    DEADLINE: new Date(now - (20 + i) * DAY),
-    START_TIME: new Date(now - (10 + i) * DAY),
-    END_TIME: new Date(now + (20 + i * 3) * DAY),
-  }));
+  }, (function () {
+    // j: 같은 단계 안에서 몇 번째인지 (날짜를 조금씩 다르게)
+    const phase = item.phase || "now";
+    seen[phase] = (seen[phase] || 0) + 1;
+    return sampleTimes(phase, i, seen[phase] - 1, now);
+  })()));
 }
 
 // category_img 폴더의 이미지로 만든 샘플 카테고리 (회원가입 3단계 화면 확인용)
@@ -125,12 +183,13 @@ function rowsFor(sql, values) {
     return { affectedRows: 0, insertId: 0, changedRows: 0 };
   }
   if (/\bfrom\s+(\w+\.)?exhibition\b/.test(text)) {
-    const rows = sampleExhibitions();
+    let rows = sampleExhibitions();
     // "where NUMBER=?" 처럼 한 건을 찾는 쿼리면 그 번호의 샘플을 돌려준다
     if (/where\s+number\s*=\s*\?/.test(text) && values && values.length) {
       const found = rows.filter((row) => String(row.NUMBER) === String(values[0]));
       return found.length ? found : [rows[0]];
     }
+    rows = applyComparisons(rows, text, values);
     // 검색 ("TITLE like ?" 등): 제목·분야에 검색어가 들어 있는 샘플만
     if (/\blike\s+\?/.test(text) && values && values.length) {
       const term = String(values[0]).replace(/^%|%$/g, "").replace(/\\(.)/g, "$1").toLowerCase();

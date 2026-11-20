@@ -1,0 +1,29 @@
+<%
+    // 마이페이지 공통 머리: 제목 + 계정 · 결제 · 문의 탭
+    // 사용: include('mypage_head.ejs', { tab: 'account' | 'payment' | 'inquiry' })
+    var myTabs = [
+        { key: "account", label: "계정", href: "/mypage" },
+        { key: "payment", label: "결제", href: "/mypage_payment" },
+        { key: "inquiry", label: "문의", href: "/inquiry" }
+    ];
+%>
+<style>
+    body {
+        background-color: #141414;
+    }
+</style>
+<header class="mp_head mp_head--plain">
+    <div class="mp_head_text">
+        <p class="mp_kicker">
+            <span>MY PAGE</span>
+            <% if (sess.user.ID == 'IU') { %><span>ADMIN</span><% } %>
+        </p>
+        <h1 class="mp_title" id="mp_title">마이페이지</h1>
+        <p class="mp_desc">안녕하세요, <%= sess.user.NAME || sess.user.ID %> 님. 계정과 이용권, 문의를 한곳에서 관리합니다.</p>
+    </div>
+</header>
+<nav class="my_tabs" aria-label="마이페이지 메뉴">
+    <% myTabs.forEach(function (item) { var current = item.key === tab; %>
+        <a class="my_tab<%= current ? ' is-current' : '' %>" href="<%= item.href %>"<%- current ? ' aria-current="page"' : '' %>><%= item.label %></a>
+    <% }) %>
+</nav>

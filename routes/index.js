@@ -172,20 +172,25 @@ router.get("/logout", function (req, res) {
 
 
 //유저 마이페이지 메인 O
-router.get("/mypage", function(req, res) {
+router.get("/mypage", function(req, res, next) {
     var sess = req.session;
+    if (!sess.user) return res.redirect("/login"); // 로그인하지 않으면 sess.user 를 읽다가 서버 오류가 난다
     var sql = "select * from work where USER_ID=?"
     var sql2 = "select * from card where USER_ID=?"
     var sql3 = "SELECT * FROM work_calculate where USER_ID=?;"
     pool.getConnection((err, conn) => {
+        if (err) return next(err);
         conn.query(sql, [sess.user.ID], function(err, row){
             conn.query(sql2, [sess.user.ID], function(err, row2){
                 conn.query(sql3, [sess.user.ID], function(err, row3){
+                    row = row || [];
+                    row2 = row2 || [];
+                    row3 = row3 || [];
                     var result = 0;
                     for (var i  = 0; i < row3.length; i++){
-                        result = result + row3[i].AMOUNT;
+                        result = result + (Number(row3[i].AMOUNT) || 0);
                     }
-                    result = addComma(result - sess.user.HAVE_AMOUNT);
+                    result = addComma(result - (Number(sess.user.HAVE_AMOUNT) || 0));
                     res.render("main.ejs", {
                         title: "마이페이지",
                         page: "user/mypage.ejs",
@@ -204,6 +209,7 @@ router.get("/mypage", function(req, res) {
 //유저 마이페이지 결제 O
 router.get("/mypage_payment", function(req, res) {
     var sess = req.session;
+    if (!sess.user) return res.redirect("/login"); // 로그인하지 않으면 sess.user 를 읽다가 서버 오류가 난다
     res.render("main.ejs", {
         title: "결제",
         page: "user/mypage_payment.ejs",
@@ -214,6 +220,7 @@ router.get("/mypage_payment", function(req, res) {
 // 전시회 문의 O
 router.get("/inquiry", function(req, res) {
     var sess = req.session;
+    if (!sess.user) return res.redirect("/login"); // 로그인하지 않으면 sess.user 를 읽다가 서버 오류가 난다
     res.render("main.ejs", {
         title: "문의",
         page: "user/inquiry.ejs",
@@ -224,6 +231,7 @@ router.get("/inquiry", function(req, res) {
 // 전시회 결제 문의 O
 router.get("/inquiry_payment", function(req, res) {
     var sess = req.session;
+    if (!sess.user) return res.redirect("/login"); // 로그인하지 않으면 sess.user 를 읽다가 서버 오류가 난다
     res.render("main.ejs", {
         title: "문의",
         page: "user/inquiry_payment.ejs",
@@ -1011,13 +1019,18 @@ router.get("/public_post/:number", function(req, res, next){
 })
 
 // 지원 가능한 전시회 O
-router.get("/supportable_exhibition", function(req, res){
+router.get("/supportable_exhibition", function(req, res, next){
     var sess = req.session;
     var now = new Date();
-    console.log(now);
-    var get_exhibition_date_sql = "select * from exhibition where APPROVAL_WHETHER='Y' AND DEADLINE > ?"
+    // 아직 작품을 받는(마감 전) 전시, 마감이 가까운 순
+    var get_exhibition_date_sql = "select * from exhibition where APPROVAL_WHETHER='Y' AND DEADLINE > ? order by DEADLINE asc"
     pool.getConnection((err, conn)=>{
+        if (err) return next(err);
         conn.query(get_exhibition_date_sql, [now] , function(err, row){
+            if (err) {
+                conn.release();
+                return next(err);
+            }
             var deadline = new Array();
                 for (var edc = 0; edc < row.length; edc ++){
                     deadline[edc] = row[edc].DEADLINE.format('yyyy-MM-dd a/p hh:mm:ss');;
@@ -1977,13 +1990,18 @@ router.get('/closing_exhibition_settlement/:number', function(req,res){
 })
 
 // 종료된 전시회
-router.get('/end_exhibition', function(req,res){
+router.get('/end_exhibition', function(req,res, next){
     var sess= req.session;
     var now = new Date();
-    var sql = "select * from exhibition where END_TIME < 0 AND APPROVAL_WHETHER='Y'"
+    // 예전 조건(END_TIME < 0)은 날짜와 0을 비교해 아무것도 나오지 않았다 → 지금보다 먼저 끝난 전시, 최근에 끝난 순
+    var sql = "select * from exhibition where END_TIME < ? AND APPROVAL_WHETHER='Y' order by END_TIME desc"
     pool.getConnection((err, conn) => {
-        conn.query(sql, function(err, row){
-            console.log(row[0]);
+        if (err) return next(err);
+        conn.query(sql, [now], function(err, row){
+            if (err) {
+                conn.release();
+                return next(err);
+            }
             res.render('main.ejs', {
                 title: "종료된 전시회",
                 page: "board/end_exhibition.ejs",

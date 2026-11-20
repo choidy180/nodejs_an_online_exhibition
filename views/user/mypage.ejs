@@ -1,132 +1,118 @@
-<style>
-    a{
-        text-decoration: none;
-        color: black;
-    }
-</style>
-<div id="mypage_area">
-    <div id="mypage_container">
-        <div id="mypage_title" style="cursor: pointer;">
-            <span style="margin-right: 50px; color: red;">계정</span>
-            <a href="/mypage_payment"><span style="margin-right: 50px;">결제</span></a>
-            <a href="/inquiry"><span style="margin-right: 50px;">문의</span></a>
-        </div>
-        <div class="mypage_main_top">
-            <div class="mypage_main_box_left">
-                <p class="mypage_main_box_left_title">프로필</p>
-            </div>
-            <div class="mypage_main_box_right">
-                <img class="mypage_main_profile_img" src="/uploads/<%=sess.user.IMG%>" alt="">
-                <div class="mypage_main_box_right_right">
-                    <div class="mypage_main_box_right_right_top">
-                        <div class="mypage_main_box_right_right_top_textbox">
-                            <div class="mypage_main_box_right_right_top_textbox_title">ID</div>
-                            <div class="mypage_main_box_right_right_top_textbox_sub"><%= sess.user.ID%>
-                                <%if(sess.user.ID == 'IU'){%>
-                                    [ 관리자 ]
-                                <%}%>
-                            </div>
-                        </div>
-                        <div class="mypage_main_box_right_right_top_textbox">
-                            <div class="mypage_main_box_right_right_top_textbox_title">NAME</div>
-                            <div class="mypage_main_box_right_right_top_textbox_sub"><%= sess.user.NAME%></div>
-                        </div>
-                        <div class="mypage_main_box_right_right_top_textbox">
-                            <div class="mypage_main_box_right_right_top_textbox_title">EMAIL</div>
-                            <div class="mypage_main_box_right_right_top_textbox_sub"><%= sess.user.EMAIL%></div>
-                        </div>
-                        <div class="mypage_main_box_right_right_top_textbox">
-                            <div class="mypage_main_box_right_right_top_textbox_title">TEL</div>
-                            <div class="mypage_main_box_right_right_top_textbox_sub"><%= sess.user.TEL%></div>
-                        </div>
-                        <div class="mypage_main_box_right_right_top_textbox2">
-                            <div class="mypage_main_box_right_right_top_textbox2_box">
-                                <div class="mypage_main_box_right_right_top_textbox2_box_box" style="border-right: 1px solid gray;">
-                                    <p class="mypage_main_box_right_right_top_textbox2_box_title">등록전시작품 수</p>
-                                    <p class="mypage_main_box_right_right_top_textbox2_box_sub"><%=row.length%></p>
-                                </div>
-                            </div>
-                            <div class="mypage_main_box_right_right_top_textbox2_box">
-                                <div class="mypage_main_box_right_right_top_textbox2_box_box "  style="border-right: 1px solid gray;">
-                                    <p class="mypage_main_box_right_right_top_textbox2_box_title">관람 가능 전시회수</p>
-                                    <p class="mypage_main_box_right_right_top_textbox2_box_sub"><%=sess.user.VIEWING_AVA_COUNT%></p>
-                                </div>
-                            </div>
-                            <div class="mypage_main_box_right_right_top_textbox2_box">
-                                <div class="mypage_main_box_right_right_top_textbox2_box_box">
-                                    <p class="mypage_main_box_right_right_top_textbox2_box_title">보유 금액</p>
-                                    <p class="mypage_main_box_right_right_top_textbox2_box_sub"><%=result%></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mypage_main_profile_img_button_box">
-                        <div class="filebox"> 
-                            <label for="ex_file">사진 변경</label> 
-                            <input type="file" id="ex_file"> 
-                        </div>
-                        <div class="filebox"> 
-                            <label for="ex_file"  style="margin-right: 0px;">사진 삭제</label> 
-                            <input type="file" id="ex_file"> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mypage_main_bottom">
-            <div class="mypage_main_box_left" style="border-top: none;">
-                <p class="mypage_main_box_left_title">결제중인 이용권</p>
-            </div>
-            <div class="mypage_main_box_right" style="flex-direction: column;">
-                <div style="display: flex; width: 100%;">
-                    <div class="mypage_main_box_box"><%= sess.user.GRADE%></div>
-                    <div class="mypage_main_box_box" style="justify-content: flex-end; font-weight: 500; font-size: 24px; color: #0073e6; cursor: pointer;" onclick="location.href='/user_card'">결제 정보 변경</div>
-                </div>
-                <% if (row2[0] != undefined){%>
-                    <div class="mypage_main_box_box_title">다음 결제일은 <strong>12월 25일 </strong> 입니다.</div>
-                    <div class="mypage_main_box_box_title"><strong>신용카드 •••• •••• •••• <%=row2[0].NUMBER.slice(15,19)%></strong></div>
-                <%} else {%>
-                    <div class="mypage_main_box_box_title">등록된 카드가 존재하지않습니다.</div>
-                <%}%>
-            </div>
-        </div>
-        <div class="mypage_main_bottom" style="border-top: 1px solid #999; height: auto;">
-            <div class="mypage_main_box_left" style="border-top: none;">
-                <p class="mypage_main_box_left_title">추가 정보 관리</p>
-            </div>
-            <div id="mypage_main_box_right" class="mypage_main_box_right" style="flex-direction: column; height: auto;">
-                <% if(sess.user.TYPE === 'N') {%>
-                    <div class="mypage_main_box_right_textbox" onclick="location.href='application_for_exhibition'">전시회 신청</div>
-                <%}%>
-                <% if(sess.user.TYPE === 'A') {%>
-                    <div class="mypage_main_box_right_textbox" onclick="location.href='application_for_exhibition'">전시회 신청</div>
-                <%}%>
-                <div class="mypage_main_box_right_textbox" onclick="location.href='/bookmark'">즐겨찾는 전시회</div>
-                <div class="mypage_main_box_right_textbox" onclick="location.href='/bookmark_user'">즐겨찾는 회원</div>
-                <div class="mypage_main_box_right_textbox" onclick="location.href='/organized_exhibition_present'">주최한 전시회</div>
-                <div class="mypage_main_box_right_textbox" onclick="location.href='/payment_record'">요금제 결제기록 보기</div>
-                <div class="mypage_main_box_right_textbox" onclick="location.href='/viewing_record'">전시회 관람기록</div>
-                <div class="mypage_main_box_right_textbox" onclick="location.href='/purchase_record'">결제 내역보기</div>
-                <div class="mypage_main_box_right_textbox" onclick="location.href='/settlement_of_holding_amount'">보유 금액 정산</div>
-                <div class="mypage_main_box_right_textbox" onclick="location.href='/settlement_of_holding_amount_record'">정산 내역 확인</div>
-            </div>
-        </div>
-        <%if(sess.user.ID == 'IU'){%>
-            <div class="mypage_main_bottom" style="border-top: 1px solid #999; height: auto; align-items: flex-start;">
-                <div class="mypage_main_box_left" style="border-top: none; height: auto;">
-                    <p class="mypage_main_box_left_title">관리자 추가 기능</p>
-                </div>
-                <div id="mypage_main_box_right" class="mypage_main_box_right" style="flex-direction: column; height: auto;">
-                    <div class="mypage_main_box_right_textbox" style="cursor: pointer;" onclick="location.href='/category_list'">카테고리 리스트</div>
-                    <div class="mypage_main_box_right_textbox" style="cursor: pointer;" onclick="location.href='/category_generation'">카테고리 등록</div>
-                    <div class="mypage_main_box_right_textbox" style="cursor: pointer;" onclick="location.href='/public_register'">공지사항 등록</div>
-                    <div class="mypage_main_box_right_textbox" style="cursor: pointer;" onclick="location.href='/category_generation'">보상 신청 조회</div>
-                    <div class="mypage_main_box_right_textbox" style="cursor: pointer;" onclick="location.href='/inquiry_list'">문의 목록</div>
-                </div>
-            </div>
-        <%}%>
-    </div>
-</div>
+<%
+    // 마이페이지 · 계정 — 메인 화면 스타일
+    var user = sess.user;
+    var isAdmin = user.ID == 'IU';
+    var works = row || [];
+    var card = row2 && row2[0];
+    var cardTail = card && card.NUMBER ? String(card.NUMBER).replace(/\D/g, "").slice(-4) : "";
+    var PLAN_NAMES = { basic: "베이직", standard: "스탠다드", premium: "프리미엄" };
+    var planName = user.GRADE ? (PLAN_NAMES[String(user.GRADE).toLowerCase()] || user.GRADE) : "";
 
+    var menus = [];
+    if (user.TYPE === 'N' || user.TYPE === 'A') menus.push({ label: "전시회 신청", href: "/application_for_exhibition" });
+    menus.push(
+        { label: "즐겨찾는 전시회", href: "/bookmark" },
+        { label: "즐겨찾는 회원", href: "/bookmark_user" },
+        { label: "주최한 전시회", href: "/organized_exhibition_present" },
+        { label: "전시회 관람 기록", href: "/viewing_record" },
+        { label: "결제 내역", href: "/purchase_record" },
+        { label: "요금제 결제 기록", href: "/payment_record" },
+        { label: "보유 금액 정산", href: "/settlement_of_holding_amount" },
+        { label: "정산 내역", href: "/settlement_of_holding_amount_record" },
+        { label: "내 문의 내역", href: "/inquiry_list" }
+    );
+    var adminMenus = [
+        { label: "카테고리 목록", href: "/category_list" },
+        { label: "카테고리 등록", href: "/category_generation" },
+        { label: "공지사항 등록", href: "/public_register" },
+        { label: "보상 신청 조회", href: "/category_generation" },
+        { label: "문의 목록", href: "/inquiry_list" }
+    ];
+%>
+<main class="mp" aria-labelledby="mp_title">
+    <%- include('mypage_head.ejs', { tab: 'account' }) %>
 
-<link rel="stylesheet" href="/public/stylesheets/main_nav.css">
+    <section class="my_profile" aria-label="프로필">
+        <div class="my_avatar">
+            <% if (user.IMG) { %>
+                <img src="/uploads/<%= user.IMG %>" alt="<%= user.ID %> 프로필 사진">
+            <% } else { %>
+                <span aria-hidden="true"><%= String(user.NAME || user.ID || "?").charAt(0).toUpperCase() %></span>
+            <% } %>
+        </div>
+        <dl class="my_info">
+            <div>
+                <dt>아이디</dt>
+                <dd><%= user.ID %><% if (isAdmin) { %><span class="my_badge">관리자</span><% } %></dd>
+            </div>
+            <div>
+                <dt>이름</dt>
+                <dd><%= user.NAME %></dd>
+            </div>
+            <div>
+                <dt>이메일</dt>
+                <dd><%= user.EMAIL %></dd>
+            </div>
+            <div>
+                <dt>전화번호</dt>
+                <dd><%= user.TEL %></dd>
+            </div>
+        </dl>
+    </section>
+
+    <section class="my_stats" aria-label="활동 요약">
+        <div class="my_stat">
+            <p class="my_stat_label">등록한 작품</p>
+            <p class="my_stat_value"><%= works.length %></p>
+        </div>
+        <div class="my_stat">
+            <p class="my_stat_label">관람 가능 전시회</p>
+            <p class="my_stat_value"><%= user.VIEWING_AVA_COUNT || 0 %></p>
+        </div>
+        <div class="my_stat">
+            <p class="my_stat_label">보유 금액</p>
+            <p class="my_stat_value"><small>₩</small><%= result %></p>
+        </div>
+    </section>
+
+    <section class="mp_section" aria-labelledby="my_plan_title">
+        <h2 class="mp_section_title" id="my_plan_title">이용권</h2>
+        <div class="my_plan">
+            <div class="my_plan_text">
+                <p class="my_plan_label">현재 요금제</p>
+                <p class="my_plan_name"><%= planName || "이용 중인 요금제가 없습니다" %></p>
+                <p class="my_plan_card">
+                    <% if (cardTail) { %>
+                        신용카드 •••• <%= cardTail %>
+                    <% } else { %>
+                        등록된 카드가 없습니다.
+                    <% } %>
+                </p>
+            </div>
+            <div class="my_plan_actions">
+                <a class="mp_text_link" href="/user_card">결제 정보 변경</a>
+                <a class="mp_button" href="/mypage_payment"><%= planName ? "요금제 변경" : "요금제 보기" %></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="mp_section" aria-labelledby="my_menu_title">
+        <h2 class="mp_section_title" id="my_menu_title">내 활동</h2>
+        <ul class="my_menu">
+            <% menus.forEach(function (item) { %>
+                <li><a class="my_menu_link" href="<%= item.href %>"><%= item.label %></a></li>
+            <% }) %>
+        </ul>
+    </section>
+
+    <% if (isAdmin) { %>
+        <section class="mp_section" aria-labelledby="my_admin_title">
+            <h2 class="mp_section_title" id="my_admin_title">관리자 메뉴</h2>
+            <ul class="my_menu">
+                <% adminMenus.forEach(function (item) { %>
+                    <li><a class="my_menu_link" href="<%= item.href %>"><%= item.label %></a></li>
+                <% }) %>
+            </ul>
+        </section>
+    <% } %>
+</main>
