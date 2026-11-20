@@ -1,143 +1,298 @@
-<div class="exhibition_detail_area" style="height: auto; margin-bottom: 30px; border-bottom: 0;">
-    <div class="exhibition_detail_container">
-        <div class="exhibition_left_box" style="height: auto;">
-            <div class="exhibition_left_top">
-                <div class="exhibition_left_top_left">
-                    <div class="exhibition_left_imgbox">
-                        <img class="exhibition_left_img" src="/public/images/exhibition_title_images/<%=row[0].IMG%>" alt="">
+<%
+    // 전시회 상세 — 메인 화면 스타일 (가는 글씨, 흑백, 1px 선, 빨강은 마우스를 올렸을 때만)
+    // 로그인하지 않았을 때는 라우트가 row4/row5/pay_now 를 넘기지 않으므로 locals 로 읽는다
+    var ex = row[0];
+    var DAY = 24 * 60 * 60 * 1000;
+    var today = new Date();
+    var startAt = ex.START_TIME ? new Date(ex.START_TIME) : null;
+    var endAt = ex.END_TIME ? new Date(ex.END_TIME) : null;
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function ymd(value) {
+        var d = new Date(value);
+        if (isNaN(d)) return "";
+        return d.getFullYear() + "." + pad(d.getMonth() + 1) + "." + pad(d.getDate());
+    }
+
+    var status = "NOW SHOWING";
+    var remain = "";
+    if (startAt && today < startAt) {
+        status = "UPCOMING";
+        remain = "오픈까지 " + Math.ceil((startAt - today) / DAY) + "일";
+    } else if (endAt && today > endAt) {
+        status = "CLOSED";
+        remain = "종료된 전시";
+    } else if (endAt) {
+        remain = "종료까지 " + Math.max(1, Math.ceil((endAt - today) / DAY)) + "일";
+    }
+    var period = ymd(ex.START_TIME) + " — " + ymd(ex.END_TIME);
+    var category = ex.CATEGORY === ex.DETAIL_CATEGORY || !ex.DETAIL_CATEGORY
+        ? ex.CATEGORY
+        : ex.CATEGORY + " / " + ex.DETAIL_CATEGORY;
+
+    var reviews = row7 || [];
+    var replies = row8 || [];
+    var scoreSum = 0;
+    reviews.forEach(function (review) { scoreSum += Number(review.SCORE) || 0; });
+    var average = reviews.length ? (scoreSum / reviews.length).toFixed(2) : "0.00";
+
+    var bookmarked = !!(sess.user && locals.row4 && locals.row4[0] !== undefined);
+    var watch;
+    if (!sess.user) {
+        watch = { href: "/login", label: "로그인 하고 관람하기" };
+    } else if (locals.row5 && locals.row5[0] !== undefined && locals.pay_now == 0) {
+        watch = { href: "/view_work/" + ex.NUMBER + "=1", label: "바로 관람하기" };
+    } else {
+        watch = { href: "/exhibition_purchase_card/" + ex.NUMBER, label: "관람하기" };
+    }
+
+    // 지금 보고 있는 전시회는 빼고 최대 4개
+    var related = (row3 || []).filter(function (item) {
+        return String(item.NUMBER) !== String(ex.NUMBER);
+    }).slice(0, 4);
+
+    var IMG_DIR = "/public/images/exhibition_title_images/";
+%>
+<style>
+    body {
+        background-color: #141414;
+    }
+</style>
+<article class="xd" aria-labelledby="xd_title">
+    <!-- 최상단: 포스터를 흐리게 깐 배경이 아래로 갈수록 #141414 로 짙어진다 (메인 최상단과 같은 방식) -->
+    <header class="xd_hero">
+        <img class="xd_hero_bg" src="<%= IMG_DIR + ex.IMG %>" alt="" aria-hidden="true">
+        <div class="xd_hero_inner">
+            <div class="xd_hero_text">
+                <p class="xd_kicker">
+                    <span><%= status %></span>
+                    <% if (category) { %><span><%= category %></span><% } %>
+                </p>
+                <h1 class="xd_title" id="xd_title"><%= ex.TITLE %></h1>
+                <dl class="xd_meta">
+                    <div>
+                        <dt>기간</dt>
+                        <dd><%= period %></dd>
                     </div>
-                </div>
-                <div class="exhibition_left_top_right">
-                    <p class="exhibition_detail_title"><%=row[0].TITLE%></p>
-                    <p class="exhibition_detail_sub"><%=row[0].CATEGORY%> / <%=row[0].DETAIL_CATEGORY%></p>
-                    <div class="exhibition_left_top_bottom">
-                        <div class="exhibition_left_top_bottom_box">
-                            <script>
-                                favorite_user = () => {
-                                    alert("로그인창으로 이동합니다.");
-                                    location.href='/login';
-                                }
-                            </script>
-                            <div class="exhibition_left_top_bottom_box1">
-                                <p>즐겨찾기</p>
-                                <%if (sess.user){%>
-                                    <% if(row4[0] == undefined){%>
-                                        <img src="/public/images/icon/star (1).png" alt="" width="25px" style="cursor: pointer;" onclick="location.href='/exbigition_category_register/<%=row[0].NUMBER%>'">
-                                    <%} else {%>
-                                        <img src="/public/images/icon/star.png" alt="" width="25px" style="cursor: pointer;" onclick="location.href='/exbigition_category_register/<%=row[0].NUMBER%>'">
-                                    <%}%>
-                                <%} else {%>
-                                    <img src="/public/images/icon/star (1).png" alt="" width="25px" style="cursor: pointer;" onclick="favorite_user();">
-                                <%}%>
-                            </div>
-                            <div class="exhibition_left_top_bottom_box2">
-                                <p>조회수</p>
-                                <p class="exhibition_detail_hit"><%=row[0].HIT%></p>
-                            </div>
-                            <div class="exhibition_left_top_bottom_box3">
-                                <p>평점</p>
-                                <p class="exhibition_detail_hit">
-                                    <% var score = 0; %>
-                                    <% for (var a = 0; a < row7.length; a++){%>
-                                        <% score = score + row7[a].SCORE%>
-                                    <%}%>
-                                    <% score = score / row7.length%>
-                                    <% if (row7[0] == undefined){%>
-                                        0
-                                    <%} else {%>
-                                        <%=score.toFixed(2);%>
-                                    <%}%>
-                                    / 5.0</p>
-                            </div>
+                    <% if (remain) { %>
+                        <div>
+                            <dt>상태</dt>
+                            <dd><%= remain %></dd>
                         </div>
-                    </div>
+                    <% } %>
+                </dl>
+                <div class="xd_actions">
+                    <a class="xd_button" href="<%= watch.href %>"><%= watch.label %></a>
+                    <% if (sess.user) { %>
+                        <a class="xd_bookmark<%= bookmarked ? ' is-on' : '' %>"
+                           href="/exbigition_category_register/<%= ex.NUMBER %>"
+                           aria-pressed="<%= bookmarked %>">
+                            <span class="xd_bookmark_icon" aria-hidden="true"><%= bookmarked ? "★" : "☆" %></span>
+                            <span><%= bookmarked ? "즐겨찾기 해제" : "즐겨찾기" %></span>
+                        </a>
+                    <% } else { %>
+                        <button type="button" class="xd_bookmark" aria-haspopup="dialog" aria-controls="xd_login_modal">
+                            <span class="xd_bookmark_icon" aria-hidden="true">☆</span>
+                            <span>즐겨찾기</span>
+                        </button>
+                    <% } %>
                 </div>
             </div>
-            <div class="exhibition_left_middle">
-                <div style="display: flex; align-items: center;">
-                    <p class="exhibition_left_middle_head">전시회 정보</p>
-                    <img class="exhibition_detail_bubble_btn" src="/public/images/icon/question.png" alt="" style="width: 20px; height: 20px; margin-left: 5px; cursor: pointer;">
-                    <div class="exhibition_left_middle_head_bubble">해당 정보는 변경될 수 있습니다.</div>
-                </div>
-                <div class="exhibition_left_middle_box">
-                    <div class="exhibition_left_middle_box_box">
-                        <div class="exhibition_detail_booth_work_box">
-                            <p class="exhibition_detail_booth_work_box_title">BOOTH COUNT</p>
-                            <p class="exhibition_detail_booth_work_box_count"><%=row[0].BOOTH_COUNT%></p>
-                        </div>
-                        <div class="exhibition_detail_booth_work_box" style="border: none;">
-                            <p class="exhibition_detail_booth_work_box_title">WORK COUNT</p>
-                            <p class="exhibition_detail_booth_work_box_count"><%=row2.length%></p>
-                        </div>
-                    </div>
-                    <div class="exhibition_left_middle_box_box" style="margin-right: 0px; flex-direction: column; height: 160px;">
-                        <p class="exhibition_detail_booth_work_box_title">EXHIBITION PERIOD</p>
-                        <p class="exhibition_detail_booth_work_box_count" style="font-size: 26px;"><%=start_date%> - <%=end_date%></p>
-                    </div>
-                </div>
-            </div>
-            <div class="exhibition_left_bottom">
-                <%=row[0].EXPLAIN_TEXT%>
-            </div>
-            <% for (var j = 0; j < row7.length; j++){%>
-                <div class="exhibition_left_bottom_review_box" style="height: auto; border-top: 1px solid #999;">
-                    <div class="exhibition_left_bottom_review_title">
-                        <strong><%=row7[j].USER_ID%></strong>&nbsp;&nbsp;&nbsp; <span style="font-size: 16px; color: #999;"><%=register_date[j]%></span>
-                    </div>
-                    <div class="exhibition_left_bottom_review_title" style="margin-top: 10px;">
-                        <% for (var i = 0; i < row7[j].SCORE ; i++){%>
-                            <img src="/public/images/icon/star.png" alt="" width="25px">
-                        <%}%>
-                    </div>
-                    <div class="exhibition_left_bottom_review_title" style="margin-top: 10px;">
-                        <p><%=row7[j].CONTENT%></p>
-                    </div>
-                    <div style="width: 100%; height: 70px; display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                        <% if (sess.user) {%>
-                            <input type="text" id="<%=row7[j].NUMBER%>" style="width: calc(100% - 130px); height: 20px; margin-top: 10px; padding: 10px; font-size: 18px; font-family: var(--font-sans); outline: none; border: 1px solid #999; border-right: 0;" placeholder="댓글에 대한 코멘트를 입력해주세요.">
-                            <button style="width: 100px; height: 42px; margin-top: 10px; outline: none; border: none; background-color: #1387fc; color: white; border-radius: 5px; font-size: 18px; cursor: pointer;" onclick="location.href='/comment_update/<%=row7[0].NUMBER%>=' + document.getElementById('<%=row7[0].NUMBER%>').value + '=' + '<%=row[0].NUMBER%>'">작성</button>
-                        <%} else {%>
-                            <input type="text" style="width: calc(100% - 20px); height: 20px; margin-top: 10px; padding: 10px; font-size: 18px; font-family: var(--font-sans); outline: none; border: 1px solid #999;" readonly placeholder="로그인 후에 이용할 수 있습니다.">
-                        <%}%>
-                    </div>
-                    <div style="width: 100%; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                        <% for (var k = 0; k < row8.length; k++){%>
-                            <%if (row8[k].REVIEW_NUMBER == row7[j].NUMBER){%>
-                                <div style="width: calc(100% - 30px); height: 40px; padding-left: 30px; display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 20px;">
-                                    <p style="font-size: 18px;"><%=row8[k].USER_ID%> <span style="font-size: 16px; color: #999;"><%=row8[k].date%></span></p>
-                                    <%=row8[k].CONTENT%>
-                                </div>
-                            <%}%>
-                        <%}%>
-                    </div>
-                </div>
-            <%}%>
+            <figure class="xd_poster">
+                <img src="<%= IMG_DIR + ex.IMG %>" alt="<%= ex.TITLE %> 포스터">
+            </figure>
         </div>
-        <div class="exhibition_right_box" style="height: auto;">
-            <div class="exhibition_right_exhibi_box">
-                <p style="margin-bottom: 15px;">이런 전시회는 어떠세요?</p>
-                <% if(row3.length > 1){%>
-                    <% for(var i = 0; i < row3.length; i++) {%>
-                    <div class="exhibition_right_img_box">
-                        <img src="/public/images/exhibition_title_images/<%=row3[i].IMG%>" alt="">
-                    </div>
-                    <div class="exhibition_right_title" onclick="location.href='/exhibition_detail/<%=row3[i].NUMBER%>'"><%=row3[i].TITLE%></div>
-                    <%}%>
-                <%}%>
+    </header>
+
+    <div class="xd_body">
+        <!-- 숫자 정보: 1px 세로선으로 나눈 4칸 -->
+        <section class="xd_stats" aria-label="전시회 정보">
+            <div class="xd_stat">
+                <p class="xd_stat_label">BOOTH</p>
+                <p class="xd_stat_value"><%= ex.BOOTH_COUNT %></p>
             </div>
-            <%if (sess.user) {%>
-                <%if (row5[0] != undefined){%>
-                    <% if(pay_now == 0){%>
-                        <button onclick="location.href='/view_work/<%=row[0].NUMBER%>=1'" class="exhibition_detail_btn" style="margin-bottom: 20px;">바로 관람하기</button>
-                    <%} else {%>
-                        <button onclick="location.href='/exhibition_purchase_card/<%=row[0].NUMBER%>'" class="exhibition_detail_btn">관람하기</button>
-                    <%}%>
-                <%} else {%>
-                    <button onclick="location.href='/exhibition_purchase_card/<%=row[0].NUMBER%>'" class="exhibition_detail_btn">관람하기</button>
-                <%}%>
-            <%} else {%>
-                <button onclick="location.href='/login'" class="exhibition_detail_btn">로그인 하기</button>
-            <%}%>
-        </div>
+            <div class="xd_stat">
+                <p class="xd_stat_label">WORKS</p>
+                <p class="xd_stat_value"><%= (row2 || []).length %></p>
+            </div>
+            <div class="xd_stat">
+                <p class="xd_stat_label">VIEWS</p>
+                <p class="xd_stat_value"><%= ex.HIT %></p>
+            </div>
+            <div class="xd_stat">
+                <p class="xd_stat_label">RATING</p>
+                <p class="xd_stat_value"><%= average %><small> / 5.0</small></p>
+            </div>
+        </section>
+
+        <section class="xd_section" aria-labelledby="xd_about_title">
+            <h2 class="xd_section_title" id="xd_about_title">ABOUT</h2>
+            <div class="xd_about"><%= ex.EXPLAIN_TEXT %></div>
+            <p class="xd_note">전시회 정보는 변경될 수 있습니다.</p>
+        </section>
+
+        <section class="xd_section" aria-labelledby="xd_review_title">
+            <h2 class="xd_section_title" id="xd_review_title">
+                REVIEWS<span class="xd_section_count"><%= reviews.length %></span>
+            </h2>
+            <% if (!reviews.length) { %>
+                <p class="xd_empty">아직 등록된 관람평이 없습니다.</p>
+            <% } else { %>
+                <ol class="xd_reviews">
+                    <% reviews.forEach(function (review, j) {
+                        var score = Math.max(0, Math.min(5, Math.round(Number(review.SCORE) || 0)));
+                        var own = replies.filter(function (reply) { return String(reply.REVIEW_NUMBER) === String(review.NUMBER); });
+                    %>
+                        <li class="xd_review">
+                            <div class="xd_review_head">
+                                <strong class="xd_review_user"><%= review.USER_ID %></strong>
+                                <span class="xd_review_date"><%= register_date[j] %></span>
+                                <span class="xd_stars" role="img" aria-label="5점 만점에 <%= score %>점">
+                                    <span class="xd_stars_on"><%= "★".repeat(score) %></span><span class="xd_stars_off"><%= "★".repeat(5 - score) %></span>
+                                </span>
+                            </div>
+                            <p class="xd_review_body"><%= review.CONTENT %></p>
+                            <% if (own.length) { %>
+                                <ul class="xd_replies">
+                                    <% own.forEach(function (reply) { %>
+                                        <li class="xd_reply">
+                                            <p class="xd_reply_head">
+                                                <strong><%= reply.USER_ID %></strong>
+                                                <span><%= reply.date %></span>
+                                            </p>
+                                            <p class="xd_reply_body"><%= reply.CONTENT %></p>
+                                        </li>
+                                    <% }) %>
+                                </ul>
+                            <% } %>
+                            <% if (sess.user) { %>
+                                <form class="xd_reply_form" data-review="<%= review.NUMBER %>" data-exhibition="<%= ex.NUMBER %>">
+                                    <input class="xd_reply_input" type="text" maxlength="200"
+                                           aria-label="<%= review.USER_ID %> 님의 관람평에 댓글 쓰기"
+                                           placeholder="이 관람평에 댓글을 남겨 주세요.">
+                                    <button type="submit" class="xd_reply_submit">작성</button>
+                                </form>
+                            <% } else { %>
+                                <p class="xd_reply_login"><a href="/login">로그인</a> 후에 댓글을 남길 수 있습니다.</p>
+                            <% } %>
+                        </li>
+                    <% }) %>
+                </ol>
+            <% } %>
+        </section>
+
+        <% if (related.length) { %>
+            <section class="xd_section" aria-labelledby="xd_more_title">
+                <h2 class="xd_section_title" id="xd_more_title">
+                    MORE EXHIBITIONS<span class="xd_section_sub">이런 전시회는 어떠세요?</span>
+                </h2>
+                <!-- 메인 화면의 진행 중인 전시 카드(.now_card)와 같은 카드 -->
+                <div class="xd_related">
+                    <% related.forEach(function (item, i) { %>
+                        <a class="now_card" href="/exhibition_detail/<%= item.NUMBER %>">
+                            <img class="now_card_img" src="<%= IMG_DIR + item.IMG %>" alt="" loading="lazy">
+                            <span class="now_card_arrow" aria-hidden="true">→</span>
+                            <div class="now_card_caption">
+                                <p class="now_card_kicker">
+                                    <span><%= pad(i + 1) %></span>
+                                    <span><%= item.CATEGORY ? String(item.CATEGORY).toUpperCase() : "NOW SHOWING" %></span>
+                                </p>
+                                <p class="now_card_title"><%= item.TITLE %></p>
+                                <p class="now_card_period"><%= ymd(item.START_TIME) %> — <%= ymd(item.END_TIME) %></p>
+                            </div>
+                        </a>
+                    <% }) %>
+                </div>
+            </section>
+        <% } %>
     </div>
-</div>
+</article>
+
+<% if (!sess.user) { %>
+    <!-- 로그인하지 않고 즐겨찾기를 눌렀을 때 (메인 화면 안내 모달과 같은 모양) -->
+    <dialog class="notice_modal" id="xd_login_modal" aria-labelledby="xd_login_modal_title">
+        <p class="notice_modal_kicker">BOOKMARK</p>
+        <h3 class="notice_modal_title" id="xd_login_modal_title">로그인이 필요합니다</h3>
+        <p class="notice_modal_desc">
+            즐겨찾기는 로그인한 뒤에 쓸 수 있습니다.<br>
+            로그인 화면으로 이동할까요?
+        </p>
+        <div class="notice_modal_actions">
+            <button type="button" class="notice_modal_button notice_modal_button--ghost" data-modal-close>취소</button>
+            <a class="notice_modal_button" href="/login" autofocus>로그인</a>
+        </div>
+        <button type="button" class="notice_modal_x" data-modal-close aria-label="닫기">×</button>
+    </dialog>
+<% } %>
+
+<script>
+    (function () {
+        // 관람평 댓글: 주소에 그대로 붙이므로 내용은 인코딩한다 (라우트: /comment_update/리뷰번호=내용=전시회번호)
+        document.querySelectorAll(".xd_reply_form").forEach(function (form) {
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                var input = form.querySelector(".xd_reply_input");
+                var text = input.value.trim();
+                if (!text) {
+                    input.focus();
+                    return;
+                }
+                location.href = "/comment_update/" + form.getAttribute("data-review") + "=" +
+                    encodeURIComponent(text) + "=" + form.getAttribute("data-exhibition");
+            });
+        });
+
+        // 로그인 안내 모달
+        var modal = document.getElementById("xd_login_modal");
+        var opener = document.querySelector("[aria-controls='xd_login_modal']");
+        if (!modal || !opener) return;
+        var root = document.documentElement;
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        function open() {
+            if (typeof modal.showModal !== "function") {
+                if (confirm("즐겨찾기는 로그인한 뒤에 쓸 수 있습니다.\n로그인 화면으로 이동할까요?")) location.href = "/login";
+                return;
+            }
+            root.classList.add("modal-open");
+            modal.showModal();
+        }
+        function close() {
+            if (!modal.open || modal.classList.contains("is-closing")) return;
+            function finish() {
+                clearTimeout(fallback);
+                modal.removeEventListener("animationend", onEnd);
+                modal.classList.remove("is-closing");
+                modal.close();
+                root.classList.remove("modal-open");
+            }
+            function onEnd(event) {
+                if (event.target === modal && !event.pseudoElement) finish();
+            }
+            if (reduceMotion) {
+                finish();
+                return;
+            }
+            var fallback = setTimeout(finish, 400);
+            modal.addEventListener("animationend", onEnd);
+            modal.classList.add("is-closing");
+        }
+
+        opener.addEventListener("click", open);
+        modal.querySelectorAll("[data-modal-close]").forEach(function (el) {
+            el.addEventListener("click", close);
+        });
+        modal.addEventListener("cancel", function (event) {
+            event.preventDefault();
+            close();
+        });
+        // 모달 바깥(어두운 배경)을 누르면 닫는다. 배경을 누르면 target 이 dialog 자신이다
+        modal.addEventListener("click", function (event) {
+            if (event.target !== modal) return;
+            var rect = modal.getBoundingClientRect();
+            var inside = event.clientX >= rect.left && event.clientX <= rect.right &&
+                event.clientY >= rect.top && event.clientY <= rect.bottom;
+            if (!inside) close();
+        });
+    })();
+</script>

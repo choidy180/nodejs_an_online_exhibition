@@ -1723,9 +1723,11 @@ router.get("/comment_update/:para", function(req, res){
     var sess = req.session;
     var para = req.params.para;
     var now = new Date();
-    var number = para.split('=')[0];
-    var content = para.split('=')[1];
-    var exhibi_no = para.split('=')[2];
+    // 리뷰번호=내용=전시회번호 — 내용에 '=' 가 있어도 잘리지 않게 처음과 마지막만 번호로 본다
+    var parts = para.split('=');
+    var number = parts[0];
+    var exhibi_no = parts[parts.length - 1];
+    var content = parts.slice(1, -1).join('=');
     var sql = "insert into review_comments (EXHIBITION_NUMBER, REVIEW_NUMBER, USER_ID, CONTENT, CREATE_TIME) values(?, ?, ?, ?, ?)";
     console.log("ㅎㅇㅎㅇ");
     pool.getConnection((err, conn)=>{

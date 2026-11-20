@@ -3,7 +3,8 @@
  *
  * - NODE_ENV가 production이 아니면, DB 연결에 실패했을 때 진짜 커넥션 대신
  *   샘플 데이터를 돌려주는 가짜 커넥션을 넘긴다. (production에서는 아무것도 바꾸지 않는다)
- * - 읽기(SELECT): exhibition 은 샘플 전시회, category 는 샘플 카테고리, 나머지는 빈 목록
+ * - 읽기(SELECT): exhibition 은 샘플 전시회, category 는 샘플 카테고리,
+ *   전시회 번호로 찾는 review / review_comments 는 샘플 관람평 · 댓글, 나머지는 빈 목록
  * - 쓰기(INSERT/UPDATE/DELETE): 아무것도 저장하지 않고 성공한 것처럼 돌려준다
  * - 한 번 실패하면 30초 동안은 DB에 다시 붙어 보지 않고 바로 샘플 데이터를 쓴다
  *   (요청마다 연결 대기 시간이 생기지 않게). DB가 살아나면 자동으로 진짜 데이터로 돌아간다.
@@ -63,6 +64,38 @@ const SAMPLE_CATEGORIES = [
   ["게임 아트", "l4XorHXMUe8lWc00lQso.jpg"],
 ].map(([NAME, IMG], i) => ({ NUMBER: i + 1, NAME, IMG }));
 
+// 전시회 상세 화면의 관람평 · 댓글 확인용 샘플 (전시회 번호로 찾는 쿼리에만 돌려준다)
+function sampleReviews(exhibitionNumber) {
+  const now = Date.now();
+  return [
+    { USER_ID: "sample_kim", SCORE: 5, CONTENT: "작품 사이를 천천히 걷는 느낌이라 좋았어요.\n조명 연출이 특히 인상적이었습니다." },
+    { USER_ID: "sample_lee", SCORE: 4, CONTENT: "설명이 조금 더 있었으면 좋겠지만 전체적으로 만족스러운 전시였어요." },
+    { USER_ID: "sample_park", SCORE: 3, CONTENT: "사진이 많아서 둘러보는 데 시간이 걸렸어요." },
+  ].map((item, i) => ({
+    NUMBER: i + 1,
+    EXHIBITION_NUMBER: Number(exhibitionNumber) || 1,
+    USER_ID: item.USER_ID,
+    SCORE: item.SCORE,
+    CONTENT: item.CONTENT,
+    CREATE_TIME: new Date(now - (i + 1) * 2 * DAY),
+  }));
+}
+
+function sampleReviewComments(exhibitionNumber) {
+  const now = Date.now();
+  return [
+    { REVIEW_NUMBER: 1, USER_ID: "sample_choi", CONTENT: "저도 조명이 제일 기억에 남아요!" },
+    { REVIEW_NUMBER: 1, USER_ID: "sample_kim", CONTENT: "다음 전시도 기대됩니다." },
+  ].map((item, i) => ({
+    NUMBER: i + 1,
+    EXHIBITION_NUMBER: Number(exhibitionNumber) || 1,
+    REVIEW_NUMBER: item.REVIEW_NUMBER,
+    USER_ID: item.USER_ID,
+    CONTENT: item.CONTENT,
+    CREATE_TIME: new Date(now - (i + 1) * DAY),
+  }));
+}
+
 function rowsFor(sql, values) {
   const text = String(sql).trim().toLowerCase();
   if (!text.startsWith("select")) {
@@ -79,6 +112,13 @@ function rowsFor(sql, values) {
   }
   if (/\bfrom\s+(\w+\.)?category\b/.test(text)) {
     return SAMPLE_CATEGORIES.map((row) => Object.assign({}, row));
+  }
+  // "select * from review where EXHIBITION_NUMBER=?" 처럼 전시회의 관람평 목록을 찾을 때만.
+  // (사용자별로 찾는 쿼리는 빈 목록 그대로 — 이미 관람평을 쓴 것처럼 보이지 않게)
+  const byExhibition = /^\s*where\s+exhibition_number\s*=\s*\?\s*;?\s*$/;
+  const reviewMatch = text.match(/\bfrom\s+(\w+\.)?(review_comments|review)\b(.*)$/);
+  if (reviewMatch && byExhibition.test(reviewMatch[3]) && values && values.length) {
+    return reviewMatch[2] === "review" ? sampleReviews(values[0]) : sampleReviewComments(values[0]);
   }
   return [];
 }
