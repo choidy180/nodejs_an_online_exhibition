@@ -44,7 +44,7 @@
             </p>
             <div class="start_actions">
                 <a class="mono_btn" href="/sign_first">회원가입 하기</a>
-                <a class="mono_btn" href="/main">가입하지 않고 이용하기</a>
+                <a class="mono_btn" href="/main" data-main-transition>가입하지 않고 이용하기</a>
             </div>
             <p class="start_divider">기존 회원은 로그인 후 이용하세요</p>
             <a class="mono_btn mono_btn--solid" href="/login">로그인</a>
@@ -57,6 +57,62 @@
                 document.documentElement.classList.remove("stage-enter");
             }, 900);
         }
+    </script>
+    <script src="/public/javascripts/start-to-main.js"></script>
+    <script>
+        // 가입하지 않고 이용하기 → 메인: 패널이 걷히는 동안 반짝이는 원형 디졸브로
+        // 메인 화면 첫 장면까지 넘어간 뒤 이동한다 (효과 본체: start-to-main.js)
+        (function () {
+            var MAIN_BACKGROUND = "/public/images/wall2.png"; // style.css .top_main_area 와 같은 이미지
+            var START_BACKGROUND = "/public/images/start/start5.png";
+            var START_BRIGHTNESS = 0.2; // #back1: filter: brightness(20%)
+            var PANEL_OUT_MS = 420;     // WebGL을 못 쓸 때는 패널이 걷힌 뒤 바로 이동
+
+            var link = document.querySelector("[data-main-transition]");
+            var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            var leaving = false;
+            var fallbackTimer = null;
+            if (!link) return;
+
+            link.addEventListener("click", function (event) {
+                // 새 탭 열기(Ctrl/⌘/Shift/가운데 버튼)는 그대로 둔다
+                if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+                if (reduceMotion || !window.StartToMain) return;
+                event.preventDefault();
+                if (leaving) return;
+                leaving = true;
+                var href = link.getAttribute("href");
+                try {
+                    sessionStorage.setItem("main_transition", "1");
+                } catch (e) {}
+                document.body.classList.add("is-leaving");
+
+                function go() {
+                    location.href = href;
+                }
+                window.StartToMain.play({
+                    from: START_BACKGROUND,
+                    fromBrightness: START_BRIGHTNESS,
+                    to: MAIN_BACKGROUND,
+                    duration: 1700
+                }).then(go, function () {
+                    fallbackTimer = setTimeout(go, PANEL_OUT_MS);
+                });
+            });
+
+            window.addEventListener("load", function () {
+                if (window.StartToMain) window.StartToMain.preload([START_BACKGROUND, MAIN_BACKGROUND]);
+            });
+
+            // 뒤로가기로 bfcache 에서 복원되면 원래 상태로
+            window.addEventListener("pageshow", function (event) {
+                if (!event.persisted) return;
+                clearTimeout(fallbackTimer);
+                leaving = false;
+                if (window.StartToMain) window.StartToMain.reset();
+                document.body.classList.remove("is-leaving");
+            });
+        })();
     </script>
 </body>
 </html>

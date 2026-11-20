@@ -1787,6 +1787,55 @@ body {
 html {
   scrollbar-gutter: stable;
 }
+/* ---------------------------------------------------------
+   시작 화면 → 메인 입장 (html.main-enter, start-to-main.js 전환 뒤)
+   배경(최상단 이미지 · 내비게이션 띠)은 전환의 마지막 장면과 같으므로 그대로 두고,
+   내비게이션 글자 → 최상단 소개 → 카드 순으로 드러낸다.
+   본문의 기본 fadein(1초) 애니메이션은 끈다 (켜 두면 배경까지 다시 흐려졌다 나타난다)
+   --------------------------------------------------------- */
+html.main-enter {
+  background-color: #141414; /* 배경 이미지가 그려지기 전 한 프레임이 흰색으로 튀지 않게 */
+}
+/* main-entered: 입장 효과가 끝나 main-enter 를 뗀 뒤에도 남겨 두는 표시.
+   이게 없으면 클래스를 떼는 순간 본문 fadein 이 다시 걸려 화면 전체가 한 번 더 깜빡인다 */
+html.main-enter body,
+html.main-entered body {
+  animation: none !important;
+}
+.main-enter .main_nav_area {
+  animation: main_enter_fade 0.6s ease 0.1s both;
+}
+.main-enter .hero_upcoming > * {
+  animation: main_enter_rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.main-enter .hero_upcoming > :nth-child(1) { animation-delay: 0.15s; }
+.main-enter .hero_upcoming > :nth-child(2) { animation-delay: 0.22s; }
+.main-enter .hero_upcoming > :nth-child(3) { animation-delay: 0.29s; }
+.main-enter .hero_upcoming > :nth-child(4) { animation-delay: 0.36s; }
+.main-enter .hero_upcoming > :nth-child(5) { animation-delay: 0.42s; }
+.main-enter .hero_upcoming > :nth-child(6) { animation-delay: 0.48s; }
+.main-enter .top_recommendation_area > * {
+  animation: main_enter_rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+@keyframes main_enter_fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes main_enter_rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .main-enter .main_nav_area,
+  .main-enter .hero_upcoming > *,
+  .main-enter .top_recommendation_area > * {
+    animation: none;
+  }
+}
+
 html.modal-open {
   overflow: hidden; /* 모달이 열린 동안 뒤 페이지가 스크롤되지 않게 */
 }
