@@ -5902,10 +5902,12 @@ html.modal-open {
 .xd_button:hover::after {
   transform: translateX(4px);
 }
+/* 즐겨찾기: 큰 별 + 글자. 마우스를 올리면 별 안에 빨간 물결이 차오르고,
+   밑줄은 글자에만 (별 밑에는 선이 생기지 않게) */
 .xd_bookmark {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   height: 44px;
   padding: 0;
   font-family: var(--font-sans);
@@ -5915,20 +5917,113 @@ html.modal-open {
   background: none;
   border: none;
   cursor: pointer;
+  text-decoration: none;
+  transition: color var(--nav-motion);
+}
+.xd_bookmark_label {
   text-decoration: underline var(--nav-line) transparent;
   text-underline-offset: 6px;
-  transition: color var(--nav-motion), text-decoration-color var(--nav-motion);
-}
-.xd_bookmark_icon {
-  font-size: 17px;
-  line-height: 1;
+  transition: text-decoration-color var(--nav-motion);
 }
 .xd_bookmark.is-on {
   color: var(--nav-ink);
 }
-.xd_bookmark:hover {
+.xd_bookmark:hover,
+.xd_bookmark:focus-visible,
+.xd_bookmark.is-filling {
   color: var(--nav-accent);
+}
+.xd_bookmark:hover .xd_bookmark_label,
+.xd_bookmark:focus-visible .xd_bookmark_label,
+.xd_bookmark.is-filling .xd_bookmark_label {
   text-decoration-color: var(--nav-accent);
+}
+.xd_star {
+  display: block;
+  flex: none;
+  width: 30px;
+  height: 30px;
+}
+.xd_star svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.xd_star_outline {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  transition: stroke var(--nav-motion);
+}
+/* 즐겨찾기 해 둔 별은 흰색으로 가득 */
+.xd_star_fill {
+  fill: var(--nav-ink);
+  opacity: 0;
+  transition: fill var(--nav-motion);
+}
+.xd_bookmark.is-on .xd_star_fill {
+  opacity: 1;
+}
+/* 물결의 수위: 평소엔 별 아래(비어 있음), 올리면 별 위까지(가득) */
+.xd_star_level {
+  transform: translateY(20px);
+  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.xd_star_wave {
+  fill: var(--nav-accent);
+  animation: xd_star_wave 1.4s linear infinite paused;
+}
+.xd_star_wave--back {
+  opacity: 0.45;
+  animation-duration: 2.2s;
+  animation-direction: reverse;
+}
+@keyframes xd_star_wave {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-24px);
+  }
+}
+.xd_bookmark:hover .xd_star_level,
+.xd_bookmark:focus-visible .xd_star_level,
+.xd_bookmark.is-filling .xd_star_level {
+  transform: translateY(-5px);
+}
+.xd_bookmark:hover .xd_star_wave,
+.xd_bookmark:focus-visible .xd_star_wave,
+.xd_bookmark.is-filling .xd_star_wave {
+  animation-play-state: running;
+}
+.xd_bookmark:hover .xd_star_outline,
+.xd_bookmark:focus-visible .xd_star_outline,
+.xd_bookmark.is-filling .xd_star_outline {
+  stroke: var(--nav-accent);
+}
+.xd_bookmark.is-on:hover .xd_star_fill,
+.xd_bookmark.is-on:focus-visible .xd_star_fill {
+  fill: var(--nav-accent);
+}
+/* 누르면 가득 찬 별이 한 번 톡 튄다 */
+.xd_bookmark.is-filling .xd_star {
+  animation: xd_star_pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s both;
+}
+@keyframes xd_star_pop {
+  50% {
+    transform: scale(1.22);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .xd_star_level {
+    transition: none;
+  }
+  .xd_star_wave,
+  .xd_bookmark.is-filling .xd_star {
+    animation: none;
+  }
 }
 .xd_button:focus-visible,
 .xd_bookmark:focus-visible,
