@@ -1,19 +1,35 @@
-<div class="public_post_area">
-    <div class="public_post_container">
-        <div class="public_post_title"><%=row[0].TITLE%></div>
-        <div class="public_post_info">
-            <div class="public_upload_user_imgbox">
-                <% if (row2 && row2[0] && row2[0].IMG) { %>
-                    <img src="/uploads/<%=row2[0].IMG%>" alt="">
-                <% } %>
+<%
+    // 공지사항 글 — 메인 화면 스타일
+    var post = row[0];
+    var author = row2 && row2[0];
+%>
+<style>
+    body {
+        background-color: #141414;
+    }
+</style>
+<main class="mp mp--narrow" aria-labelledby="mp_title">
+    <a class="mp_back" href="/public">공지사항 목록</a>
+    <header class="mp_head mp_head--post">
+        <div class="mp_head_text">
+            <p class="mp_kicker"><span>NOTICE</span><span>No.<%= post.NUMBER %></span></p>
+            <h1 class="mp_title mp_title--post" id="mp_title"><%= post.TITLE %></h1>
+            <div class="np_meta">
+                <span class="np_avatar" aria-hidden="true">
+                    <% if (author && author.IMG) { %>
+                        <img src="/uploads/<%= author.IMG %>" alt="">
+                    <% } else { %>
+                        <%= String(post.USER_ID || "?").charAt(0).toUpperCase() %>
+                    <% } %>
+                </span>
+                <span class="np_author"><%= post.USER_ID %></span>
+                <span><%= register_date[0] %></span>
+                <span>조회 <%= post.HIT %></span>
             </div>
-            <span><%=row[0].USER_ID%>&nbsp;&nbsp;&nbsp;&nbsp;조회 <%=row[0].HIT%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=register_date%></span>
         </div>
-        <div class="public_post_content">
-            <%=row[0].CONTENT%>
-        </div>
-        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 100%;">
-            <button class="public_post_back_btn" onclick="location.href='/public'">뒤로 가기</button>
-        </div>
+    </header>
+    <div class="np_body"><%= post.CONTENT %></div>
+    <div class="np_foot">
+        <a class="mp_button" href="/public">목록으로</a>
     </div>
-</div>
+</main>

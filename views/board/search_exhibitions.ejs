@@ -1,51 +1,114 @@
-<div class="search_exhibition_area">
-    <div class="search_exhibition_container">
-        <div class="search_exhibition_input_area">
-            <svg data-v-28783d35="" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px;"><circle data-v-28783d35="" cx="11" cy="11" r="6" stroke="#666666" stroke-width="2"></circle> <path data-v-28783d35="" d="M16 16L19 19" stroke="#666666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            <input type="text" class="search_exhibition_input" placeholder="검색어를 입력하세요.">
+<%
+    // 전시회 검색 — 메인 화면 스타일
+    // q: 검색어, results: 검색 결과 (검색어가 없으면 null)
+    var query = typeof locals.q === "string" ? locals.q : "";
+    var results = locals.results || null;
+    var IMG_DIR = "/public/images/exhibition_title_images/";
+    var today = new Date();
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function ymd(value) {
+        var d = new Date(value);
+        if (isNaN(d)) return "";
+        return d.getFullYear() + "." + pad(d.getMonth() + 1) + "." + pad(d.getDate());
+    }
+    function status(item) {
+        if (item.START_TIME && today < new Date(item.START_TIME)) return "UPCOMING";
+        if (item.END_TIME && today > new Date(item.END_TIME)) return "CLOSED";
+        return "NOW SHOWING";
+    }
+
+    var terms = ["안봐도 사는데 지장없는 전시회", "Flowers Boming Home", "내 마음, 괜찮은 걸까?", "집에서 하는 시계여행"];
+
+    // 메인 화면 ORIGINAL EXHIBITION 과 같은 목록 (views/main/main_page.ejs)
+    var originals = [
+        { title: "CHERNOBYL", img: "101.jpg" },
+        { title: "조제", img: "test100.PNG" },
+        { title: "ABOUT TIME", img: "test101.PNG" },
+        { title: "EXTRACURRICULAR", img: "104.PNG", href: "/exhibition_detail/32" },
+        { title: "WITCH", img: "108.jpg" },
+        { title: "LIFE", img: "106.PNG" },
+        { title: "MOONCHANGHEE", img: "107.jpg" }
+    ];
+%>
+<style>
+    body {
+        background-color: #141414;
+    }
+</style>
+<main class="mp" aria-labelledby="mp_title">
+    <header class="mp_head mp_head--plain">
+        <div class="mp_head_text">
+            <p class="mp_kicker">SEARCH</p>
+            <h1 class="mp_title" id="mp_title">전시회 검색</h1>
         </div>
-        <p style="font-size: 24px; letter-spacing: var(--ls-body); margin-top: 10px; margin-bottom: 10px; font-weight: 700;">EXHIBITION RECOMMEND SEARCH TERM</p>
-        <div class="recommend_exhibition_comment_box">
-            <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 10px;">
-                <img src="/public/images/icon/recommend_icon.png" style="width: 20px; height: 20px; margin-right: 10px;" alt="">
-                <p>안봐도 <strong>사는데 지장없는</strong> 전시회</p>
-            </div>
-            <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 10px;">
-                <img src="/public/images/icon/recommend_icon.png" style="width: 20px; height: 20px; margin-right: 10px;" alt="">
-                <p><strong>Flowers</strong> Boming Home</p>
-            </div>
-            <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 10px;">
-                <img src="/public/images/icon/recommend_icon.png" style="width: 20px; height: 20px; margin-right: 10px;" alt="">
-                <p><strong>내 마음,</strong> 괜찮은 걸까?</p>
-            </div>
-            <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 10px;">
-                <img src="/public/images/icon/recommend_icon.png" style="width: 20px; height: 20px; margin-right: 10px;" alt="">
-                <p>집에서 하는 <strong>시계여행</strong></p>
-            </div>
-        </div>
-        <div class="recommend_exhibition_commentbox2">
-            <p class="recommend_exhibition_comment2">이런 전시회는 어떠세요?</p>
-        </div>
-        <div class="recommend_exhibitions_content_box">
-            <div class="recommend_exhibitions_img_box">
-                <img class="recommend_exhibitions_img" src="/public/images/test102.jpg" alt="">
-            </div>
-            <div id="recommend_exhibitions_img_box2" class="recommend_exhibitions_img_box">
-                <img class="recommend_exhibitions_img" src="/public/images/104.PNG" alt="">
-            </div>
-            <div id="recommend_exhibitions_img_box3" class="recommend_exhibitions_img_box">
-                <img class="recommend_exhibitions_img" src="/public/images/105.jpg" alt="">
-            </div>
-            <div id="recommend_exhibitions_img_box4" class="recommend_exhibitions_img_box">
-                <img class="recommend_exhibitions_img" src="/public/images/106.PNG" alt="">
-            </div>
-            <div id="recommend_exhibitions_img_box5" class="recommend_exhibitions_img_box">
-                <img class="recommend_exhibitions_img" src="/public/images/107.jpg" alt="">
-            </div>
-            <div id="recommend_exhibitions_img_box6" class="recommend_exhibitions_img_box">
-                <img class="recommend_exhibitions_img" src="/public/images/108.jpg" alt="">
-            </div>
-        </div>
+    </header>
+
+    <form class="sx_form" action="/search_exhibitions" method="get" role="search">
+        <svg class="sx_icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.2"></circle>
+            <path d="M16 16l4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path>
+        </svg>
+        <input class="sx_input" id="sx_q" name="q" type="search" value="<%= query %>" maxlength="50"
+               autocomplete="off" placeholder="전시회 이름이나 분야를 입력하세요" aria-label="전시회 검색어"<%= query ? "" : " autofocus" %>>
+        <button type="submit" class="mp_button sx_submit">검색</button>
+    </form>
+    <div class="sx_terms">
+        <span class="sx_terms_label">추천 검색어</span>
+        <% terms.forEach(function (term) { %>
+            <a class="sx_term<%= term === query ? ' is-current' : '' %>" href="/search_exhibitions?q=<%= encodeURIComponent(term) %>"><%= term %></a>
+        <% }) %>
     </div>
-</div>
-<link rel="stylesheet" href="/public/stylesheets/main_nav.css">
+
+    <% if (results) { %>
+        <section class="mp_section" aria-labelledby="sx_result_title">
+            <h2 class="mp_section_title" id="sx_result_title">
+                “<%= query %>” 검색 결과<span class="mp_section_count"><%= results.length %>건</span>
+            </h2>
+            <% if (!results.length) { %>
+                <p class="mp_empty">“<%= query %>”에 맞는 전시회가 없습니다. 다른 검색어로 찾아보세요.</p>
+            <% } else { %>
+                <!-- 메인 화면의 진행 중인 전시 카드(.now_card)와 같은 카드 -->
+                <div class="mp_grid">
+                    <% results.forEach(function (item) { %>
+                        <a class="now_card" href="/exhibition_detail/<%= item.NUMBER %>">
+                            <img class="now_card_img" src="<%= IMG_DIR + item.IMG %>" alt="" loading="lazy">
+                            <span class="now_card_arrow" aria-hidden="true">→</span>
+                            <div class="now_card_caption">
+                                <p class="now_card_kicker">
+                                    <span><%= status(item) %></span>
+                                    <% if (item.CATEGORY) { %><span><%= item.CATEGORY %></span><% } %>
+                                </p>
+                                <p class="now_card_title"><%= item.TITLE %></p>
+                                <p class="now_card_period"><%= ymd(item.START_TIME) %> — <%= ymd(item.END_TIME) %></p>
+                            </div>
+                        </a>
+                    <% }) %>
+                </div>
+            <% } %>
+        </section>
+    <% } %>
+
+    <section class="mp_section" aria-labelledby="sx_more_title">
+        <h2 class="mp_section_title" id="sx_more_title">
+            ORIGINAL EXHIBITION<span class="mp_section_sub">이런 전시회는 어떠세요?</span>
+        </h2>
+        <div class="mp_poster_grid">
+            <% originals.forEach(function (item, i) { var tag = item.href ? "a" : "div"; %>
+                <<%= tag %> class="now_card now_card--poster"<% if (item.href) { %> href="<%= item.href %>"<% } %>>
+                    <img class="now_card_img" src="/public/images/<%= item.img %>" alt="" loading="lazy">
+                    <% if (item.href) { %>
+                        <span class="now_card_arrow" aria-hidden="true">→</span>
+                    <% } %>
+                    <div class="now_card_caption">
+                        <p class="now_card_kicker">
+                            <span><%= pad(i + 1) %></span>
+                            <span>ORIGINAL</span>
+                        </p>
+                        <p class="now_card_title"><%= item.title %></p>
+                    </div>
+                </<%= tag %>>
+            <% }) %>
+        </div>
+    </section>
+</main>

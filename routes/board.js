@@ -272,20 +272,26 @@ router.post("/no_reason", function(req, res){
 })
 
 // 공지사항 작성
-router.post("/public_upload", function(req, res){
+router.post("/public_upload", function(req, res, next){
+    var sess = req.session;
     var body = req.body;
     var now = new Date();
     var sql = "insert into public (USER_ID, CREATE_TIME, TITLE, CONTENT, HIT) values(?, ?, ?, ?, 0)";
+    // 관리자만 작성할 수 있다 (작성 화면과 같은 조건)
+    if (!sess.user || sess.user.TYPE != 'A') return res.redirect("/public_register");
+    var title = String(body.title || "").trim();
+    var content = String(body.content || "").trim();
+    if (!title || !content) return res.redirect("/public_register");
     pool.getConnection((err, conn) => {
-        conn.query(sql, [sess.user.ID, now, body.title, body.content], function(err, row){
-            if(err){
+        if (err) return next(err);
+        conn.query(sql, [sess.user.ID, now, title, content], function(err, row){
+            conn.release();
+            if (err) {
                 console.log(sql);
                 console.log(err);
+                return next(err);
             }
-            if(row){
-                res.redirect("/public")
-                conn.release();
-            }
+            res.redirect("/public");
         })
     })
 })

@@ -3,7 +3,8 @@
  *
  * - NODE_ENV가 production이 아니면, DB 연결에 실패했을 때 진짜 커넥션 대신
  *   샘플 데이터를 돌려주는 가짜 커넥션을 넘긴다. (production에서는 아무것도 바꾸지 않는다)
- * - 읽기(SELECT): exhibition 은 샘플 전시회, category 는 샘플 카테고리,
+ * - 읽기(SELECT): exhibition 은 샘플 전시회(검색어가 있으면 걸러서), category 는 샘플 카테고리,
+ *   public 은 샘플 공지사항,
  *   전시회 번호로 찾는 review / review_comments 는 샘플 관람평 · 댓글, 나머지는 빈 목록
  * - 쓰기(INSERT/UPDATE/DELETE): 아무것도 저장하지 않고 성공한 것처럼 돌려준다
  * - 한 번 실패하면 30초 동안은 DB에 다시 붙어 보지 않고 바로 샘플 데이터를 쓴다
@@ -64,6 +65,28 @@ const SAMPLE_CATEGORIES = [
   ["게임 아트", "l4XorHXMUe8lWc00lQso.jpg"],
 ].map(([NAME, IMG], i) => ({ NUMBER: i + 1, NAME, IMG }));
 
+// 공지사항 화면 확인용 샘플 (최신 글이 먼저)
+function sampleNotices() {
+  const now = Date.now();
+  return [
+    { TITLE: "온라인 전시관 화면이 새로워졌습니다", HIT: 128, days: 1,
+      CONTENT: "메인 화면과 전시회 상세 화면을 새로 다듬었습니다.\n전시를 더 편하게 둘러볼 수 있도록 계속 고쳐 나가겠습니다." },
+    { TITLE: "12월 정기 점검 일정 안내", HIT: 86, days: 4,
+      CONTENT: "12월 9일(화) 새벽 2시부터 4시까지 서비스 점검이 있습니다.\n점검 중에는 전시 관람과 결제를 이용할 수 없습니다." },
+    { TITLE: "관람권 환불 기준이 바뀝니다", HIT: 203, days: 12,
+      CONTENT: "관람 시작 전에는 전액, 관람을 시작한 뒤에는 남은 기간만큼 환불됩니다." },
+    { TITLE: "작가 지원 프로그램 2기 모집", HIT: 341, days: 25,
+      CONTENT: "온라인 전시를 열고 싶은 작가를 모집합니다. 자세한 내용은 SUPPORT 메뉴를 확인해 주세요." },
+  ].map((item, i, list) => ({
+    NUMBER: list.length - i,
+    USER_ID: "IU",
+    TITLE: item.TITLE,
+    CONTENT: item.CONTENT,
+    HIT: item.HIT,
+    CREATE_TIME: new Date(now - item.days * DAY),
+  }));
+}
+
 // 전시회 상세 화면의 관람평 · 댓글 확인용 샘플 (전시회 번호로 찾는 쿼리에만 돌려준다)
 function sampleReviews(exhibitionNumber) {
   const now = Date.now();
@@ -108,7 +131,21 @@ function rowsFor(sql, values) {
       const found = rows.filter((row) => String(row.NUMBER) === String(values[0]));
       return found.length ? found : [rows[0]];
     }
+    // 검색 ("TITLE like ?" 등): 제목·분야에 검색어가 들어 있는 샘플만
+    if (/\blike\s+\?/.test(text) && values && values.length) {
+      const term = String(values[0]).replace(/^%|%$/g, "").replace(/\\(.)/g, "$1").toLowerCase();
+      return rows.filter((row) =>
+        [row.TITLE, row.CATEGORY, row.DETAIL_CATEGORY].some((v) => String(v || "").toLowerCase().includes(term))
+      );
+    }
     return rows;
+  }
+  if (/\bfrom\s+(\w+\.)?public\b/.test(text)) {
+    const notices = sampleNotices();
+    if (/where\s+number\s*=\s*\?/.test(text) && values && values.length) {
+      return notices.filter((row) => String(row.NUMBER) === String(values[0]));
+    }
+    return notices;
   }
   if (/\bfrom\s+(\w+\.)?category\b/.test(text)) {
     return SAMPLE_CATEGORIES.map((row) => Object.assign({}, row));

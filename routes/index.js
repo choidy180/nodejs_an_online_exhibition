@@ -480,13 +480,30 @@ router.get("/application_for_exhibition_third/:number", function(req, res){
         })
     })
 })
-// 전시회 검색 O
-router.get("/search_exhibitions", function(req, res){
+// 전시회 검색 O — ?q= 가 있으면 승인된 전시회의 제목·분야에서 찾는다
+router.get("/search_exhibitions", function(req, res, next){
     var sess = req.session;
-    res.render('main.ejs', {
-        title: "전시회 검색 페이지",
-        page: "board/search_exhibitions.ejs",
-        sess:sess
+    var q = String(req.query.q || "").trim().slice(0, 50);
+    function render(results) {
+        res.render('main.ejs', {
+            title: q ? "“" + q + "” 검색 결과" : "전시회 검색 페이지",
+            page: "board/search_exhibitions.ejs",
+            sess: sess,
+            q: q,
+            results: results
+        })
+    }
+    if (!q) return render(null);
+    // LIKE 의 %, _ 는 글자 그대로 찾도록 이스케이프
+    var like = "%" + q.replace(/[\\%_]/g, "\\$&") + "%";
+    var sql = "select * from exhibition where APPROVAL_WHETHER='Y' AND (TITLE like ? OR CATEGORY like ? OR DETAIL_CATEGORY like ?) order by START_TIME desc";
+    pool.getConnection((err, conn)=>{
+        if (err) return next(err);
+        conn.query(sql, [like, like, like], function(err, rows){
+            conn.release();
+            if (err) return next(err);
+            render(rows || []);
+        })
     })
 })
 
@@ -916,7 +933,7 @@ router.get("/exhibition_payment_list", function(req, res){
 router.get("/public", function(req, res, next){
     console.log("공지사항 메인");
     var sess = req.session;
-    var sql = "select * from public"
+    var sql = "select * from public order by NUMBER desc"
     pool.getConnection((err, conn)=> {
         if (err) return next(err);
         conn.query(sql, function(err, row){

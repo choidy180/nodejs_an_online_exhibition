@@ -1,27 +1,41 @@
-<div class="public_area">
-    <div class="public_container">
-        <div class="public_box_top" style="margin-top: 50px; font-size: 30px; margin-bottom: 20px;">
-            공지사항을 작성합니다.
+<%
+    // 공지사항 작성 — 메인 화면 스타일. 관리자(TYPE A)만 쓸 수 있다
+    var canWrite = !!(sess.user && sess.user.TYPE == 'A');
+%>
+<style>
+    body {
+        background-color: #141414;
+    }
+</style>
+<main class="mp mp--narrow" aria-labelledby="mp_title">
+    <a class="mp_back" href="/public">공지사항 목록</a>
+    <header class="mp_head">
+        <div class="mp_head_text">
+            <p class="mp_kicker">NOTICE</p>
+            <h1 class="mp_title" id="mp_title">공지사항 작성</h1>
+            <p class="mp_desc">등록한 공지사항은 모든 방문자에게 바로 보입니다.</p>
         </div>
-        <% if (sess.user && sess.user.TYPE == 'A'){%>
-            <form action="/board/public_upload" method="POST">
-                <div class="public_box" style=" font-size: 24px; justify-content: flex-start; height: 28px;">
-                    공지사항 제목
-                </div>
-                <div class="public_box" style="height: 38px; height: auto; flex-direction: column;">
-                    <input name="title" class="public_box_title_box" type="text">
-                    <div class="public_box" style=" font-size: 24px; justify-content: flex-start; height: 28px; margin-top: 30px;">
-                        공지사항 내용
-                    </div>
-                    <textarea class="public_box_text_box" name="content" id="" cols="30" rows="10"></textarea>
-                    <button class="public_box_register_btn">공지사항 작성</button>
-                </div>
-            </form>
-        <%} else {%>
-            <div style="width: 100%; height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                <p>로그인후에 작성할 수 있습니다.</p>
-                <button class="public_box_register_btn" onclick="location.href='/public'">뒤로 가기</button>
+    </header>
+    <% if (canWrite) { %>
+        <form class="nr_form" action="/board/public_upload" method="POST">
+            <label class="nr_label" for="nr_title">제목</label>
+            <input class="nr_input" id="nr_title" name="title" type="text" maxlength="100" required placeholder="공지사항 제목">
+            <label class="nr_label" for="nr_content">내용</label>
+            <textarea class="nr_textarea" id="nr_content" name="content" rows="12" required placeholder="알릴 내용을 입력하세요"></textarea>
+            <div class="nr_actions">
+                <a class="mp_text_link" href="/public">취소</a>
+                <button type="submit" class="mp_button">공지사항 등록</button>
             </div>
-        <%}%>
-    </div>
-</div>
+        </form>
+    <% } else { %>
+        <div class="mp_notice">
+            <% if (sess.user) { %>
+                <p>공지사항은 관리자만 작성할 수 있습니다.</p>
+                <a class="mp_button" href="/public">목록으로</a>
+            <% } else { %>
+                <p>로그인한 뒤에 작성할 수 있습니다.</p>
+                <a class="mp_button" href="/login">로그인</a>
+            <% } %>
+        </div>
+    <% } %>
+</main>

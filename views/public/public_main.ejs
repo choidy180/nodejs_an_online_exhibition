@@ -1,33 +1,59 @@
+<%
+    // 공지사항 목록 — 메인 화면 스타일 (가는 글씨, 흑백, 1px 선, 빨강은 마우스를 올렸을 때만)
+    var DAY = 24 * 60 * 60 * 1000;
+    var now = Date.now();
+    var isAdmin = !!(sess.user && sess.user.ID == 'IU');
+    var posts = row || [];
+    function day(value) {
+        return String(value || "").slice(0, 10).replace(/-/g, ".");
+    }
+%>
 <style>
-    a{
-        color: black;
+    body {
+        background-color: #141414;
     }
 </style>
-<div class="public_area">
-    <div class="public_container">
-        <div class="public_box_top" style="margin-top: 50px;">
-            공지사항
+<main class="mp" aria-labelledby="mp_title">
+    <header class="mp_head">
+        <div class="mp_head_text">
+            <p class="mp_kicker">NOTICE</p>
+            <h1 class="mp_title" id="mp_title">공지사항</h1>
+            <p class="mp_desc">전시 일정과 서비스 이용에 관한 안내를 알려 드립니다.</p>
         </div>
-        <% if (sess.user && sess.user.ID == 'IU'){%>
-        <div class="public_box_top" style="justify-content: flex-end; padding-right: 20px; width: calc(100% - 20px);">
-            <button class="public_box_btn" onclick="location.href='/public_register'">공지사항 등록</button>
+        <% if (isAdmin) { %>
+            <a class="mp_button" href="/public_register">공지사항 등록</a>
+        <% } %>
+    </header>
+
+    <p class="nt_count">전체 <strong><%= posts.length %></strong>건</p>
+    <% if (!posts.length) { %>
+        <p class="mp_empty">아직 등록된 공지사항이 없습니다.</p>
+    <% } else { %>
+        <div class="nt_list_head" aria-hidden="true">
+            <span class="nt_no">번호</span>
+            <span>제목</span>
+            <span class="nt_author">글쓴이</span>
+            <span class="nt_date">날짜</span>
+            <span class="nt_hit">조회</span>
         </div>
-        <%}%>
-        <div class="public_box2" style="border-top: 1px solid #999;">
-            <div class="public_box2_box1"></div>
-            <div class="public_box2_box2">제목</div>
-            <div class="public_box2_box4">글쓴이</div>
-            <div class="public_box2_box4">날짜</div>
-            <div class="public_box2_box3">조회수</div>
-        </div>
-        <% for(var i = 0; i < row.length; i++){%>
-        <div class="public_box2" >
-            <div class="public_box2_box1"><%=row[i].NUMBER%></div>
-            <div class="public_box2_box2"><a href="/public_post/<%=row[i].NUMBER%>"><%=row[i].TITLE%></a></div>
-            <div class="public_box2_box4"><%=row[i].USER_ID%></div>
-            <div class="public_box2_box4"><%=register_date[i]%></div>
-            <div class="public_box2_box3"><%=row[i].HIT%></div>
-        </div>
-        <%}%>
-    </div>
-</div>
+        <ol class="nt_list">
+            <% posts.forEach(function (post, i) {
+                var created = post.CREATE_TIME ? new Date(post.CREATE_TIME) : null;
+                var isNew = !!(created && now - created < 7 * DAY);
+            %>
+                <li>
+                    <a class="nt_row" href="/public_post/<%= post.NUMBER %>">
+                        <span class="nt_no"><%= post.NUMBER %></span>
+                        <span class="nt_subject">
+                            <span class="nt_subject_text"><%= post.TITLE %></span>
+                            <% if (isNew) { %><span class="nt_new">NEW</span><% } %>
+                        </span>
+                        <span class="nt_author"><%= post.USER_ID %></span>
+                        <span class="nt_date"><%= day(register_date[i]) %></span>
+                        <span class="nt_hit"><span class="mp_sr_only">조회 </span><%= post.HIT %></span>
+                    </a>
+                </li>
+            <% }) %>
+        </ol>
+    <% } %>
+</main>
