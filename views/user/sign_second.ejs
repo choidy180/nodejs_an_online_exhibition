@@ -18,7 +18,7 @@
         align-items: flex-start;
     }
 </style>
-<body>
+<body class="ui--light">
     <form action="/users/sign2" method="POST" enctype="multipart/form-data">
         <div class="sign_box" style="font-size: 30px; font-weight: 700;">
             <p onclick="console.log(window.location.pathname.split('/')[2])">추가 정보 입력</p>
@@ -45,35 +45,18 @@
         </div>
         <div class="sign_box" style="margin-top: 1vh;">
             <div class="filebox"> 
-                <label for="ex_file">프로필 이미지 등록</label> 
+                <label for="ex_file" class="ui_btn">프로필 이미지 등록</label> 
                 <input type="file" id="ex_file" accept="image/*" onchange="setThumbnail(event);" name="userfile"> 
             </div>
         </div>
         <div class="sign_box" style="margin-top: 1vh;">
-            <input id="email" class="sign_box_input" type="text" placeholder="이메일" name="email">
+            <input id="email" class="ui_input sign_box_input" type="text" placeholder="이메일" name="email">
         </div>
         <div class="sign_box" style="margin-top: 1vh;">
-            <input id="age" class="sign_box_input" type="text" placeholder="출생년도" name="age">
+            <input id="age" class="ui_input sign_box_input" type="text" placeholder="출생년도" name="age">
         </div>
         <div class="sign_box" style="margin-top: 3vh;">
-            <button style="width: 21vw; min-width: 412px; height: 72px; font-size: 21px; border-radius: 3px; outline: none; border: none; background: linear-gradient(
-                to right,
-                #f867b0,
-                #e36acc,
-                #d264ce,
-                #be66d3,
-                #b96dc5,
-                #b462df,
-                #ae6ce0,
-                #9d66ec,
-                #986de2,
-                #856bd3,
-                #806bec,
-                #8173e7,
-                #716be8,
-                #6b72de,
-                #6476ec
-            ); font-weight: 500; color: white; font-weight: 700; cursor: pointer;">가입하기</button>
+            <button class="ui_btn ui_btn--primary sign_submit_button">가입하기</button>
         </div>
     </form>
     <img src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION" style="position: fixed; top: 20px; left: 20px; z-index: 10; width: 240px; cursor: pointer;">

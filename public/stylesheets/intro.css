@@ -94,6 +94,43 @@ body {
   outline: 3px dashed #fff;
   outline-offset: 8px;
 }
+/* 오른쪽 위 로그인 버튼 — 시작 페이지 보조 버튼과 같은 규칙을 작게
+   (검은 면 + 흰 테두리 + 흰 하드 섀도우, 호버하면 흰 면) */
+.intro_login_button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  height: 38px;
+  padding: 0 16px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  background-color: #111;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  box-shadow: 3px 3px 0 #fff;
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.08s linear, box-shadow 0.08s linear,
+    background-color 0.08s linear, color 0.08s linear;
+}
+.intro_login_button:hover {
+  color: #111;
+  background-color: #fff;
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #fff;
+}
+.intro_login_button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 #fff;
+}
+.intro_login_button:focus-visible {
+  outline: 2px dashed #fff;
+  outline-offset: 5px;
+}
 /* ---------------------------------------------------------
    페이지 전환 ① 인트로 퇴장 (body.is-leaving)
    제목 → 부제 → 버튼 순으로 블록이 아래에서 위로 걷히고, 그 사이
@@ -528,49 +565,6 @@ html.stage-enter {
   justify-content: center;
   align-items: center;
 }
-/* 시작 페이지 버튼 — 브루탈리즘 (인트로 버튼과 같은 규칙)
-   보조 버튼: 검은 면 + 흰 테두리 + 흰 하드 섀도우
-   주 버튼(로그인): 빨간 면 + 검은 테두리 + 흰 하드 섀도우 */
-.start_button,
-.start_login_button {
-  width: 400px;
-  min-width: 215px;
-  height: clamp(48px, 6.4vh, 64px);
-  border-radius: 6px;
-  outline: none;
-  font-size: 22px;
-  font-family: var(--font-sans);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  box-shadow: 3px 3px 0 #fff;
-  cursor: pointer;
-  transition: transform 0.08s linear, box-shadow 0.08s linear,
-    background-color 0.08s linear, color 0.08s linear;
-}
-.start_button {
-  color: #fff;
-  background-color: #111;
-  border: 3px solid #fff;
-}
-.start_button:hover {
-  color: #111;
-  background-color: #fff;
-}
-.start_button:hover,
-.start_login_button:hover {
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0 #fff;
-}
-.start_button:active,
-.start_login_button:active {
-  transform: translate(3px, 3px);
-  box-shadow: 0 0 0 #fff;
-}
-.start_button:focus-visible,
-.start_login_button:focus-visible {
-  outline: 3px dashed #fff;
-  outline-offset: 8px;
-}
 .start_button_login_box {
   margin-top: 2vh;
   width: 100vw;
@@ -580,14 +574,111 @@ html.stage-enter {
   justify-content: center;
   align-items: center;
 }
-.start_login_button {
+
+/* =========================================================
+   공통 버튼 · 입력칸 — 시작 · 로그인 · 회원가입 페이지
+   인트로/시작 페이지와 같은 규칙: 두꺼운 테두리, 살짝 둥근 모서리(6px),
+   번지지 않는 하드 섀도우(3px), 검은 면 / 빨간 면.
+   어두운 바탕이 기본이고, 밝은 바탕 페이지는 body.ui--light 로 색을 뒤집는다.
+   ========================================================= */
+body.ui--light {
+  --ui-ink: #111;   /* 선 · 글자 · 그림자 */
+  --ui-paper: #fff; /* 보조 버튼 면 */
+  --ui-field: #fff; /* 입력칸 면 */
+}
+
+/* 버튼 — 보조: 검은 면 + 흰 테두리 + 흰 그림자 (밝은 바탕에서는 반대) */
+.ui_btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+  min-width: 215px;
+  height: clamp(48px, 6.4vh, 64px);
+  padding: 0 24px;
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ui-ink, #fff);
+  background-color: var(--ui-paper, #111);
+  border: 3px solid var(--ui-ink, #fff);
+  border-radius: 6px;
+  box-shadow: 3px 3px 0 var(--ui-ink, #fff);
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.08s linear, box-shadow 0.08s linear,
+    background-color 0.08s linear, color 0.08s linear;
+}
+.ui_btn:hover {
+  color: var(--ui-paper, #111);
+  background-color: var(--ui-ink, #fff);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--ui-ink, #fff);
+}
+.ui_btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--ui-ink, #fff);
+}
+.ui_btn:focus-visible {
+  outline: 3px dashed var(--ui-ink, #fff);
+  outline-offset: 6px;
+}
+
+/* 주 버튼: 빨간 면 + 검은 테두리 (그림자는 바탕에 맞춘 색) */
+.ui_btn--primary,
+.ui_btn--primary:hover {
   color: #fff;
   background-color: #f00;
-  border: 3px solid #111;
+  border-color: #111;
 }
-.start_login_button::after {
+.ui_btn--primary::after {
   content: "→";
   margin-left: 0.6em;
+}
+
+/* 작은 버튼 (오른쪽 위 등) */
+.ui_btn--small {
+  width: auto;
+  min-width: 0;
+  height: 38px;
+  padding: 0 16px;
+  font-size: 15px;
+  border-width: 2px;
+}
+
+/* 입력칸 — 어두운 면 + 흰 테두리. 입력 중에는 빨간 테두리와 빨간 그림자 */
+.ui_input {
+  box-sizing: border-box;
+  height: 48px;
+  padding: 0 16px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ui-ink, #fff);
+  background-color: var(--ui-field, rgba(17, 17, 17, 0.6));
+  border: 2px solid var(--ui-ink, #fff);
+  border-radius: 6px;
+  outline: none;
+  caret-color: #f00;
+  transition: border-color 0.08s linear, box-shadow 0.08s linear;
+}
+.ui_input::placeholder {
+  color: var(--ui-ink, #fff);
+  opacity: 0.45;
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+.ui_input:focus {
+  border-color: #f00;
+  box-shadow: 3px 3px 0 #f00;
+}
+/* 브라우저 자동완성 배경색이 면을 덮지 않게 */
+.ui_input:-webkit-autofill {
+  -webkit-text-fill-color: var(--ui-ink, #fff);
+  transition: background-color 99999s 0s, border-color 0.08s linear, box-shadow 0.08s linear;
 }
 
 /* 로그인 */
@@ -602,52 +693,20 @@ html.stage-enter {
   z-index: 20;
   top: 47vh;
 }
+/* 모양은 .ui_input / .ui_btn이 맡고, 여기서는 크기와 위치만 정한다 */
 .login_box_input {
   width: 400px;
   min-width: 200px;
-  height: 40px;
-  border: none;
-  outline: none;
-  background-color: transparent;
   z-index: 30;
-  color: lightgray;
-  border-bottom: 1px solid white;
-  font-size: 1.33rem;
-  font-family: var(--font-sans);
-}
-.login_box_input::placeholder {
-  font-size: 20px;
-  font-family: var(--font-sans);
 }
 .login_page_login_button {
   width: 400px;
-  height: 60px;
-  outline: none;
-  border: none;
-  font-size: 30px;
-  font-weight: 700;
-  border-radius: 30px;
-  font-family: var(--font-sans);
-  background: linear-gradient(
-    to right,
-    #f867b0,
-    #e36acc,
-    #d264ce,
-    #be66d3,
-    #b96dc5,
-    #b462df,
-    #ae6ce0,
-    #9d66ec,
-    #986de2,
-    #856bd3,
-    #806bec,
-    #8173e7,
-    #716be8,
-    #6b72de,
-    #6476ec
-  );
-  color: white;
-  cursor: pointer;
+}
+.login_top_button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
 }
 
 /* 회원가입 2 */
@@ -675,30 +734,15 @@ html.stage-enter {
   margin-bottom: 5px;
   padding-right: 20vw;
 }
-.sign_box_input {
-  width: 20vw;
-  min-width: 390px;
-  outline: none;
-  font-size: 18px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
+/* 회원가입 입력칸 · 버튼: 모양은 .ui_input / .ui_btn이 맡고, 여기서는 너비만 맞춘다 */
+.sign_box_input,
+.sign_submit_button,
 .filebox label {
   width: 20vw;
   min-width: 390px;
-  text-align: center;
-  display: inline-block;
-  padding: 0.5em 0.75em;
-  color: black;
-  font-size: inherit;
-  line-height: normal;
-  vertical-align: middle;
-  background-color: #fdfdfd;
-  cursor: pointer;
-  border: 1px solid black;
-  border-bottom-color: black;
-  padding: 10px;
+}
+.sign_box_input {
+  margin: 5px 0; /* 입력칸끼리 붙어 보이지 않게 */
 }
 /* 파일 필드 숨기기 */
 .filebox input[type="file"] {

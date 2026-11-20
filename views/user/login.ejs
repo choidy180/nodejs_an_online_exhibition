@@ -13,16 +13,16 @@
         <div class="background" id="back1" style="background: url(/public/images/start/login.jpg) center center / cover no-repeat; filter: brightness(20%);">
         </div>
         <div class="login_box">
-            <input type="text" class="login_box_input" placeholder="아이디" name="id">
+            <input type="text" class="ui_input login_box_input" placeholder="아이디" name="id">
         </div>
-        <div class="login_box" style="top: calc(47vh + 55px);">
-            <input type="password" class="login_box_input" placeholder="비밀번호" name="pwd">
+        <div class="login_box" style="top: calc(47vh + 60px);">
+            <input type="password" class="ui_input login_box_input" placeholder="비밀번호" name="pwd">
         </div>
         <div class="login_box" style="top: calc(47vh + 145px);">
-            <button class="login_page_login_button">로그인</button>
+            <button class="ui_btn ui_btn--primary login_page_login_button">로그인</button>
         </div>
     </form>
     <img src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION" style="position: fixed; top: 36vh; left: calc(50% - 220px); z-index: 10; width: 440px; cursor: pointer;" onclick="location.href='/main'">
-    <button style="position: fixed; top: 20px; right: 20px; z-index: 10; width: 80px; height: 35px; font-size: 16px; border: none; outline: none; border-radius: 17.5px; cursor: pointer;" onclick="location.href='/sign_first'">회원가입</button>
+    <button type="button" class="ui_btn ui_btn--small login_top_button" onclick="location.href='/sign_first'">회원가입</button>
 </body>
 </html>
