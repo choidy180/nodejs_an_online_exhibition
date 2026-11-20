@@ -5,369 +5,237 @@
       background-color: #212121;
     }
 </style>
-<div class="top_main_area"></div>
-<div class="top_main_blur"></div>
+<div class="top_main_area">
+    <!-- 곧 열릴 전시회 소개 (임의로 만든 예시 내용) -->
+    <section class="hero_upcoming" aria-label="곧 열릴 전시회">
+        <p class="hero_upcoming_kicker">
+            UPCOMING EXHIBITION<span class="hero_upcoming_dday" data-open="2027-01-15"></span>
+        </p>
+        <h2 class="hero_upcoming_title">NEON MASK</h2>
+        <p class="hero_upcoming_subtitle">네온 마스크 — 거리의 초상</p>
+        <p class="hero_upcoming_desc">
+            도시의 벽 위에서 태어난 얼굴들. 그래피티와 스트리트 아트로 기록한
+            지금 우리의 초상을 온라인 전시관에서 가장 먼저 만나보세요.
+        </p>
+        <dl class="hero_upcoming_meta">
+            <div>
+                <dt>기간</dt>
+                <dd>2027.01.15 — 2027.03.14</dd>
+            </div>
+            <div>
+                <dt>장소</dt>
+                <dd>온라인 전시관 A홀</dd>
+            </div>
+        </dl>
+        <button type="button" class="hero_upcoming_button" aria-haspopup="dialog" aria-controls="upcoming_modal">전시회 보러가기</button>
+    </section>
+</div>
+<!-- 아직 전시 기간이 아닐 때 띄우는 안내 모달 -->
+<dialog class="notice_modal" id="upcoming_modal" aria-labelledby="upcoming_modal_title">
+    <p class="notice_modal_kicker">NEON MASK<span class="hero_upcoming_dday" data-open="2027-01-15"></span></p>
+    <h3 class="notice_modal_title" id="upcoming_modal_title">아직 전시 기간이 아닙니다</h3>
+    <p class="notice_modal_desc">
+        이 전시회는 <strong>2027년 1월 15일</strong>에 오픈합니다.<br>
+        오픈 이후에 다시 찾아와 주세요.
+    </p>
+    <dl class="notice_modal_meta">
+        <div>
+            <dt>기간</dt>
+            <dd>2027.01.15 — 2027.03.14</dd>
+        </div>
+        <div>
+            <dt>장소</dt>
+            <dd>온라인 전시관 A홀</dd>
+        </div>
+    </dl>
+    <div class="notice_modal_actions">
+        <button type="button" class="notice_modal_button" data-modal-close autofocus>확인</button>
+    </div>
+    <button type="button" class="notice_modal_x" data-modal-close aria-label="닫기">×</button>
+</dialog>
+<script>
+    (function () {
+        // 오픈까지 남은 날짜 (D-day) — 최상단 소개와 모달에 같이 표시
+        document.querySelectorAll(".hero_upcoming_dday").forEach(function (dday) {
+            var open = new Date(dday.getAttribute("data-open") + "T00:00:00");
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+            var days = Math.round((open - today) / 86400000);
+            if (days > 0) dday.textContent = "D-" + days;
+        });
+
+        // 곧 열릴 전시회: 아직 전시 기간이 아니므로 버튼은 안내 모달만 띄운다
+        var button = document.querySelector(".hero_upcoming_button");
+        var modal = document.getElementById("upcoming_modal");
+        if (!button || !modal) return;
+
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var root = document.documentElement;
+        // 스크롤바 자리는 CSS(scrollbar-gutter)로 비워 둔다. 지원하지 않는 브라우저에서만
+        // 스크롤을 막는 동안 스크롤바 폭만큼 오른쪽 여백을 줘서 화면이 밀리지 않게 한다
+        var needsGutterFallback = !(window.CSS && CSS.supports("scrollbar-gutter: stable"));
+
+        function lockScroll() {
+            if (needsGutterFallback) {
+                var scrollbar = window.innerWidth - root.clientWidth;
+                if (scrollbar > 0) root.style.paddingRight = scrollbar + "px";
+            }
+            root.classList.add("modal-open");
+        }
+        function unlockScroll() {
+            root.classList.remove("modal-open");
+            root.style.paddingRight = "";
+        }
+
+        function open() {
+            if (typeof modal.showModal !== "function") {
+                // <dialog>를 지원하지 않는 아주 오래된 브라우저
+                alert("현재는 전시 기간이 아닙니다.\n2027년 1월 15일에 오픈합니다.");
+                return;
+            }
+            lockScroll();
+            modal.showModal();
+        }
+
+        // 닫힘 애니메이션이 끝난 뒤 실제로 닫는다 (포커스는 브라우저가 버튼으로 되돌린다)
+        function close() {
+            if (!modal.open || modal.classList.contains("is-closing")) return;
+            function finish() {
+                clearTimeout(fallback);
+                modal.removeEventListener("animationend", onEnd);
+                modal.classList.remove("is-closing");
+                modal.close();
+                unlockScroll();
+            }
+            function onEnd(event) {
+                if (event.target === modal && !event.pseudoElement) finish();
+            }
+            if (reduceMotion) {
+                finish();
+                return;
+            }
+            var fallback = setTimeout(finish, 400);
+            modal.addEventListener("animationend", onEnd);
+            modal.classList.add("is-closing");
+        }
+
+        button.addEventListener("click", open);
+        modal.querySelectorAll("[data-modal-close]").forEach(function (el) {
+            el.addEventListener("click", close);
+        });
+        // Esc: 바로 닫히지 않게 막고 애니메이션으로 닫는다
+        modal.addEventListener("cancel", function (event) {
+            event.preventDefault();
+            close();
+        });
+        // 모달 바깥(어두운 배경)을 누르면 닫는다
+        modal.addEventListener("click", function (event) {
+            var rect = modal.getBoundingClientRect();
+            var inside =
+                event.clientX >= rect.left && event.clientX <= rect.right &&
+                event.clientY >= rect.top && event.clientY <= rect.bottom;
+            if (!inside) close();
+        });
+    })();
+</script>
 <div class="top_recommendation_area">
-    <!-- 최상단 박스 -->
-    <div class="top_recommendation_box1">
-        <div class="top_recommendation_content_box">
-            <div class="top_recommendation_content" onclick="location.href='/exhibition_detail/<%=row[0].NUMBER%>'">
-                <img class="top_recommendation_img" src="/public/images/exhibition_title_images/<%=row[0].IMG%>" alt="">
-            </div>
-            <div class="top_recommendation_textbox">
-                <p class="top_recommendation_title"><%=row[0].TITLE%></p>
-                <p class="top_recommendation_sub"><%=start_date[0]%> - <%=end_date[0]%></p>
-            </div>
-        </div>
-        <div class="top_recommendation_content_box" style=" left: calc(25%);">
-            <div class="top_recommendation_content" onclick="location.href='/exhibition_detail/<%=row[1].NUMBER%>'">
-                <img class="top_recommendation_img" src="/public/images/exhibition_title_images/<%=row[1].IMG%>" alt="">
-            </div>
-            <div class="top_recommendation_textbox">
-                <p class="top_recommendation_title"><%=row[1].TITLE%></p>
-                <p class="top_recommendation_sub"><%=start_date[1]%> - <%=end_date[1]%></p>
-            </div>
-        </div>
-        <div class="top_recommendation_content_box" style=" left: calc(50%);">
-            <div class="top_recommendation_content" onclick="location.href='/exhibition_detail/<%=row[2].NUMBER%>'">
-                <img class="top_recommendation_img" src="/public/images/exhibition_title_images/<%=row[2].IMG%>" alt="">
-            </div>
-            <div class="top_recommendation_textbox">
-                <p class="top_recommendation_title">미국의 도시들</p>
-                <p class="top_recommendation_sub"><%=start_date[2]%> - <%=end_date[2]%></p>
-            </div>
-        </div>
-        <div class="top_recommendation_content_box" style="left: calc(75%);">
-            <div class="top_recommendation_content" onclick="location.href='/exhibition_detail/<%=row[3].NUMBER%>'">
-                <img class="top_recommendation_img" src="/public/images/exhibition_title_images/2624d40fed2c0b1512ec160223dae034bf341156.jpg" alt="">
-            </div>
-            <div class="top_recommendation_textbox">
-                <p class="top_recommendation_title">MÜNCHEN</p>
-                <p class="top_recommendation_sub"><%=start_date[3]%> - <%=end_date[3]%></p>
-            </div>
-        </div>
+    <!-- 진행 중인 전시 (최대 4개) — 실제 데이터로 그린다 -->
+    <div class="now_grid">
+        <% row.slice(0, 4).forEach(function (item, i) { %>
+            <a class="now_card" href="/exhibition_detail/<%= item.NUMBER %>">
+                <img class="now_card_img" src="/public/images/exhibition_title_images/<%= item.IMG %>" alt="">
+                <span class="now_card_arrow" aria-hidden="true">→</span>
+                <div class="now_card_caption">
+                    <p class="now_card_kicker">
+                        <span><%= String(i + 1).padStart(2, "0") %></span>
+                        <span><%= item.CATEGORY ? String(item.CATEGORY).toUpperCase() : "NOW SHOWING" %></span>
+                    </p>
+                    <p class="now_card_title"><%= item.TITLE %></p>
+                    <p class="now_card_period"><%= String(start_date[i]).replace(/-/g, ".") %> — <%= String(end_date[i]).replace(/-/g, ".") %></p>
+                </div>
+            </a>
+        <% }) %>
     </div>
-    <div class="main_area_text" style="height: calc(5vh + 20px); font-size: 2.333rem; margin-bottom: calc(1vh + 5px); margin-top: calc(1vh + 2px); font-weight: 700; color: white; padding-left: 1vw;">ORIGINAL EXHIBITION</div>
-    <div class="top_recommendation_box2" style="padding-bottom: 20%;">
-        <div class="box2_content_box">
-            <p class="box2_content_box_title">ORIGINAL</p>
-            <p class="box2_content_box_sub">CHERNOBYL</p>
-        </div>
-        <div class="box2_content_imgbox">
-            <img id="box2_3" class="box2_content_img" src="/public/images/101.jpg">
-        </div>
-        <div class="box2_content_box"  style="left: calc(14.28571428571429%);">
-            <p class="box2_content_box_title">ORIGINAL</p>
-            <p class="box2_content_box_sub">조제</p>
-        </div>
-        <div class="box2_content_imgbox"  style="left: calc(14.28571428571429%);">
-            <img id="box2_1" class="box2_content_img" src="/public/images/test100.PNG">
-        </div>
-        <div class="box2_content_box" style="left: calc(28.57142857142858%);">
-            <p class="box2_content_box_title">ORIGINAL</p>
-            <p class="box2_content_box_sub">ABOUT TIME</p>
-        </div>
-        <div class="box2_content_imgbox" style="left: calc(28.57142857142858%);">
-            <img id="box2_2" class="box2_content_img" src="/public/images/test101.PNG">
-        </div>
-        <div class="box2_content_box" style="left: calc(42.85714285714287%);">
-            <p class="box2_content_box_title">ORIGINAL</p>
-            <p class="box2_content_box_sub">EXTRACURRICULAR</p>
-        </div>
-        <div class="box2_content_imgbox" style="left: calc(42.85714285714287%);">
-            <img id="box2_4" class="box2_content_img" src="/public/images/104.PNG" onclick="location.href='http://localhost:3000/exhibition_detail/32'">
-        </div>
-        <div class="box2_content_box" style="left: calc(57.14285714285716%);">
-            <p class="box2_content_box_title">ORIGINAL</p>
-            <p class="box2_content_box_sub">WITCH</p>            
-        </div>
-        <div class="box2_content_imgbox" style="left: calc(57.14285714285716%);">
-            <img id="box2_5" class="box2_content_img" src="/public/images/108.jpg">
-        </div>
-        <div class="box2_content_box" style="left: calc(71.42857142857145%);">
-            <p class="box2_content_box_title">ORIGINAL</p>
-            <p class="box2_content_box_sub">LIFE</p>
-        </div>
-        <div class="box2_content_imgbox" style="left: calc(71.42857142857145%);">
-            <img id="box2_6" class="box2_content_img" src="/public/images/106.PNG">
-        </div>
-        <div class="box2_content_box" style="left: calc(85.71428571428574%);">
-            <p class="box2_content_box_title">ORIGINAL</p>
-            <p class="box2_content_box_sub">MOONCHANGHEE</p>
-        </div>
-        <div class="box2_content_imgbox" style="left: calc(85.71428571428574%);">
-            <img id="box2_7" class="box2_content_img" src="/public/images/107.jpg">
-        </div>
-        <style>
-            #box2_1:hover{
-                content: url("/public/images/100.webp");
-                position: relative;
-                z-index: 5000;
-                filter: brightness(100%);
+    <div class="main_area_text">ORIGINAL EXHIBITION</div>
+    <%
+        // 오리지널 전시 (DB가 아닌 고정 목록). hover: 마우스를 올리면 바뀌는 이미지, href: 상세 페이지
+        var originals = [
+            { title: "CHERNOBYL", img: "101.jpg" },
+            { title: "조제", img: "test100.PNG", hover: "100.webp" },
+            { title: "ABOUT TIME", img: "test101.PNG" },
+            { title: "EXTRACURRICULAR", img: "104.PNG", hover: "104_1.PNG", href: "/exhibition_detail/32" },
+            { title: "WITCH", img: "108.jpg", hover: "106_1.jpg" },
+            { title: "LIFE", img: "106.PNG" },
+            { title: "MOONCHANGHEE", img: "107.jpg" }
+        ];
+    %>
+    <div class="orig_grid">
+        <% originals.forEach(function (item, i) { var tag = item.href ? "a" : "div"; %>
+            <<%= tag %> class="now_card now_card--poster"<% if (item.href) { %> href="<%= item.href %>"<% } %>>
+                <img class="now_card_img" src="/public/images/<%= item.img %>" alt="" loading="lazy">
+                <% if (item.hover) { %>
+                    <img class="now_card_img now_card_img--alt" data-src="/public/images/<%= item.hover %>" alt="">
+                <% } %>
+                <% if (item.href) { %>
+                    <span class="now_card_arrow" aria-hidden="true">→</span>
+                <% } %>
+                <div class="now_card_caption">
+                    <p class="now_card_kicker">
+                        <span><%= String(i + 1).padStart(2, "0") %></span>
+                        <span>ORIGINAL</span>
+                    </p>
+                    <p class="now_card_title"><%= item.title %></p>
+                </div>
+            </<%= tag %>>
+        <% }) %>
+    </div>
+    <script>
+        // 마우스를 올리면 바뀌는 포스터 이미지: 처음 올렸을 때 불러오고(100.webp는 6MB),
+        // 다 받은 뒤에 부드럽게 겹쳐 보여 준다. 받는 동안에는 원래 이미지가 그대로 보인다
+        document.querySelectorAll(".now_card_img--alt[data-src]").forEach(function (img) {
+            var card = img.closest(".now_card");
+            function load() {
+                if (img.getAttribute("src")) return;
+                img.addEventListener("load", function () {
+                    img.classList.add("is-ready");
+                }, { once: true });
+                img.src = img.getAttribute("data-src");
             }
-            #box2_4:hover{
-                content: url("/public/images/104_1.PNG");
-                position: relative;
-                z-index: 5000;
-            }
-            #box2_5:hover{
-                content: url("/public/images/106_1.jpg");
-                position: relative;
-                z-index: 5000;
-            }
-        </style>
-    </div>
-    <!-- 세번째 박스 시작 -->
-    <div class="main_area_text" style="height: calc(5vh + 20px); font-size: 2.333rem; margin-bottom: calc(1vh + 5px); margin-top: calc(1vh + 2px); font-weight: 700; color: white; padding-left: 1vw;">CATEGORY_1</div>
-    <div class="main_box3">
-        <div class="main_box3_contentbox">
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d1.jpg" alt="">
+            card.addEventListener("mouseenter", load);
+            card.addEventListener("focusin", load);
+        });
+    </script>
+    <!-- 카테고리 (CATEGORY_1~3) — 세 섹션이 같은 구성이라 목록 하나로 그린다 -->
+    <%
+        // 8칸. label이 있거나 offset인 칸은 라벨(또는 빈 자리)만큼 내려와서 엇갈린 배치가 된다
+        var categoryColumns = [
+            { imgs: [1, 2] },
+            { label: "YOU ARE", imgs: [3, 4] },
+            { imgs: [5, 6] },
+            { label: "FAVORITE", imgs: [7, 8] },
+            { imgs: [9, 10] },
+            { label: "EXHIBITION", imgs: [11, 12] },
+            { imgs: [13, 14] },
+            { offset: true, imgs: [15, 16] }
+        ];
+    %>
+    <% ["CATEGORY_1", "CATEGORY_2", "CATEGORY_3"].forEach(function (category) { %>
+        <div class="main_area_text"><%= category %></div>
+        <div class="cat_grid">
+            <% categoryColumns.forEach(function (column) { %>
+                <div class="cat_column">
+                    <% if (column.label) { %>
+                        <p class="cat_label"><%= column.label %></p>
+                    <% } else if (column.offset) { %>
+                        <div class="cat_label cat_label--spacer" aria-hidden="true"></div>
+                    <% } %>
+                    <% column.imgs.forEach(function (n) { %>
+                        <div class="cat_tile">
+                            <img src="/public/images/exbox1/d<%= n %>.jpg" alt="" loading="lazy">
+                        </div>
+                    <% }) %>
                 </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d2.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
-                <div class="main_box3_line_box_sub">
-                    <div class="main_box3_line_box_sub_box">
-                        YOU ARE
-                    </div>
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d3.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d4.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d5.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d6.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
-                <div class="main_box3_line_box_sub">
-                    <div class="main_box3_line_box_sub_box">
-                        FAVORITE
-                    </div>
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d7.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d8.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d9.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d10.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
-                <div class="main_box3_line_box_sub">
-                    <div class="main_box3_line_box_sub_box">
-                        EXHIBITION
-                    </div>
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d11.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d12.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d13.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d14.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end; margin-right: 0px;">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d15.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d16.jpg" alt="">
-                </div>
-            </div>
+            <% }) %>
         </div>
-    </div>
-    <div class="main_area_text" style="height: calc(5vh + 20px); font-size: 2.333rem; margin-bottom: calc(1vh + 5px); margin-top: calc(1vh + 2px); font-weight: 700; color: white; padding-left: 1vw;">CATEGORY_2</div>
-    <div class="main_box3">
-        <div class="main_box3_contentbox">
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d1.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d2.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
-                <div class="main_box3_line_box_sub">
-                    <div class="main_box3_line_box_sub_box">
-                        YOU ARE
-                    </div>
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d3.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d4.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d5.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d6.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
-                <div class="main_box3_line_box_sub">
-                    <div class="main_box3_line_box_sub_box">
-                        FAVORITE
-                    </div>
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d7.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d8.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d9.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d10.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
-                <div class="main_box3_line_box_sub">
-                    <div class="main_box3_line_box_sub_box">
-                        EXHIBITION
-                    </div>
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d11.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d12.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d13.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d14.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end; margin-right: 0px;">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d15.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d16.jpg" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="main_area_text" style="height: calc(5vh + 20px); font-size: 2.333rem; margin-bottom: calc(1vh + 5px); margin-top: calc(1vh + 2px); font-weight: 700; color: white; padding-left: 1vw;">CATEGORY_3</div>
-    <div class="main_box3">
-        <div class="main_box3_contentbox">
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d1.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d2.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
-                <div class="main_box3_line_box_sub">
-                    <div class="main_box3_line_box_sub_box">
-                        YOU ARE
-                    </div>
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d3.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d4.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d5.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d6.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
-                <div class="main_box3_line_box_sub">
-                    <div class="main_box3_line_box_sub_box">
-                        FAVORITE
-                    </div>
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d7.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d8.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d9.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d10.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end">
-                <div class="main_box3_line_box_sub">
-                    <div class="main_box3_line_box_sub_box">
-                        EXHIBITION
-                    </div>
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d11.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d12.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d13.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d14.jpg" alt="">
-                </div>
-            </div>
-            <div class="main_box3_contentbox_line" style="justify-content: flex-end; margin-right: 0px;">
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d15.jpg" alt="">
-                </div>
-                <div class="main_box3_line_box">
-                    <img class="main_box3_line_img" src="/public/images/exbox1/d16.jpg" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
+    <% }) %>
 </div>
