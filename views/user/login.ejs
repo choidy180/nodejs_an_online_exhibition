@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/public/stylesheets/tokens.css">
     <link rel="stylesheet" href="/public/stylesheets/intro.css">
     <title>로그인</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -12,20 +13,31 @@
     <link rel="apple-touch-icon" href="/public/images/icon/apple-touch-icon.png">
 </head>
 <body>
-    <form action="/users/login_user" method="POST">
-        <div class="background" id="back1" style="background: url(/public/images/start/login.jpg) center center / cover no-repeat; filter: brightness(20%);">
-        </div>
-        <div class="login_box">
-            <input type="text" class="ui_input login_box_input" placeholder="아이디" name="id">
-        </div>
-        <div class="login_box" style="top: calc(47vh + 60px);">
-            <input type="password" class="ui_input login_box_input" placeholder="비밀번호" name="pwd">
-        </div>
-        <div class="login_box" style="top: calc(47vh + 145px);">
-            <button class="ui_btn ui_btn--primary login_page_login_button">로그인</button>
-        </div>
-    </form>
-    <img src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION" style="position: fixed; top: 36vh; left: calc(50% - 220px); z-index: 10; width: 440px; cursor: pointer;" onclick="location.href='/main'">
-    <button type="button" class="ui_btn ui_btn--small login_top_button" onclick="location.href='/sign_first'">회원가입</button>
+    <div class="background" id="back1" style="background: url(/public/images/start/login.jpg) center center / cover no-repeat; filter: brightness(20%);">
+    </div>
+    <!-- 시작 화면과 같은 메인 스타일 패널: 반투명 검정 + 1px 선 + 가는 글씨, 빨강은 마우스를 올렸을 때만 -->
+    <main class="start_stage">
+        <form class="start_panel" action="/users/login_user" method="POST" aria-labelledby="login_title">
+            <p class="start_kicker">LOGIN</p>
+            <h1 class="start_logo_wrap" id="login_title">
+                <a href="/main" aria-label="EXHIBITION — 메인으로">
+                    <img class="start_logo" src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION">
+                </a>
+            </h1>
+            <p class="start_desc">
+                다시 오신 것을 환영합니다.<br>
+                아이디와 비밀번호를 입력해 주세요.
+            </p>
+            <div class="login_fields">
+                <label class="sr_only" for="login_id">아이디</label>
+                <input id="login_id" class="line_input" type="text" name="id" placeholder="아이디" autocomplete="username">
+                <label class="sr_only" for="login_pwd">비밀번호</label>
+                <input id="login_pwd" class="line_input" type="password" name="pwd" placeholder="비밀번호" autocomplete="current-password">
+            </div>
+            <button type="submit" class="mono_btn mono_btn--solid login_submit">로그인</button>
+            <p class="start_divider">아직 회원이 아니신가요?</p>
+            <a class="mono_btn" href="/sign_first">회원가입 하기</a>
+        </form>
+    </main>
 </body>
 </html>
