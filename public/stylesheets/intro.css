@@ -552,12 +552,13 @@ html.stage-enter {
   inset: 0;
   z-index: 2;
   box-sizing: border-box;
-  display: grid;
-  place-items: center;
+  display: flex;
+  overflow-y: auto; /* 패널이 화면보다 길면(회원가입 등) 잘리지 않고 스크롤 */
   padding: 24px;
 }
 .start_panel {
   box-sizing: border-box;
+  margin: auto; /* 공간이 남으면 가운데, 모자라면 위에서부터 */
   width: min(440px, 100%);
   padding: 44px 40px 40px;
   font-family: var(--font-sans);
@@ -678,112 +679,6 @@ html.stage-enter {
   border-color: var(--nav-ink);
 }
 
-/* =========================================================
-   공통 버튼 · 입력칸 — 시작 · 로그인 · 회원가입 페이지
-   인트로/시작 페이지와 같은 규칙: 두꺼운 테두리, 살짝 둥근 모서리(6px),
-   번지지 않는 하드 섀도우(3px), 검은 면 / 빨간 면.
-   어두운 바탕이 기본이고, 밝은 바탕 페이지는 body.ui--light 로 색을 뒤집는다.
-   ========================================================= */
-body.ui--light {
-  --ui-ink: #111;   /* 선 · 글자 · 그림자 */
-  --ui-paper: #fff; /* 보조 버튼 면 */
-  --ui-field: #fff; /* 입력칸 면 */
-}
-
-/* 버튼 — 보조: 검은 면 + 흰 테두리 + 흰 그림자 (밝은 바탕에서는 반대) */
-.ui_btn {
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 400px;
-  min-width: 215px;
-  height: clamp(48px, 6.4vh, 64px);
-  padding: 0 24px;
-  font-family: var(--font-sans);
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--ui-ink, #fff);
-  background-color: var(--ui-paper, #111);
-  border: 3px solid var(--ui-ink, #fff);
-  border-radius: 6px;
-  box-shadow: 3px 3px 0 var(--ui-ink, #fff);
-  outline: none;
-  cursor: pointer;
-  transition: transform 0.08s linear, box-shadow 0.08s linear,
-    background-color 0.08s linear, color 0.08s linear;
-}
-.ui_btn:hover {
-  color: var(--ui-paper, #111);
-  background-color: var(--ui-ink, #fff);
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0 var(--ui-ink, #fff);
-}
-.ui_btn:active {
-  transform: translate(3px, 3px);
-  box-shadow: 0 0 0 var(--ui-ink, #fff);
-}
-.ui_btn:focus-visible {
-  outline: 3px dashed var(--ui-ink, #fff);
-  outline-offset: 6px;
-}
-
-/* 주 버튼: 빨간 면 + 검은 테두리 (그림자는 바탕에 맞춘 색) */
-.ui_btn--primary,
-.ui_btn--primary:hover {
-  color: #fff;
-  background-color: #f00;
-  border-color: #111;
-}
-.ui_btn--primary::after {
-  content: "→";
-  margin-left: 0.6em;
-}
-
-/* 작은 버튼 (오른쪽 위 등) */
-.ui_btn--small {
-  width: auto;
-  min-width: 0;
-  height: 38px;
-  padding: 0 16px;
-  font-size: 15px;
-  border-width: 2px;
-}
-
-/* 입력칸 — 어두운 면 + 흰 테두리. 입력 중에는 빨간 테두리와 빨간 그림자 */
-.ui_input {
-  box-sizing: border-box;
-  height: 48px;
-  padding: 0 16px;
-  font-family: var(--font-sans);
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--ui-ink, #fff);
-  background-color: var(--ui-field, rgba(17, 17, 17, 0.6));
-  border: 2px solid var(--ui-ink, #fff);
-  border-radius: 6px;
-  outline: none;
-  caret-color: #f00;
-  transition: border-color 0.08s linear, box-shadow 0.08s linear;
-}
-.ui_input::placeholder {
-  color: var(--ui-ink, #fff);
-  opacity: 0.45;
-  font-family: var(--font-sans);
-  font-weight: 600;
-}
-.ui_input:focus {
-  border-color: #f00;
-  box-shadow: 3px 3px 0 #f00;
-}
-/* 브라우저 자동완성 배경색이 면을 덮지 않게 */
-.ui_input:-webkit-autofill {
-  -webkit-text-fill-color: var(--ui-ink, #fff);
-  transition: background-color 99999s 0s, border-color 0.08s linear, box-shadow 0.08s linear;
-}
-
 /* 로그인 — 시작 화면과 같은 패널(.start_stage / .start_panel)을 쓰고,
    입력칸은 메인 스타일의 가는 선(.line_input) */
 .login_fields {
@@ -830,49 +725,279 @@ body.ui--light {
   transition: background-color 99999s 0s, border-color var(--nav-motion);
 }
 
-/* 회원가입 2 */
-.sign2_user_id {
-  font-size: 30px;
-  font-weight: 500;
-  text-align: center;
-  border: none;
-  outline: none;
+/* ---------------------------------------------------------
+   회원가입 1~3단계 — 로그인/시작 화면과 같은 패널(.start_stage / .start_panel)
+   단계 표시 줄, 위에 작은 이름표가 붙은 가는 선 입력칸(.line_input),
+   프로필 미리보기, 관심 카테고리 타일
+   --------------------------------------------------------- */
+.start_panel--wide {
+  width: min(760px, 100%);
 }
-/* 로그인 */
-.sign_box {
-  width: 100vw;
-  height: auto;
-  text-align: center;
-  margin-top: 200px;
-}
-#image_container img {
-  width: 260px;
-  height: 260px;
-}
-.sign_box_title {
-  font-size: 20px;
+.signup_title {
   margin: 0;
-  margin-bottom: 5px;
-  padding-right: 20vw;
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: var(--nav-weight);
+  letter-spacing: var(--ls-body);
+  color: var(--nav-ink);
 }
-/* 회원가입 입력칸 · 버튼: 모양은 .ui_input / .ui_btn이 맡고, 여기서는 너비만 맞춘다 */
-.sign_box_input,
-.sign_submit_button,
-.filebox label {
-  width: 20vw;
-  min-width: 390px;
+.signup_user {
+  font-weight: 500;
+  color: var(--nav-ink);
 }
-.sign_box_input {
-  margin: 5px 0; /* 입력칸끼리 붙어 보이지 않게 */
-}
-/* 파일 필드 숨기기 */
-.filebox input[type="file"] {
-  position: absolute;
-  width: 1px;
-  height: 1px;
+.signup_progress {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 18px 0 0;
   padding: 0;
-  margin: -1px;
+  list-style: none;
+}
+.signup_progress li {
+  padding-top: 10px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: var(--nav-weight);
+  letter-spacing: 0.06em;
+  color: var(--nav-muted);
+  border-top: 2px solid var(--nav-hairline);
+}
+.signup_progress li.is-done {
+  color: rgba(255, 255, 255, 0.6);
+  border-top-color: rgba(255, 255, 255, 0.5);
+}
+.signup_progress li.is-current {
+  color: var(--nav-ink);
+  border-top-color: var(--nav-ink);
+}
+.signup_fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 22px;
+}
+.signup_fields .line_input {
+  height: 46px; /* 회원가입은 칸이 많아 로그인보다 조금 낮게 */
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field_label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: var(--nav-weight);
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.65);
+}
+.signup_submit {
+  margin-top: 20px;
+}
+/* 왼쪽 위 작은 로고 (인트로로 돌아가기) */
+.signup_home {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 3;
+}
+.signup_home img {
+  display: block;
+  height: 30px;
+}
+.signup_home:focus-visible {
+  outline: var(--nav-line) dashed var(--nav-ink);
+  outline-offset: 4px;
+}
+
+/* 작은 선 버튼 (이미지 선택 등) */
+.mono_btn--small {
+  width: auto;
+  height: 38px;
+  gap: 12px;
+  padding: 0 16px;
+  font-size: 13px;
+}
+
+/* 2단계: 프로필 이미지 */
+.profile_picker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 26px;
+}
+.profile_preview {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--nav-muted);
+  background-color: rgba(255, 255, 255, 0.03);
+  border: var(--nav-line) dashed rgba(255, 255, 255, 0.35);
+}
+.profile_preview.has-image {
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.profile_preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.profile_picker_text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+.profile_hint {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: var(--nav-weight);
+  color: var(--nav-muted);
+}
+/* 필수 파일 칸이 비어서 제출이 막혔을 때 고르기 버튼을 강조 */
+#ex_file:focus + .profile_hint,
+#ex_file:focus-visible + .profile_hint {
+  color: var(--nav-ink);
+}
+
+/* 3단계: 관심 카테고리 */
+.category_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 26px;
+}
+.category_tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--nav-ink);
+  background-color: #000;
+  border: var(--nav-line) solid var(--nav-hairline);
+  border-radius: 0;
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--nav-motion);
+}
+.category_tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(55%);
+  transition: transform var(--nav-motion), filter var(--nav-motion);
+}
+.category_tile_name {
+  position: absolute;
+  left: 12px;
+  right: 40px;
+  bottom: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+  font-size: 14px;
+  font-weight: var(--nav-weight);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+  transition: color var(--nav-motion);
+}
+.category_tile_badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #111;
+  background-color: var(--nav-ink);
+  opacity: 0;
+  transition: opacity var(--nav-motion);
+}
+.category_tile:hover img,
+.category_tile:focus-visible img {
+  transform: scale(1.05);
+  filter: brightness(75%);
+}
+.category_tile:hover .category_tile_name,
+.category_tile:focus-visible .category_tile_name {
+  color: var(--nav-accent);
+}
+.category_tile:focus-visible {
+  border-color: var(--nav-ink);
+}
+.category_tile[aria-pressed="true"] {
+  border-color: var(--nav-ink);
+}
+.category_tile[aria-pressed="true"] img {
+  filter: brightness(90%);
+}
+.category_tile[aria-pressed="true"] .category_tile_badge {
+  opacity: 1;
+}
+/* 이미 3개를 골랐을 때 나머지는 흐리게 */
+.category_tile.is-locked {
+  cursor: default;
+}
+.category_tile.is-locked img {
+  filter: brightness(30%);
+}
+.category_tile.is-locked:hover img {
+  transform: none;
+  filter: brightness(30%);
+}
+.category_tile.is-locked:hover .category_tile_name {
+  color: var(--nav-ink);
+}
+.category_empty {
+  margin: 26px 0 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: var(--nav-weight);
+  color: var(--nav-muted);
+}
+.category_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 24px;
+}
+.category_count {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: var(--nav-weight);
+  letter-spacing: 0.04em;
+  color: var(--nav-muted);
+}
+.category_submit {
+  width: 220px;
+}
+.mono_btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.mono_btn--solid:disabled:hover {
+  color: #111;
+}
+.mono_btn:disabled:hover::after {
+  transform: none;
 }

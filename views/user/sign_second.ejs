@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/public/stylesheets/tokens.css">
     <link rel="stylesheet" href="/public/stylesheets/intro.css">
     <title>회원가입</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -11,57 +12,74 @@
     <link rel="icon" href="/public/images/icon/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/public/images/icon/apple-touch-icon.png">
 </head>
-<style>
-    body{
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-    }
-</style>
-<body class="ui--light">
-    <form action="/users/sign2" method="POST" enctype="multipart/form-data">
-        <div class="sign_box" style="font-size: 30px; font-weight: 700;">
-            <p onclick="console.log(window.location.pathname.split('/')[2])">추가 정보 입력</p>
-            <input type="text" class="sign2_user_id" value="<%=user_id%>" readonly name="user_id">
-        </div>
-        <div style="width: 100%;height: 260px; margin-top: 50px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <div id="image_container"></div> 
-            <script> 
-                if(document.querySelector('#image_container').children[0] == undefined){
-                    function setThumbnail(event) { 
-                        if(document.querySelector('#image_container').children[0] != undefined){
-                            document.querySelector('#image_container').children[0].remove();
-                        }
-                        var reader = new FileReader(); reader.onload = function(event) { 
-                        var img = document.createElement("img"); 
-                        img.setAttribute("name",'img');
-                        img.setAttribute("src", event.target.result); 
-                        document.querySelector("div#image_container").appendChild(img); 
-                    }; 
-                    reader.readAsDataURL(event.target.files[0]);
-                    }
-                }
-            </script>
-        </div>
-        <div class="sign_box" style="margin-top: 1vh;">
-            <div class="filebox"> 
-                <label for="ex_file" class="ui_btn">프로필 이미지 등록</label> 
-                <input type="file" id="ex_file" accept="image/*" onchange="setThumbnail(event);" name="userfile"> 
+<body>
+    <div class="background" id="back1" style="background: url(/public/images/start/start5.png) center center / cover no-repeat; filter: brightness(20%);">
+    </div>
+    <!-- 회원가입 2단계 — 로그인/시작 화면과 같은 메인 스타일 패널 -->
+    <main class="start_stage">
+        <form class="start_panel" action="/users/sign2" method="POST" enctype="multipart/form-data" aria-labelledby="signup_title">
+            <!-- 1단계에서 만든 아이디 (서버가 user_id 로 받는다) -->
+            <input type="hidden" name="user_id" value="<%= user_id %>">
+            <p class="start_kicker">SIGN UP — 02 / 03</p>
+            <h1 class="signup_title" id="signup_title">추가 정보 입력</h1>
+            <p class="start_desc"><strong class="signup_user"><%= user_id %></strong> 님, 프로필과 연락처를 입력해 주세요.</p>
+            <ol class="signup_progress" aria-label="회원가입 단계">
+                <li class="is-done">기본 정보</li>
+                <li class="is-current" aria-current="step">추가 정보</li>
+                <li>관심 카테고리</li>
+            </ol>
+
+            <!-- 프로필 이미지: 고르면 바로 미리보기 (서버가 이미지를 꼭 받아야 해서 필수) -->
+            <div class="profile_picker">
+                <div class="profile_preview" id="profile_preview" aria-hidden="true">
+                    <span>PROFILE</span>
+                </div>
+                <div class="profile_picker_text">
+                    <span class="field_label">프로필 이미지</span>
+                    <label for="ex_file" class="mono_btn mono_btn--small">이미지 선택</label>
+                    <input type="file" id="ex_file" class="sr_only" accept="image/*" name="userfile" required>
+                    <span class="profile_hint" id="profile_hint">JPG · PNG 등 이미지 파일</span>
+                </div>
             </div>
-        </div>
-        <div class="sign_box" style="margin-top: 1vh;">
-            <input id="email" class="ui_input sign_box_input" type="text" placeholder="이메일" name="email">
-        </div>
-        <div class="sign_box" style="margin-top: 1vh;">
-            <input id="age" class="ui_input sign_box_input" type="text" placeholder="출생년도" name="age">
-        </div>
-        <div class="sign_box" style="margin-top: 3vh;">
-            <button class="ui_btn ui_btn--primary sign_submit_button">가입하기</button>
-        </div>
-    </form>
-    <img src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION" style="position: fixed; top: 20px; left: 20px; z-index: 10; width: 240px; cursor: pointer;">
+
+            <div class="signup_fields">
+                <label class="field">
+                    <span class="field_label">이메일</span>
+                    <input id="email" class="line_input" type="email" name="email" placeholder="example@email.com" autocomplete="email">
+                </label>
+                <label class="field">
+                    <span class="field_label">출생년도</span>
+                    <input id="age" class="line_input" type="text" name="age" placeholder="예) 1998" inputmode="numeric" maxlength="4" autocomplete="bday-year">
+                </label>
+            </div>
+            <button type="submit" class="mono_btn mono_btn--solid signup_submit">가입하기</button>
+        </form>
+    </main>
+    <a class="signup_home" href="/" aria-label="EXHIBITION — 인트로로">
+        <img src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION">
+    </a>
+    <script>
+        // 프로필 이미지를 고르면 미리보기 칸에 보여 준다
+        (function () {
+            var input = document.getElementById("ex_file");
+            var preview = document.getElementById("profile_preview");
+            var hint = document.getElementById("profile_hint");
+            input.addEventListener("change", function () {
+                var file = input.files && input.files[0];
+                if (!file) return;
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    preview.innerHTML = "";
+                    var img = document.createElement("img");
+                    img.src = event.target.result;
+                    img.alt = "";
+                    preview.appendChild(img);
+                    preview.classList.add("has-image");
+                };
+                reader.readAsDataURL(file);
+                hint.textContent = file.name;
+            });
+        })();
+    </script>
 </body>
 </html>

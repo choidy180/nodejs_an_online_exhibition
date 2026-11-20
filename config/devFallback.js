@@ -3,7 +3,7 @@
  *
  * - NODE_ENV가 production이 아니면, DB 연결에 실패했을 때 진짜 커넥션 대신
  *   샘플 데이터를 돌려주는 가짜 커넥션을 넘긴다. (production에서는 아무것도 바꾸지 않는다)
- * - 읽기(SELECT): exhibition 테이블은 샘플 전시회, 나머지는 빈 목록
+ * - 읽기(SELECT): exhibition 은 샘플 전시회, category 는 샘플 카테고리, 나머지는 빈 목록
  * - 쓰기(INSERT/UPDATE/DELETE): 아무것도 저장하지 않고 성공한 것처럼 돌려준다
  * - 한 번 실패하면 30초 동안은 DB에 다시 붙어 보지 않고 바로 샘플 데이터를 쓴다
  *   (요청마다 연결 대기 시간이 생기지 않게). DB가 살아나면 자동으로 진짜 데이터로 돌아간다.
@@ -49,6 +49,20 @@ function sampleExhibitions() {
   }));
 }
 
+// category_img 폴더의 이미지로 만든 샘플 카테고리 (회원가입 3단계 화면 확인용)
+const SAMPLE_CATEGORIES = [
+  ["미디어아트", "10_Flower Forest Lost, Immersed and Reborn_teamlabBorderless.jpg"],
+  ["디자인", "Apple_announce-iphone12pro_10132020_big.jpg.large_2x.jpg"],
+  ["일러스트", "KakaoTalk_20200826_023245409_03.png"],
+  ["스포츠", "Return_of_Sports.jpg"],
+  ["엔터테인먼트", "a307496d21f9bd8f4a926e4308ebdfa35eeb4859.gif"],
+  ["사진", "a61fdd1cf51103f34a92f020b804b52b85e25fb3.jpg"],
+  ["회화", "art-art-history_main_1440x800.jpg"],
+  ["공연", "dffac4d38912dbc75e7ecc10f690459236e44476.gif"],
+  ["인물", "iu_full.jpg"],
+  ["게임 아트", "l4XorHXMUe8lWc00lQso.jpg"],
+].map(([NAME, IMG], i) => ({ NUMBER: i + 1, NAME, IMG }));
+
 function rowsFor(sql, values) {
   const text = String(sql).trim().toLowerCase();
   if (!text.startsWith("select")) {
@@ -62,6 +76,9 @@ function rowsFor(sql, values) {
       return found.length ? found : [rows[0]];
     }
     return rows;
+  }
+  if (/\bfrom\s+(\w+\.)?category\b/.test(text)) {
+    return SAMPLE_CATEGORIES.map((row) => Object.assign({}, row));
   }
   return [];
 }

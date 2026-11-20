@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/public/stylesheets/tokens.css">
     <link rel="stylesheet" href="/public/stylesheets/intro.css">
     <title>회원가입</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -11,37 +12,45 @@
     <link rel="icon" href="/public/images/icon/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/public/images/icon/apple-touch-icon.png">
 </head>
-<style>
-    body{
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-    }
-</style>
-<body class="ui--light">
-    <div class="sign_box" style="font-size: 30px; font-weight: 700;">
-        <span>회원가입</span>
+<body>
+    <div class="background" id="back1" style="background: url(/public/images/start/start5.png) center center / cover no-repeat; filter: brightness(20%);">
     </div>
-    <form action="/users/sign1" method="POST">
-        <div class="sign_box" style="margin-top: 5vh;">
-            <input id="id" class="ui_input sign_box_input" type="text" placeholder="아이디" name="id">
-        </div>
-        <div class="sign_box" style="margin-top: 1vh;">
-            <input id="pwd" class="ui_input sign_box_input" type="password" placeholder="비밀번호" name="pwd">
-        </div>
-        <div class="sign_box" style="margin-top: 1vh;">
-            <input id="name" class="ui_input sign_box_input" type="text" placeholder="이름" name="name">
-        </div>
-        <div class="sign_box" style="margin-top: 1vh;">
-            <input id="tel" class="ui_input sign_box_input" type="text" placeholder="전화번호" name="tel">
-        </div>
-        <div class="sign_box" style="margin-top: 3vh;">
-            <button class="ui_btn ui_btn--primary sign_submit_button">다음 단계로</button>
-        </div>
-    </form>
-    <img src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION" style="position: fixed; top: 20px; left: 20px; z-index: 10; width: 240px; cursor: pointer;">
+    <!-- 회원가입 1단계 — 로그인/시작 화면과 같은 메인 스타일 패널 -->
+    <main class="start_stage">
+        <form class="start_panel" action="/users/sign1" method="POST" aria-labelledby="signup_title">
+            <p class="start_kicker">SIGN UP — 01 / 03</p>
+            <h1 class="signup_title" id="signup_title">회원가입</h1>
+            <p class="start_desc">전시회를 관람하고 직접 열 수 있는 계정을 만들어 주세요.</p>
+            <ol class="signup_progress" aria-label="회원가입 단계">
+                <li class="is-current" aria-current="step">기본 정보</li>
+                <li>추가 정보</li>
+                <li>관심 카테고리</li>
+            </ol>
+            <div class="signup_fields">
+                <label class="field">
+                    <span class="field_label">아이디</span>
+                    <input id="id" class="line_input" type="text" name="id" placeholder="아이디" autocomplete="username">
+                </label>
+                <label class="field">
+                    <span class="field_label">비밀번호</span>
+                    <input id="pwd" class="line_input" type="password" name="pwd" placeholder="비밀번호" autocomplete="new-password">
+                </label>
+                <label class="field">
+                    <span class="field_label">이름</span>
+                    <input id="name" class="line_input" type="text" name="name" placeholder="이름" autocomplete="name">
+                </label>
+                <label class="field">
+                    <span class="field_label">전화번호</span>
+                    <input id="tel" class="line_input" type="tel" name="tel" placeholder="010-0000-0000" autocomplete="tel">
+                </label>
+            </div>
+            <button type="submit" class="mono_btn mono_btn--solid signup_submit">다음 단계로</button>
+            <p class="start_divider">이미 회원이신가요?</p>
+            <a class="mono_btn" href="/login">로그인</a>
+        </form>
+    </main>
+    <a class="signup_home" href="/" aria-label="EXHIBITION — 인트로로">
+        <img src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION">
+    </a>
 </body>
 </html>

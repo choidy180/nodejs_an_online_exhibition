@@ -1,5 +1,6 @@
 var express = require("express");
 const pool = require("../config/dbconfig");
+const { alertAndGo } = require("../lib/respond");
 var router = express.Router();
 
 var multer = require('multer');
@@ -22,48 +23,53 @@ router.post("/sign1", function (req, res) {
   var user_name = body.name;
   var user_tel = body.tel;
   var sql = "insert into user(ID, PWD, NAME, TEL) values (?, ?, ?, ?)";
-  console.log("넘어온다");
   pool.getConnection((err, conn) => {
+      if (err) {
+          console.log(err);
+          return alertAndGo(res, "잠시 후 다시 시도해 주세요. (서버 연결 오류)");
+      }
       conn.query(sql, [user_id, user_pwd, user_name, user_tel],
         function(err, result){
+            conn.release();
             if(err){
                 console.log(err);
-                res.writeHead(200, { "Content-Type": "text/html; charset=utf-8;" });
-                res.write("<script> alert('회원가입에 문제가 있습니다..'); history.back(); </script>");
-                conn.release();
-                return;
+                return alertAndGo(res, "회원가입에 문제가 있습니다..");
             }
-            if(result){
-                res.redirect("/sign_second/" + user_id)
-                conn.release();
-            }
+            // 회원가입 중에는 아직 로그인 상태가 아니라서, 3단계(카테고리 등록)에서
+            // 누구의 가입인지 알 수 있도록 방금 만든 아이디를 세션에 기억해 둔다
+            req.session.signupUserId = user_id;
+            res.redirect("/sign_second/" + encodeURIComponent(user_id));
         })
   })
 });
 
 // 개인 회원가입 2
 router.post("/sign2", upload.single('userfile'), function(req, res){
-    console.log(req.body);
     var user_id = req.body.user_id;
     var user_email = req.body.email;
+    // 프로필 이미지 없이 넘어오면 req.file 이 없어 서버가 꺼졌다 → 안내하고 돌려보낸다
+    if (!req.file) {
+        return alertAndGo(res, "프로필 이미지를 선택해 주세요.");
+    }
     let date = new Date();
     let year = date.getFullYear();
     var userfile = req.file.filename;
     var user_age = year - req.body.age + 1;
     var sql = "update user set IMG=?, EMAIL=?, AGE=? where ID=?"
     pool.getConnection((err, conn) => {
+        if (err) {
+            console.log(err);
+            return alertAndGo(res, "잠시 후 다시 시도해 주세요. (서버 연결 오류)");
+        }
         conn.query(sql , [userfile, user_email, user_age, user_id], function(err, row){
+            conn.release();
             if (err){
                 console.log(sql);
                 console.log(err);
+                // 예전에는 여기서 응답을 보내지 않아 페이지가 끝없이 기다렸다
+                return alertAndGo(res, "추가 정보를 저장하지 못했습니다. 다시 시도해 주세요.");
             }
-            if(row){
-                res.redirect("/sign_choice_category/" + user_id);
-                conn.release();
-                return;
-            } else {
-                return;
-            }
+            res.redirect("/sign_choice_category/" + encodeURIComponent(user_id));
         })
     })
 })

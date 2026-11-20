@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const pool = require("../config/dbconfig");
+const { alertAndGo } = require("../lib/respond");
 
 var multer = require("multer");
 const { query } = require("express");
@@ -366,18 +367,46 @@ router.post("/inquiry_answer_admin", function(req, res){
 })
 
 // 카테고리 등록
+// 관심 카테고리 등록 (회원가입 3단계, 또는 로그인한 사용자)
 router.post("/category_register", function(req, res){
     var body = req.body;
     var sess = req.session;
-    var sql = "insert into user_category (USER_ID, CATEGORY_NAME) values (?, ?)"
+    // 로그인한 사용자, 아니면 회원가입 1단계에서 세션에 기억해 둔 아이디.
+    // 예전에는 sess.user.ID 만 읽어서, 로그인 전인 회원가입 중에는 sess.user 가 없어 서버가 꺼졌다
+    var userId = (sess.user && sess.user.ID) || sess.signupUserId;
+    if (!userId) {
+        return alertAndGo(res, "회원 정보를 확인할 수 없습니다. 로그인 후 다시 시도해 주세요.", "/login");
+    }
+    // category1 은 1개면 문자열, 여러 개면 배열로 온다 → 배열로 맞추고 빈 값은 버린다 (최대 3개)
+    var picked = [].concat(body.category1 || []).filter(function (name) {
+        return typeof name === "string" && name.trim() !== "";
+    }).slice(0, 3);
+    if (!picked.length) {
+        return alertAndGo(res, "관심 카테고리를 골라 주세요.");
+    }
+    // 한 번의 쿼리로 함께 저장하고, 저장이 끝난 뒤에 응답한다
+    var sql = "insert into user_category (USER_ID, CATEGORY_NAME) values ?";
+    var values = picked.map(function (name) { return [userId, name]; });
     pool.getConnection((err, conn)=>{
-        for(var i = 0; i < 3; i++){
-            conn.query(sql, [sess.user.ID ,body.category1[i]], function(err, row){
-            })
+        if (err) {
+            console.log(err);
+            return alertAndGo(res, "잠시 후 다시 시도해 주세요. (서버 연결 오류)");
         }
-        res.redirect("/main");
-        conn.release();
-    })  
+        conn.query(sql, [values], function(err){
+            conn.release();
+            if (err) {
+                console.log(sql);
+                console.log(err);
+                return alertAndGo(res, "카테고리를 저장하지 못했습니다. 다시 시도해 주세요.");
+            }
+            if (sess.user) {
+                return res.redirect("/main");
+            }
+            // 회원가입을 마친 경우: 기억해 둔 아이디를 지우고 로그인 화면으로
+            delete sess.signupUserId;
+            alertAndGo(res, "회원가입이 완료되었습니다. 로그인해 주세요.", "/login");
+        })
+    })
 })
 
 // 리뷰작성
