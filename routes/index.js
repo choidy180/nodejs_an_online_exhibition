@@ -1443,6 +1443,7 @@ router.get("/view_work/:number", function(req, res){
 // 고객 즐겨찾기 X
 router.get("/exbigition_category_register/:number", function(req, res){
     var sess = req.session;
+    if (!sess.user) return res.redirect("/login"); // 로그인하지 않으면 sess.user 를 읽다가 서버 오류가 난다
     var number = req.params.number;
     var sql = "select * from bookmark where USER_ID=? AND EXHIBITION_NUMBER=?"
     var sql1 = "insert into bookmark (USER_ID, EXHIBITION_NUMBER) values(?, ?)"
@@ -1546,19 +1547,21 @@ router.get("/exhibition_purchase_card_final/:para", function(req, res){
 })
 
 // 전시회 즐겨찾기
-router.get("/bookmark", function(req, res){
+router.get("/bookmark", function(req, res, next){
     var sess = req.session;
+    if (!sess.user) return res.redirect("/login"); // 로그인하지 않으면 sess.user 를 읽다가 서버 오류가 난다
     var sql = "select * from exhibition where NUMBER IN (select bookmark.EXHIBITION_NUMBER from bookmark where USER_ID=?)"
     pool.getConnection((err, conn)=>{
+        if (err) return next(err);
         conn.query(sql, [sess.user.ID], function(err, row){
-            console.log(row);
+            conn.release();
+            if (err) return next(err);
             res.render('main.ejs', {
                 title: "즐겨찾기",
                 page: "board/bookmark.ejs",
                 sess:sess,
-                row:row,
+                row:row || [],
             })
-            conn.release();
         })
     })
 })
@@ -1584,6 +1587,7 @@ router.get("/bookmark_user", function(req, res){
 // 유저 즐겨찾기 X
 router.get("/exbigition_category_register_bookmark/:number", function(req, res){
     var sess = req.session;
+    if (!sess.user) return res.redirect("/login"); // 로그인하지 않으면 sess.user 를 읽다가 서버 오류가 난다
     var number = req.params.number;
     var sql = "select * from bookmark where USER_ID=? AND EXHIBITION_NUMBER=?"
     var sql1 = "insert into bookmark (USER_ID, EXHIBITION_NUMBER) values(?, ?)"

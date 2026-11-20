@@ -1,30 +1,107 @@
+<%
+    // 즐겨찾는 전시회 — 메인 화면 스타일
+    // 카드마다 오른쪽 위 흰 별이 '즐겨찾기 해제' 버튼. 마우스를 올리면 별 안의 물이 빠진다
+    var items = row || [];
+    var IMG_DIR = "/public/images/exhibition_title_images/";
+    var today = new Date();
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function ymd(value) {
+        var d = new Date(value);
+        if (isNaN(d)) return "";
+        return d.getFullYear() + "." + pad(d.getMonth() + 1) + "." + pad(d.getDate());
+    }
+    function status(item) {
+        if (item.START_TIME && today < new Date(item.START_TIME)) return "UPCOMING";
+        if (item.END_TIME && today > new Date(item.END_TIME)) return "CLOSED";
+        return "NOW SHOWING";
+    }
+
+    // 전시회 상세의 즐겨찾기 별과 같은 모양 (별마다 clipPath id 가 달라야 한다)
+    var STAR_PATH = "M12 2.6l2.82 5.72 6.31.92-4.57 4.45 1.08 6.29L12 17.02l-5.64 2.96 1.08-6.29L2.87 9.24l6.31-.92L12 2.6z";
+    var WAVE_PATH = "M0 4 Q6 0 12 4 T24 4 T36 4 T48 4 V30 H0 Z";
+    function starSvg(id) {
+        return '<span class="xd_star" aria-hidden="true">' +
+            '<svg viewBox="0 0 24 24" focusable="false">' +
+                '<defs><clipPath id="' + id + '"><path d="' + STAR_PATH + '"/></clipPath></defs>' +
+                '<g clip-path="url(#' + id + ')">' +
+                    '<g class="xd_star_level">' +
+                        '<path class="xd_star_wave xd_star_wave--back" d="' + WAVE_PATH + '"/>' +
+                        '<path class="xd_star_wave" d="' + WAVE_PATH + '"/>' +
+                    '</g>' +
+                '</g>' +
+                '<path class="xd_star_outline" d="' + STAR_PATH + '"/>' +
+            '</svg>' +
+        '</span>';
+    }
+%>
 <style>
-    a{
-        text-decoration: none;
-        color: black;
+    body {
+        background-color: #141414;
     }
 </style>
-<div id="mypage_area">
-    <div id="mypage_container" style="margin-top: 100px; width: 900px;">
-        <div class="book_mark_title">
-            즐겨찾기 목록
+<main class="mp" aria-labelledby="mp_title">
+    <a class="mp_back" href="/mypage">마이페이지</a>
+    <header class="mp_head">
+        <div class="mp_head_text">
+            <p class="mp_kicker">BOOKMARK</p>
+            <h1 class="mp_title" id="mp_title">즐겨찾는 전시회</h1>
+            <p class="mp_desc">별을 눌러 모아 둔 전시회입니다. 카드의 흰 별을 누르면 목록에서 빠집니다.</p>
         </div>
-        <div class="book_mark_content_box" style="margin-top: 80px;">
-            <%for (var i = 0; i < row.length; i++){%>
-                <div class="book_mark_content">
-                    <div class="book_mark_content_img">
-                        <img src="/public/images/exhibition_title_images/<%=row[i].IMG%>" alt="" onclick="location.href='/exhibition_detail/<%=row[i].NUMBER%>'">
-                    </div>
-                    <div class="bookmark_text_box">
-                        <div class="bookmark_title_text">
-                            <%=row[i].TITLE%>
+    </header>
+
+    <p class="nt_count">전체 <strong><%= items.length %></strong>건</p>
+    <% if (!items.length) { %>
+        <div class="mp_notice">
+            <p>아직 즐겨찾기한 전시회가 없습니다.<br>전시회 상세 화면에서 별을 눌러 모아 보세요.</p>
+            <a class="mp_button" href="/main">전시회 둘러보기</a>
+        </div>
+    <% } else { %>
+        <div class="mp_grid bm_grid">
+            <% items.forEach(function (item, i) { %>
+                <div class="bm_card">
+                    <!-- 메인 화면의 전시 카드(.now_card)와 같은 카드 -->
+                    <a class="now_card" href="/exhibition_detail/<%= item.NUMBER %>">
+                        <img class="now_card_img" src="<%= IMG_DIR + item.IMG %>" alt="" loading="lazy">
+                        <div class="now_card_caption">
+                            <p class="now_card_kicker">
+                                <span><%= status(item) %></span>
+                                <% if (item.CATEGORY) { %><span><%= item.CATEGORY %></span><% } %>
+                            </p>
+                            <p class="now_card_title"><%= item.TITLE %></p>
+                            <p class="now_card_period"><%= ymd(item.START_TIME) %> — <%= ymd(item.END_TIME) %></p>
                         </div>
-                        <div class="bookmark_start_box">
-                            <button onclick="location.href='/exbigition_category_register_bookmark/<%=row[i].NUMBER%>'">삭제</button>
-                        </div>
-                    </div>
+                    </a>
+                    <a class="bm_remove" href="/exbigition_category_register_bookmark/<%= item.NUMBER %>"
+                       aria-label="<%= item.TITLE %> 즐겨찾기 해제" title="즐겨찾기 해제">
+                        <%- starSvg("bm_star_clip_" + i) %>
+                        <span class="bm_remove_tip" aria-hidden="true">해제</span>
+                    </a>
                 </div>
-            <%}%>
+            <% }) %>
         </div>
-    </div>
-</div>
+    <% } %>
+</main>
+<script>
+    (function () {
+        // 해제: 누르면 별의 물이 다 빠진 뒤 이동한다 (마우스가 없는 터치 화면에서도 보이게)
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        document.querySelectorAll(".bm_remove").forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                if (link.classList.contains("is-draining")) return;
+                link.classList.add("is-draining");
+                setTimeout(function () {
+                    location.href = link.href;
+                }, 600);
+            });
+        });
+        window.addEventListener("pageshow", function (event) {
+            if (!event.persisted) return;
+            document.querySelectorAll(".bm_remove.is-draining").forEach(function (link) {
+                link.classList.remove("is-draining");
+            });
+        });
+    })();
+</script>

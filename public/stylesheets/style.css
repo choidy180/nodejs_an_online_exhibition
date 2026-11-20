@@ -7406,3 +7406,92 @@ a.notice_modal_button {
   letter-spacing: 0.02em;
   color: var(--nav-muted);
 }
+
+/* =========================================================
+   즐겨찾는 전시회 (views/board/bookmark.ejs)
+   카드 오른쪽 위의 흰 별 = 해제 버튼. 평소엔 흰 물이 가득,
+   마우스를 올리면 물이 빠지며 빨간 테두리만 남는다 (상세 화면 별과 반대 방향)
+   ========================================================= */
+.bm_grid {
+  margin-top: 16px;
+}
+.bm_card {
+  position: relative;
+}
+.bm_card .now_card_arrow {
+  display: none;
+}
+.bm_remove {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background-color: rgba(0, 0, 0, 0.45);
+  border-radius: 50%;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: background-color var(--nav-motion);
+}
+.bm_remove .xd_star {
+  width: 24px;
+  height: 24px;
+}
+.bm_remove .xd_star_wave {
+  fill: var(--nav-ink);
+}
+.bm_remove .xd_star_level {
+  transform: translateY(-5px); /* 평소엔 가득 */
+}
+.bm_remove .xd_star_outline {
+  stroke: var(--nav-ink);
+}
+.bm_remove:hover,
+.bm_remove:focus-visible,
+.bm_remove.is-draining {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.bm_remove:hover .xd_star_level,
+.bm_remove:focus-visible .xd_star_level,
+.bm_remove.is-draining .xd_star_level {
+  transform: translateY(20px); /* 물이 빠짐 */
+}
+.bm_remove:hover .xd_star_wave,
+.bm_remove:focus-visible .xd_star_wave,
+.bm_remove.is-draining .xd_star_wave {
+  animation-play-state: running;
+}
+.bm_remove:hover .xd_star_outline,
+.bm_remove:focus-visible .xd_star_outline,
+.bm_remove.is-draining .xd_star_outline {
+  stroke: var(--nav-accent);
+}
+.bm_remove:focus-visible {
+  outline: var(--nav-line) dashed var(--nav-ink);
+  outline-offset: 3px;
+}
+/* 마우스를 올리면 왼쪽에 '해제' 글자 */
+.bm_remove_tip {
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 50%;
+  padding: 3px 9px;
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--nav-accent);
+  background-color: rgba(0, 0, 0, 0.7);
+  border: var(--nav-line) solid var(--nav-accent);
+  opacity: 0;
+  transform: translate(6px, -50%);
+  pointer-events: none;
+  transition: opacity var(--nav-motion), transform var(--nav-motion);
+}
+.bm_remove:hover .bm_remove_tip,
+.bm_remove:focus-visible .bm_remove_tip,
+.bm_remove.is-draining .bm_remove_tip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
