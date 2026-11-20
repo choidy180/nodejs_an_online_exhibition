@@ -1,0 +1,48 @@
+/* =========================================================
+   Global typography — Pretendard + tight tracking
+   (Pretendard webfont is loaded via CDN <link> in each layout head)
+   ========================================================= */
+:root {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", sans-serif;
+  /* 본문 자간 / 큰 제목(28px 이상) 자간 */
+  --ls-body: -0.025em;
+  --ls-title: -0.04em;
+}
+
+html,
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  word-break: keep-all;
+}
+
+/* em 단위 자간이 요소별 글자 크기에 맞게 계산되도록 전체 요소에 적용
+   (클래스/인라인에서 지정한 값이 있으면 그 값이 우선) */
+*,
+*::before,
+*::after {
+  letter-spacing: var(--ls-body);
+}
+
+h1,
+h2 {
+  letter-spacing: var(--ls-title);
+}
+
+/* 폼 요소는 기본적으로 폰트를 상속하지 않으므로 강제 상속 */
+button,
+input,
+select,
+textarea,
+optgroup {
+  font-family: inherit;
+}
+input::placeholder,
+textarea::placeholder {
+  font-family: inherit;
+}

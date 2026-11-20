@@ -6,7 +6,7 @@
                     <img class="afe_user_info_img" src="/uploads/<%=sess.user.IMG%>" alt="">
                 </div>
                 <p class="afe_user_info_name"><%= sess.user.NAME%></p>
-                <p class="afe_user_info_name" style="font-weight: 500; letter-spacing: -0.5px;"><%= sess.user.EMAIL%></p>
+                <p class="afe_user_info_name" style="font-weight: 500; letter-spacing: var(--ls-body);"><%= sess.user.EMAIL%></p>
             </div>
             <div class="app_for_exhibition_user_info_bottom">
                 <p class="app_for_exhibition_user_info_bottom_text" onclick="location.href='/user_change_info_first'">회원정보 수정</p>
@@ -17,7 +17,7 @@
         </div>
         <div class="mypage_main_box_right" style="flex-direction: column ;justify-content: flex-start; margin-top: 150px;">
             <% if (row.length == 0){%>
-            <p style="font-size: 30px; font-weight: 700px; letter-spacing: -1.3px;">등록한 카드가 존재하지 않습니다.</p>
+            <p style="font-size: 30px; font-weight: 700px; letter-spacing: var(--ls-title);">등록한 카드가 존재하지 않습니다.</p>
             <div style="display: flex; margin-top: 20px;">
                 <button class="mypage_user_card_btn"onclick="location.href='/register_card'">카드 등록하기</button>
             </div>

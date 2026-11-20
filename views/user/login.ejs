@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/public/stylesheets/intro.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Nanum+Gothic+Coding:wght@700&family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
     <title>로그인</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link rel="stylesheet" href="/public/stylesheets/typography.css" />
 </head>
 <body>
     <form action="/users/login_user" method="POST">
@@ -20,7 +22,7 @@
             <button class="login_page_login_button">로그인</button>
         </div>
     </form>
-    <img src="/public/images/icon/title_text_icon.png" alt="" style="position: fixed; top: 36vh; left: calc(50% - 200px); z-index: 10; width: 400px; cursor: pointer;" onclick="location.href='/main'">
+    <img src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION" style="position: fixed; top: 36vh; left: calc(50% - 220px); z-index: 10; width: 440px; cursor: pointer;" onclick="location.href='/main'">
     <button style="position: fixed; top: 20px; right: 20px; z-index: 10; width: 80px; height: 35px; font-size: 16px; border: none; outline: none; border-radius: 17.5px; cursor: pointer;" onclick="location.href='/sign_first'">회원가입</button>
 </body>
 </html>

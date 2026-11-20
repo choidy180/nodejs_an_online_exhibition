@@ -1,0 +1,126 @@
+<%
+  var status = locals.status || 500;
+  var notFound = status === 404;
+  var stack = locals.error && locals.error.stack;
+%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= status %> | 온라인 전시회 플랫폼</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link rel="stylesheet" href="/public/stylesheets/typography.css" />
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #111;
+            color: white;
+            animation: fadein 600ms ease-out;
+        }
+        @keyframes fadein {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .error_box {
+            width: 100%;
+            max-width: 640px;
+            padding: 48px 24px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .error_logo {
+            width: 220px;
+            max-width: 60%;
+            cursor: pointer;
+            margin-bottom: 48px;
+        }
+        .error_status {
+            margin: 0;
+            font-size: 96px;
+            font-weight: 800;
+            line-height: 1;
+            color: #f00;
+        }
+        .error_title {
+            margin: 24px 0 8px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .error_message {
+            margin: 0;
+            font-size: 16px;
+            color: #9a9a9a;
+        }
+        .error_buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+        .error_button {
+            min-width: 160px;
+            height: 48px;
+            padding: 0 24px;
+            border-radius: 24px;
+            border: 1px solid silver;
+            background-color: transparent;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .error_button:hover {
+            background-color: white;
+            color: black;
+        }
+        .error_button.primary {
+            background-color: #f00;
+            border-color: #f00;
+        }
+        .error_button.primary:hover {
+            background-color: #c00;
+            border-color: #c00;
+            color: white;
+        }
+        .error_stack {
+            margin-top: 40px;
+            padding: 16px;
+            max-height: 320px;
+            overflow: auto;
+            text-align: left;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            letter-spacing: 0;
+            color: #ccc;
+            background-color: #1c1c1c;
+            border: 1px solid #333;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="error_box">
+        <img class="error_logo" src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION" onclick="location.href='/main'">
+        <p class="error_status"><%= status %></p>
+        <h1 class="error_title"><%= notFound ? '페이지를 찾을 수 없습니다' : '문제가 발생했습니다' %></h1>
+        <p class="error_message"><%= locals.message %></p>
+        <div class="error_buttons">
+            <button class="error_button" onclick="history.back()">이전 페이지</button>
+            <button class="error_button primary" onclick="location.href='/main'">메인으로</button>
+        </div>
+        <% if (stack) { %>
+        <pre class="error_stack"><%= stack %></pre>
+        <% } %>
+    </div>
+</body>
+</html>

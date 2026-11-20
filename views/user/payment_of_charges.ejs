@@ -1,5 +1,3 @@
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 <div class="app_for_exhibition_area">
     <div class="app_for_exhibition_container">
         <div class="app_for_exhibition_container_right">
@@ -9,21 +7,21 @@
                     <p>요금제 결제를 진행합니다.</p>
                     <% if (para == 'premium'){%>
                         <div style="width: 100%; display: flex;flex-direction: row; justify-content: flex-start; align-items: center; width: 100%; height: 50px; margin-top: 50px;">
-                            관람권 : <input type="text" id="count" name="grade" value="20" style="border: none; outline: none; font-size: 26px; margin-left: 20px; background-color: transparent; font-family: 'Noto Sans KR', sans-serif; font-weight: 700;">
+                            관람권 : <input type="text" id="count" name="grade" value="20" style="border: none; outline: none; font-size: 26px; margin-left: 20px; background-color: transparent; font-family: var(--font-sans); font-weight: 700;">
                             ₩ 169,000
                         </div>
                         <input type="text" id="pay" name="ava" style="border: none; outline: none; background-color: transparent; color: transparent;" readonly  value="169,000">
                     <%}%>
                     <% if (para == 'basic'){%>
                         <div style="width: 100%; display: flex;flex-direction: row; justify-content: flex-start; align-items: center; width: 100%; height: 50px; margin-top: 50px;">
-                            관람권 : <input type="text" id="count" name="grade" value="5" style="border: none; outline: none; font-size: 26px; margin-left: 20px; background-color: transparent; font-family: 'Noto Sans KR', sans-serif; font-weight: 700;">
+                            관람권 : <input type="text" id="count" name="grade" value="5" style="border: none; outline: none; font-size: 26px; margin-left: 20px; background-color: transparent; font-family: var(--font-sans); font-weight: 700;">
                             ₩ 45,900
                         </div>
                         <input type="text" id="pay" name="ava" style="border: none; outline: none; background-color: transparent; color: transparent;" readonly  value="49,000">
                     <%}%>
                     <% if (para == 'standard'){%>
                         <div style="width: 100%; display: flex;flex-direction: row; justify-content: flex-start; align-items: center; width: 100%; height: 50px; margin-top: 50px;">
-                            관람권 : <input type="text" id="count" name="grade" value="10" style="border: none; outline: none; font-size: 26px; margin-left: 20px; background-color: transparent; font-family: 'Noto Sans KR', sans-serif; font-weight: 700;">
+                            관람권 : <input type="text" id="count" name="grade" value="10" style="border: none; outline: none; font-size: 26px; margin-left: 20px; background-color: transparent; font-family: var(--font-sans); font-weight: 700;">
                             ₩ 89,000
                         </div>
                         <input type="text" id="pay" name="ava" style="border: none; outline: none; background-color: transparent; color: transparent;" readonly value="89,000">

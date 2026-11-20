@@ -4,7 +4,7 @@ html {
 body {
   margin: 0px;
   padding: 0px;
-  font-family: "Nanum Gothic", sans-serif;
+  font-family: var(--font-sans);
   overflow: hidden;
 }
 /* 인트로 페이지 */
@@ -57,103 +57,439 @@ body {
   justify-content: center;
   align-items: center;
 }
+/* ---------------------------------------------------------
+   인트로 문구 / 버튼 — 브루탈리즘
+   각진 모서리, 두꺼운 테두리, 번지지 않는 하드 섀도우, 원색 블록
+   --------------------------------------------------------- */
 .intro_content_button {
-  width: 250px;
-  height: 80px;
-  font-size: 30px;
-  font-weight: 500;
-  background: linear-gradient(
-    to right,
-    #f867b6,
-    #e36acc,
-    #d264ce,
-    #be66d3,
-    #b96dc5,
-    #b462df,
-    #ae6ce0,
-    #9d66ec,
-    #986de2,
-    #856bd3,
-    #806bec,
-    #8173e7,
-    #716be8,
-    #6b72de,
-    #6476ec
-  );
-  color: white;
+  height: 72px;
+  padding: 0 36px;
+  font-size: 24px;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fff;
+  background: #f00;
+  border: 3px solid #111;
+  border-radius: 6px;
+  box-shadow: 3px 3px 0 #fff;
+  white-space: nowrap;
   outline: none;
-  top: -1vh;
-  border-radius: 1rem;
-  border: none;
-  transition: all ease 0.3s;
   cursor: pointer;
-  font-family: "Nanum Gothic", sans-serif;
-  font-weight: 700;
+  transition: transform 0.08s linear, box-shadow 0.08s linear;
+}
+.intro_content_button::after {
+  content: "→";
+  margin-left: 0.6em;
 }
 .intro_content_button:hover {
-  transform: scale(1.1);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #fff;
+}
+.intro_content_button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 #fff;
+}
+.intro_content_button:focus-visible {
+  outline: 3px dashed #fff;
+  outline-offset: 8px;
+}
+/* ---------------------------------------------------------
+   페이지 전환 ① 인트로 퇴장 (body.is-leaving)
+   제목 → 부제 → 버튼 순으로 블록이 아래에서 위로 걷히고, 그 사이
+   WebGL 캔버스(stage-transition.js)가 배경을 시작 페이지 배경으로
+   반짝이며 디졸브한다. 캔버스는 배경 위, 문구 아래에 깔린다.
+   --------------------------------------------------------- */
+body.is-leaving .intro_content_title,
+body.is-leaving .intro_content_sub_title,
+body.is-leaving .intro_content_button_box {
+  animation: stage_block_out 280ms cubic-bezier(0.32, 0, 0.67, 0) forwards;
+}
+body.is-leaving .intro_content_sub_title {
+  animation-delay: 70ms;
+}
+body.is-leaving .intro_content_button_box {
+  animation-delay: 140ms;
+}
+body.is-leaving .scroll_cue,
+body.is-leaving .intro_fixed {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms linear;
+}
+body.is-leaving .intro_content_button {
+  pointer-events: none;
+}
+.stage_transition_canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; /* .background(1)보다 뒤에 붙으므로 그 위, .intro_content_box(2) 아래 */
+  pointer-events: none;
+}
+/* 끝 상태는 bottom을 100% + 12px로 둬서 보이는 영역 높이를 0으로 만든다
+   (100%에서 멈추면 경계에 1px 잔상이 남는다) */
+@keyframes stage_block_out {
+  from {
+    clip-path: inset(-12px -12px -12px -12px);
+  }
+  to {
+    clip-path: inset(-12px -12px calc(100% + 12px) -12px);
+  }
+}
+
+/* ---------------------------------------------------------
+   페이지 전환 ② 시작 페이지 입장 (html.stage-enter)
+   인트로의 캔버스가 시작 페이지 배경 그대로 끝나므로 배경은 움직이지 않고,
+   로고와 버튼만 위에서부터 차례로 드러난다.
+   --------------------------------------------------------- */
+html.stage-enter {
+  background: #000; /* 배경 이미지가 그려지기 전 한 프레임이 흰색으로 튀지 않게 */
+}
+.stage-enter .intro_content_box > * {
+  animation: stage_block_in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.stage-enter .intro_content_box > :nth-child(1) { animation-delay: 60ms; }
+.stage-enter .intro_content_box > :nth-child(2) { animation-delay: 160ms; }
+.stage-enter .intro_content_box > :nth-child(3) { animation-delay: 220ms; }
+.stage-enter .intro_content_box > :nth-child(4) { animation-delay: 280ms; }
+.stage-enter .intro_content_box > :nth-child(5) { animation-delay: 320ms; }
+.stage-enter .intro_content_box > :nth-child(6) { animation-delay: 360ms; }
+@keyframes stage_block_in {
+  from {
+    clip-path: inset(-12px -12px calc(100% + 12px) -12px);
+    transform: translateY(-12px);
+  }
+  to {
+    clip-path: inset(-12px -12px -12px -12px);
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage-enter .intro_content_box > * {
+    animation: none;
+  }
+}
+
+/* 문구는 .intro_label에 배경을 깔아 줄 단위 블록(라벨)으로 보이게 한다 */
+.intro_content_title,
+.intro_content_sub_title {
+  padding: 0 16px;
+}
+.intro_content_title .intro_label,
+.intro_content_sub_title .intro_label {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 .intro_content_title {
-  color: white;
-  font-weight: 400;
   font-size: 80px;
+  font-weight: 900;
+  line-height: 1.32;
+}
+.intro_content_title .intro_label {
+  padding: 0.02em 0.22em;
+  color: #111;
+  background: #fff;
+  letter-spacing: -0.05em;
 }
 .intro_content_sub_title {
-  opacity: 0.5;
-  font-size: 60px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.6;
 }
-.start_under_arrow {
-  margin-top: 37vh;
-  width: 70px;
-  bottom: -100px;
-  margin-left: calc(50% - 35px);
+.intro_content_sub_title .intro_label {
+  padding: 0.08em 0.4em;
+  color: #fff;
+  background: #111;
+  border: 2px solid #fff;
+}
+
+/* ---------------------------------------------------------
+   제목 타이핑 (intro-typing.js)
+   보이지 않는 완성본(type_ghost)이 자리를 잡고, 같은 칸에 겹친
+   type_live에 글자가 쳐진다. 그래서 치는 동안 줄이 흔들리지 않는다.
+   --------------------------------------------------------- */
+.typing-pending .intro_content_title {
+  visibility: hidden;
+}
+/* 제목을 다 치면(.is-typed) 부제가 페이드인하고, 부제가 다 나타난 뒤 버튼이 나타난다.
+   다시 칠 때는 둘 다 바로 숨긴다 (숨김 상태 쪽 transition이 0s라서 즉시 사라진다) */
+.typing-on .intro_content_sub_title {
+  transition: opacity 600ms ease-out;
+}
+.typing-on .intro_content_button_box {
+  /* 부제 페이드인(600ms)이 끝난 뒤 시작. visibility도 같이 늦춰야 그 전에 눌리지 않는다 */
+  transition: opacity 500ms ease-out 600ms, visibility 0s linear 600ms;
+}
+.typing-pending .intro_content_sub_title,
+.typing-on .intro_content_box:not(.is-typed) .intro_content_sub_title {
+  opacity: 0;
+  transition: none;
+}
+.typing-pending .intro_content_button_box,
+.typing-on .intro_content_box:not(.is-typed) .intro_content_button_box {
+  opacity: 0;
+  visibility: hidden;
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .typing-on .intro_content_sub_title,
+  .typing-on .intro_content_button_box {
+    transition: none;
+  }
+}
+.type_box {
+  display: inline-grid;
+  max-width: 100%;
+  text-align: left;
+  vertical-align: top;
+}
+.type_ghost,
+.type_live {
+  grid-area: 1 / 1;
+}
+.type_ghost {
+  visibility: hidden;
+}
+.type_caret {
+  display: inline-block;
+  width: 0.07em;
+  height: 0.86em;
+  margin-left: 0.05em;
+  vertical-align: -0.1em;
+  background: #111;
+  animation: type_caret_blink 1s steps(1) infinite;
+}
+.type_box.is-typing .type_caret {
+  animation: none; /* 치는 동안에는 깜빡이지 않는다 */
+}
+@keyframes type_caret_blink {
+  50% {
+    opacity: 0;
+  }
+}
+.sr_only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .type_caret {
+    animation: none;
+  }
+}
+/* 스크롤 유도 버튼 (마우스 휠 모션) */
+.scroll_cue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* .intro_content_box 상단 = 섹션 37vh 지점 → 섹션 하단에서 약 4vh 위에 위치 */
+  top: calc(59vh - 122px);
+  margin: 0 auto;
+  width: 96px;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  outline: none;
   cursor: pointer;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
+  animation: scroll_cue_float 2.4s ease-in-out infinite;
+}
+.scroll_cue_mouse {
+  position: relative;
+  display: block;
+  width: 34px;
+  height: 56px;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.28);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+/* 클릭 유도용 펄스 링 */
+.scroll_cue_mouse::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  animation: scroll_cue_pulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+.scroll_cue_wheel {
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  width: 4px;
+  height: 10px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: #fff;
+  animation: scroll_cue_wheel 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  transition: background-color 0.3s ease;
+}
+.scroll_cue_arrows {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 18px;
+}
+.scroll_cue_arrows i {
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin-top: -2px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  opacity: 0;
+  transform: rotate(45deg);
+  animation: scroll_cue_arrow 1.6s ease-in-out infinite;
+  transition: border-color 0.3s ease;
+}
+.scroll_cue_arrows i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.scroll_cue_label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  margin-right: -0.2em;
+  opacity: 0.85;
+}
+.scroll_cue:hover .scroll_cue_mouse,
+.scroll_cue:focus-visible .scroll_cue_mouse {
+  border-color: #f867b6;
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(248, 103, 182, 0.55);
+}
+.scroll_cue:hover .scroll_cue_wheel,
+.scroll_cue:focus-visible .scroll_cue_wheel {
+  background: #f867b6;
+}
+.scroll_cue:hover .scroll_cue_arrows i,
+.scroll_cue:focus-visible .scroll_cue_arrows i {
+  border-color: #f867b6;
+}
+.scroll_cue:active .scroll_cue_mouse {
+  transform: scale(0.96);
+}
+/* 마지막 섹션: 처음으로(TOP) */
+.scroll_cue--top .scroll_cue_arrows {
+  order: -1;
+}
+.scroll_cue--top .scroll_cue_arrows i {
+  margin-top: 0;
+  margin-bottom: -2px;
+  transform: rotate(-135deg);
+  animation-name: scroll_cue_arrow_up;
+}
+.scroll_cue--top .scroll_cue_arrows i:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.scroll_cue--top .scroll_cue_arrows i:nth-child(2) {
+  animation-delay: 0s;
+}
+.scroll_cue--top .scroll_cue_wheel {
+  animation-name: scroll_cue_wheel_up;
+}
+@keyframes scroll_cue_wheel {
+  0% { transform: translateY(0); opacity: 0; }
+  15% { opacity: 1; }
+  65% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(20px); opacity: 0; }
+}
+@keyframes scroll_cue_wheel_up {
+  0% { transform: translateY(20px); opacity: 0; }
+  15% { opacity: 1; }
+  65% { transform: translateY(0); opacity: 0; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+@keyframes scroll_cue_arrow {
+  0% { opacity: 0; transform: translateY(-4px) rotate(45deg); }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(4px) rotate(45deg); }
+}
+@keyframes scroll_cue_arrow_up {
+  0% { opacity: 0; transform: translateY(4px) rotate(-135deg); }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-4px) rotate(-135deg); }
+}
+@keyframes scroll_cue_float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+@keyframes scroll_cue_pulse {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  70% { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+@media (max-height: 760px) {
+  .scroll_cue {
+    top: calc(63vh - 104px);
+    gap: 6px;
+  }
+  .scroll_cue_label {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll_cue,
+  .scroll_cue_mouse::before,
+  .scroll_cue_wheel,
+  .scroll_cue_arrows i {
+    animation: none;
+  }
+  .scroll_cue_arrows i {
+    opacity: 1;
+  }
 }
 @media (max-width: 1700px) {
   .intro_content_title {
-    font-size: 60px;
+    font-size: 64px;
   }
   .intro_content_sub_title {
-    font-size: 50px;
+    font-size: 28px;
   }
   .intro_content_button {
-    width: 200px;
-    height: 70px;
-    font-size: 24px;
-  }
-  .start_under_arrow {
-    margin-top: 40vh;
+    height: 66px;
+    font-size: 22px;
   }
 }
 @media (max-width: 1300px) {
   .intro_content_title {
-    font-size: 50px;
+    font-size: 54px;
   }
   .intro_content_sub_title {
-    font-size: 40px;
-  }
-  .intro_content_button {
-    width: 200px;
-    font-size: 24px;
-  }
-  .start_under_arrow {
-    margin-top: 43vh;
+    font-size: 26px;
   }
 }
 @media (max-width: 1130px) {
   .intro_content_title {
-    font-size: 40px;
+    font-size: 46px;
   }
   .intro_content_sub_title {
-    font-size: 36px;
+    font-size: 24px;
   }
   .intro_content_button {
-    width: 180px;
     height: 60px;
+    padding: 0 28px;
     font-size: 20px;
-  }
-  .start_under_arrow {
-    margin-top: 46vh;
   }
 }
 @media (max-width: 870px) {
@@ -161,10 +497,12 @@ body {
     font-size: 30px;
   }
   .intro_content_sub_title {
-    font-size: 26px;
+    font-size: 18px;
   }
-  .start_under_arrow {
-    margin-top: 43vh;
+  .intro_content_button {
+    height: 54px;
+    padding: 0 22px;
+    font-size: 18px;
   }
 }
 /* 시작 페이지 */
@@ -178,7 +516,7 @@ body {
   color: #f00;
 }
 .start_logo {
-  width: 400px;
+  width: 440px;
   margin-bottom: 10vh;
 }
 .start_button_box {
@@ -190,23 +528,48 @@ body {
   justify-content: center;
   align-items: center;
 }
-.start_button {
+/* 시작 페이지 버튼 — 브루탈리즘 (인트로 버튼과 같은 규칙)
+   보조 버튼: 검은 면 + 흰 테두리 + 흰 하드 섀도우
+   주 버튼(로그인): 빨간 면 + 검은 테두리 + 흰 하드 섀도우 */
+.start_button,
+.start_login_button {
   width: 400px;
   min-width: 215px;
-  height: 4.5vh;
-  border-radius: 2vh;
+  height: clamp(48px, 6.4vh, 64px);
+  border-radius: 6px;
   outline: none;
-  background-color: transparent;
-  border: 1px solid silver;
-  color: white;
-  font-size: 24px;
-  font-family: "Nanum Gothic", sans-serif;
-  font-weight: 700;
+  font-size: 22px;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  box-shadow: 3px 3px 0 #fff;
   cursor: pointer;
+  transition: transform 0.08s linear, box-shadow 0.08s linear,
+    background-color 0.08s linear, color 0.08s linear;
+}
+.start_button {
+  color: #fff;
+  background-color: #111;
+  border: 3px solid #fff;
 }
 .start_button:hover {
-  background-color: white;
-  color: black;
+  color: #111;
+  background-color: #fff;
+}
+.start_button:hover,
+.start_login_button:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #fff;
+}
+.start_button:active,
+.start_login_button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 #fff;
+}
+.start_button:focus-visible,
+.start_login_button:focus-visible {
+  outline: 3px dashed #fff;
+  outline-offset: 8px;
 }
 .start_button_login_box {
   margin-top: 2vh;
@@ -218,34 +581,13 @@ body {
   align-items: center;
 }
 .start_login_button {
-  width: 400px;
-  min-width: 195px;
-  height: 4.5vh;
-  border-radius: 2vh;
-  outline: none;
+  color: #fff;
   background-color: #f00;
-  border: 1px solid #f00;
-  color: white;
-  font-size: 26px;
-  font-family: "Nanum Gothic", sans-serif;
-  font-weight: 700;
-  cursor: pointer;
+  border: 3px solid #111;
 }
-@media (max-width: 1700px) {
-  .intro_content_title {
-    font-size: 60px;
-  }
-  .intro_content_sub_title {
-    font-size: 50px;
-  }
-  .intro_content_button {
-    width: 200px;
-    height: 70px;
-    font-size: 24px;
-  }
-  .start_under_arrow {
-    margin-top: 40vh;
-  }
+.start_login_button::after {
+  content: "→";
+  margin-left: 0.6em;
 }
 
 /* 로그인 */
@@ -271,11 +613,11 @@ body {
   color: lightgray;
   border-bottom: 1px solid white;
   font-size: 1.33rem;
-  font-family: "Nanum Gothic", sans-serif;
+  font-family: var(--font-sans);
 }
 .login_box_input::placeholder {
   font-size: 20px;
-  font-family: "Nanum Gothic", sans-serif;
+  font-family: var(--font-sans);
 }
 .login_page_login_button {
   width: 400px;
@@ -285,7 +627,7 @@ body {
   font-size: 30px;
   font-weight: 700;
   border-radius: 30px;
-  font-family: "Nanum Gothic", sans-serif;
+  font-family: var(--font-sans);
   background: linear-gradient(
     to right,
     #f867b0,

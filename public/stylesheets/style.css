@@ -232,7 +232,7 @@ body {
 .sign_up_logo_text {
   color: #39373a;
   text-decoration: none;
-  font-family: "Noto-B";
+  font-family: var(--font-sans);
   font-size: 30px;
 }
 
@@ -259,7 +259,7 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-family: "Noto-B";
+  font-family: var(--font-sans);
   margin-left: 70px;
 }
 
@@ -279,7 +279,7 @@ body {
 .sign_profile_img_upload {
   font-size: 18px;
   font-weight: 700;
-  font-family: "Noto-M";
+  font-family: var(--font-sans);
 }
 .sign_up_input:focus {
   outline: none;
@@ -375,7 +375,7 @@ body {
   color: white;
   font-size: 18px;
   font-weight: 700;
-  font-family: "Noto-M";
+  font-family: var(--font-sans);
   border-radius: 6px;
   outline: none;
   cursor: pointer;
@@ -520,14 +520,14 @@ body {
   width: 100%;
   height: 28px;
   font-size: 28px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .main_hall_head_text_sub {
   margin-top: 15px;
   width: 100%;
   height: 18px;
   font-size: 18px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .main_hall_box {
   margin-top: 0px;
@@ -686,7 +686,7 @@ body {
   width: 100%;
   height: 50px;
   font-size: 40px;
-  font-family: "Noto B";
+  font-family: var(--font-sans);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -919,7 +919,7 @@ body {
   margin-top: 15px;
   width: 100%;
   height: 20px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
   text-align: center;
 }
@@ -927,7 +927,7 @@ body {
   margin-top: 5px;
   width: 100%;
   height: 15px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   text-align: center;
 }
@@ -957,7 +957,7 @@ body {
   justify-content: center;
   align-items: center;
   margin-bottom: 100px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .admin_menu_select_home_text_box_imgbox {
   width: 5px;
@@ -982,14 +982,14 @@ body {
   justify-content: flex-start;
   align-items: center;
   font-size: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .admin_menu_select_sub_text_box {
   width: 100%;
   height: 20px;
   font-size: 20px;
   margin-left: 110px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .admin_menu_select_content_area {
   width: 100%;
@@ -1027,7 +1027,7 @@ body {
 .admin_menu_contentbox_head {
   width: 100%;
   height: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -1046,7 +1046,7 @@ body {
   width: 150px;
   height: 40px;
   font-size: 20px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   border: 0.1px solid #dddddd;
   background-color: white;
   transition: all ease 0.5s;
@@ -1099,7 +1099,7 @@ body {
   padding-top: 10px;
   height: 45px;
   text-align: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 20px;
   font-weight: 700;
 }
@@ -1130,7 +1130,7 @@ body {
 .mypage_home_a {
   width: 100%;
   height: 50px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 30px;
   font-weight: 700;
   display: flex;
@@ -1156,13 +1156,13 @@ body {
   font-size: 30px;
   font-weight: 500;
   margin-right: 50px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_home_login_id_box_sub {
   margin-bottom: 5px;
   font-size: 18px;
   font-weight: 100;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_home_content_box {
   width: 100%;
@@ -1216,7 +1216,7 @@ body {
   align-items: center;
   font-size: 40px;
   font-weight: 500;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_home_content_box_left_bottom_name {
   margin-top: -30px;
@@ -1228,7 +1228,7 @@ body {
   align-items: center;
   font-size: 34px;
   font-weight: 500;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_home_content_box_left_bottom_email {
   margin-top: -40px;
@@ -1240,7 +1240,7 @@ body {
   align-items: center;
   font-size: 25px;
   font-weight: 500;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_home_content_box_right {
   width: 700px;
@@ -1265,7 +1265,7 @@ body {
   padding-right: 45px;
   font-size: 25px;
   font-weight: 500;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_home_content_box_right_top_title {
   width: 100%;
@@ -1277,7 +1277,7 @@ body {
   align-items: center;
   font-size: 25px;
   font-weight: 500;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_home_content_box_right_top_post_written {
   width: 100%;
@@ -1289,7 +1289,7 @@ body {
   align-items: center;
   font-size: 25px;
   font-weight: 300;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_home_content_box_right_top_post_written_sub {
   width: 100%;
@@ -1300,7 +1300,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   font-size: 20px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   margin-bottom: 50px;
 }
 .mypage_nav {
@@ -1317,7 +1317,7 @@ body {
 }
 .mypage_nav_choice_text {
   font-size: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   text-decoration: none;
   color: #7048e8;
   margin-right: 50px;
@@ -1325,7 +1325,7 @@ body {
 
 .mypage_nav_non_choice_text {
   font-size: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   text-decoration: none;
   color: black;
   margin-right: 50px;
@@ -1334,7 +1334,7 @@ body {
   width: 100%;
   height: 35px;
   font-size: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   text-decoration: none;
   color: black;
   display: flex;
@@ -1366,7 +1366,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: 20px;
 }
@@ -1379,7 +1379,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: 20px;
   border-left: 0.5px solid white;
@@ -1483,7 +1483,7 @@ body {
   align-items: center;
   border-right: 1px solid #cfcfcf;
   font-size: 18px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_payment_box2_sub_content_title {
   width: 630px;
@@ -1513,20 +1513,20 @@ body {
 .mypage_payment_box2_sub_content_title_text_title {
   width: 100%;
   height: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 18px;
   margin-top: 10px;
 }
 .mypage_payment_box2_sub_content_title_text_hostess {
   width: 100%;
   height: 14px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   color: gray;
 }
 .mypage_payment_box2_sub_content_title_text_date {
   width: 100%;
   height: 20px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 16px;
   margin-top: 60px;
 }
@@ -1539,7 +1539,7 @@ body {
   align-items: center;
   border-right: 1px solid #cfcfcf;
   font-size: 18px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_payment_box2_sub_content_viewing_status {
   width: 130px;
@@ -1549,7 +1549,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 18px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .mypage_nav_payment_choice_box1_nav a {
   text-decoration: none;
@@ -1592,13 +1592,14 @@ body {
   color: white;
   font-size: 1.3rem;
   transition: all ease 0.5s;
-  letter-spacing: -1.2px;
-  font-weight: 100;
+  letter-spacing: var(--ls-body);
+  font-weight: 300;
 }
 .main_nav_text:hover {
   color: #f00;
 }
 .main_nav_textbox {
+  white-space: nowrap;
   position: relative;
   z-index: 2000;
   transition: all ease 0.5s;
@@ -1740,8 +1741,8 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-end;
-  letter-spacing: -1.2px;
-  font-family: "Open Sans", sans-serif;
+  letter-spacing: var(--ls-title);
+  font-family: var(--font-sans);
 }
 /* 메인 두번째 박스 */
 .top_recommendation_box2 {
@@ -1807,13 +1808,13 @@ body {
 .box2_content_box_title {
   margin-top: 85%;
   font-size: calc(10px + 1vw);
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font-sans);
   color: red;
   font-weight: 700;
 }
 .box2_content_box_sub {
   font-size: calc(10px + 0.7vw);
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font-sans);
   color: white;
   font-weight: 700;
 }
@@ -1875,7 +1876,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 2vw;
-  letter-spacing: -1.5px;
+  letter-spacing: var(--ls-title);
 }
 .main_box3_line_img {
   height: 100%;
@@ -1906,9 +1907,9 @@ body {
   justify-content: center;
   align-items: center;
   margin-top: 30px;
-  font-family: "Nato B", sans-serif;
+  font-family: var(--font-sans);
   font-size: 1.3777vw;
-  letter-spacing: -1.5px;
+  letter-spacing: var(--ls-body);
   font-weight: 700;
 }
 .cc_title_box {
@@ -1919,7 +1920,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 32px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
 }
 .cc_content_box {
@@ -1954,7 +1955,7 @@ body {
   position: absolute;
   z-index: 500;
   font-size: 50px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
 }
 .cc_content_box2 {
@@ -1980,7 +1981,7 @@ body {
   position: absolute;
   z-index: 500;
   font-size: 50px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
 }
 #ccc_box1 {
@@ -2019,7 +2020,7 @@ body {
   height: 100%;
   border: none;
   background-color: #1387fc;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 22px;
   color: white;
   font-weight: 500;
@@ -2216,7 +2217,7 @@ body {
 .mypage_main_box_left_title {
   font-size: 24px;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: var(--ls-body);
 }
 .mypage_main_box_box {
   width: 50%;
@@ -2348,7 +2349,7 @@ body {
   font-size: 40px;
   margin-top: 30px;
   font-weight: 700;
-  letter-spacing: -3px;
+  letter-spacing: var(--ls-title);
 }
 .mypage_payment_guide_box {
   margin-top: 30px;
@@ -2383,7 +2384,7 @@ body {
   align-items: center;
   font-size: 36px;
   font-weight: 700;
-  letter-spacing: -3px;
+  letter-spacing: var(--ls-title);
 }
 .mypage_payment_guide_content_text {
   width: 100%;
@@ -2406,7 +2407,7 @@ body {
   font-weight: 500;
   font-size: 70px;
   margin-top: 50px;
-  letter-spacing: -5px;
+  letter-spacing: var(--ls-title);
 }
 .mypage_payment_select_box {
   width: 100%;
@@ -2420,7 +2421,7 @@ body {
 .mypage_payment_select_box_title {
   font-size: 40px;
   font-weight: 700;
-  letter-spacing: -1px;
+  letter-spacing: var(--ls-title);
 }
 .mypage_payment_select_box_title2 {
   font-size: 32px;
@@ -2556,7 +2557,7 @@ body {
   outline: none;
   font-size: 24px;
   font-weight: 700;
-  letter-spacing: -1.6px;
+  letter-spacing: var(--ls-body);
 }
 .recommend_exhibition_comment_box p {
   font-size: 20px;
@@ -2709,17 +2710,17 @@ body {
 }
 .exhibition_left_middle_head {
   font-size: 22px;
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -2.2px;
+  letter-spacing: var(--ls-body);
 }
 .exhibition_detail_booth_work_box_title {
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font-sans);
   font-size: 16px;
   font-weight: 700;
 }
 .exhibition_detail_booth_work_box_count {
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font-sans);
   font-size: 40px;
   font-weight: 700;
 }
@@ -2733,7 +2734,7 @@ body {
   width: 100%;
   height: 30px;
   font-size: 24px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (min-width: 1300px) {
@@ -2793,7 +2794,7 @@ body {
   }
   .exhibition_left_top_right p {
     margin: 0px;
-    font-family: "Open Sans", sans-serif;
+    font-family: var(--font-sans);
   }
   .exhibition_right_box {
     width: 300px;
@@ -2808,9 +2809,9 @@ body {
     width: 240px;
     height: 40px;
     font-size: 22px;
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: var(--font-sans);
     font-weight: 500;
-    letter-spacing: -0.3px;
+    letter-spacing: var(--ls-body);
     background-color: #1387fc;
     color: white;
     border: none;
@@ -2895,7 +2896,7 @@ body {
   .exhibition_left_bottom {
     width: calc(100% - 50px);
     padding: 25px;
-    font-family: "Open Sans", sans-serif;
+    font-family: var(--font-sans);
     font-size: 20px;
     border-bottom: 10px solid #f7f7f7;
   }
@@ -2963,7 +2964,7 @@ body {
   }
   .exhibition_left_top_right p {
     margin: 0px;
-    font-family: "Open Sans", sans-serif;
+    font-family: var(--font-sans);
   }
   .exhibition_left_top_bottom {
     width: 100%;
@@ -3041,7 +3042,7 @@ body {
   .exhibition_left_bottom {
     width: calc(100% - 50px);
     padding: 25px;
-    font-family: "Open Sans", sans-serif;
+    font-family: var(--font-sans);
     font-size: 20px;
     border-bottom: 10px solid #f7f7f7;
   }
@@ -3079,7 +3080,7 @@ body {
   .exhibition_left_bottom {
     width: calc(100% - 50px);
     padding: 25px;
-    font-family: "Open Sans", sans-serif;
+    font-family: var(--font-sans);
     font-size: 20px;
     border-bottom: 10px solid #f7f7f7;
   }
@@ -3114,7 +3115,7 @@ body {
   padding: 15px;
   font-size: 20px;
   font-weight: 500;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .exhibition_right_img_box {
   width: 100%;
@@ -3139,10 +3140,10 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   margin-bottom: 40px;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: var(--ls-body);
 }
 @media (max-width: 1300px) {
   .exhibition_detail_area {
@@ -3288,9 +3289,9 @@ body {
   justify-content: flex-start;
   align-items: center;
   font-size: 24px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   word-spacing: -0.5px;
-  letter-spacing: -0.3px;
+  letter-spacing: var(--ls-body);
 }
 .app_for_exhibition_user_info_bottom_text {
   cursor: pointer;
@@ -3314,9 +3315,9 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 24px;
-  letter-spacing: -0.8px;
+  letter-spacing: var(--ls-body);
   font-weight: 700;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .afe_right_exhb_title {
   padding-left: 10px;
@@ -3375,9 +3376,9 @@ body {
   justify-content: flex-start;
   align-items: center;
   font-size: 24px;
-  letter-spacing: -0.8px;
+  letter-spacing: var(--ls-body);
   font-weight: 700;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 #exhibition_image_container img {
   width: 100%;
@@ -3406,7 +3407,7 @@ body {
   border: none;
   border-radius: 5px;
   color: white;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 24px;
   cursor: pointer;
   transition: all ease 0.2s;
@@ -3451,9 +3452,9 @@ body {
   align-items: center;
   margin-top: 30px;
   font-size: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.3px;
+  letter-spacing: var(--ls-title);
 }
 /* 카테고리 리스트 */
 .category_list_box {
@@ -3499,15 +3500,15 @@ body {
 }
 .category_list_text_box_title {
   font-size: 42px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.3px;
+  letter-spacing: var(--ls-title);
 }
 .category_list_text_box_sub {
   font-size: 24px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.3px;
+  letter-spacing: var(--ls-body);
 }
 /* 관리자 페이지 - 전시회 승인 */
 .exhibition_approval_area {
@@ -3524,9 +3525,9 @@ body {
 }
 .exhibition_approval_title {
   font-size: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.3px;
+  letter-spacing: var(--ls-title);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -3549,9 +3550,9 @@ body {
 }
 .exhibition_approval_register_date {
   font-size: 22px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
-  letter-spacing: -0.3px;
+  letter-spacing: var(--ls-body);
   margin-top: 10px;
 }
 .exhibition_approval_btn {
@@ -3559,9 +3560,9 @@ body {
   height: 40px;
   margin-top: 10px;
   font-size: 22px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
-  letter-spacing: -0.3px;
+  letter-spacing: var(--ls-body);
   background-color: #1387fc;
   color: white;
   border: none;
@@ -3639,9 +3640,9 @@ body {
 }
 .input_user_info_change_pwd_1 {
   font-size: 18px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
-  letter-spacing: -0.3px;
+  letter-spacing: var(--ls-body);
   padding-left: 10px;
 }
 .afe_right_headbox_exhibinumber {
@@ -3711,9 +3712,9 @@ body {
   background: transparent;
   border: none;
   font-size: 16px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
-  letter-spacing: -0.3px;
+  letter-spacing: var(--ls-body);
 }
 .overpay_on_box {
   width: 130px;
@@ -3798,12 +3799,12 @@ body {
 }
 .app_yes_exhibition_title {
   font-size: 22px;
-  letter-spacing: -1px;
+  letter-spacing: var(--ls-body);
   font-weight: 700;
 }
 .app_yes_exhibition_category {
   font-size: 20px;
-  letter-spacing: -1px;
+  letter-spacing: var(--ls-body);
 }
 .app_yes_exhibition_register_time {
   display: flex;
@@ -3813,7 +3814,7 @@ body {
   width: 100%;
   height: 20px;
   font-size: 20px;
-  letter-spacing: -1px;
+  letter-spacing: var(--ls-body);
   margin-top: 5px;
 }
 /* 전시회 결제내역*/
@@ -3908,7 +3909,7 @@ body {
   align-items: center;
   font-size: 36px;
   font-weight: 700;
-  letter-spacing: -2.4px;
+  letter-spacing: var(--ls-title);
   margin-bottom: 20px;
 }
 .public_box {
@@ -3920,7 +3921,7 @@ body {
   align-items: center;
   font-size: 36px;
   font-weight: 700;
-  letter-spacing: -2.4px;
+  letter-spacing: var(--ls-title);
   border-top: none;
 }
 .public_box_btn {
@@ -3946,7 +3947,7 @@ body {
   outline: none;
   border: 2px solid #999;
   font-size: 18px;
-  letter-spacing: -1px;
+  letter-spacing: var(--ls-body);
   padding-left: 10px;
 }
 .public_box_text_box {
@@ -3956,7 +3957,7 @@ body {
   height: 600px;
   border: 2px solid #999;
   font-size: 18px;
-  letter-spacing: -0.3px;
+  letter-spacing: var(--ls-body);
 }
 .public_box_register_btn {
   width: 200px;
@@ -3981,7 +3982,7 @@ body {
   outline: none;
   border: 2px solid #999;
   font-size: 18px;
-  letter-spacing: -1px;
+  letter-spacing: var(--ls-body);
   padding-left: 10px;
 }
 .public_box2 {
@@ -4056,7 +4057,7 @@ body {
   width: 100%;
   height: 30px;
   font-size: 30px;
-  letter-spacing: -0.7px;
+  letter-spacing: var(--ls-title);
   font-weight: 700;
   color: #006dd7;
 }
@@ -4065,7 +4066,7 @@ body {
   width: 100%;
   height: 30px;
   font-size: 20px;
-  letter-spacing: -0.7px;
+  letter-spacing: var(--ls-body);
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -4124,7 +4125,7 @@ body {
   margin-top: 120px;
   font-size: 26px;
   font-weight: 700;
-  letter-spacing: -0.4px;
+  letter-spacing: var(--ls-body);
 }
 .supportable_exhibition_box {
   padding: 20px;
@@ -4166,7 +4167,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   font-size: 22px;
-  letter-spacing: -0.4px;
+  letter-spacing: var(--ls-body);
   font-weight: 700;
 }
 .supportable_exhibition_text_category {
@@ -4177,7 +4178,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   font-size: 20px;
-  letter-spacing: -0.4px;
+  letter-spacing: var(--ls-body);
   font-weight: 500;
 }
 .supportable_exhibition_text_category button {
@@ -4214,7 +4215,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   font-size: 28px;
-  letter-spacing: -0.4px;
+  letter-spacing: var(--ls-title);
   font-weight: 700;
 }
 .sp_exhibi_imgbox {
@@ -4244,7 +4245,7 @@ body {
   width: 100%;
   height: 250px;
   font-size: 18px;
-  letter-spacing: -0.6px;
+  letter-spacing: var(--ls-body);
   outline: none;
   border: 2px solid #999;
 }
@@ -4289,7 +4290,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   width: 100%;
   height: 30px;
   margin-top: 50px;
@@ -4301,7 +4302,7 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   width: 100%;
   height: 50px;
   margin-top: 50px;
@@ -4358,7 +4359,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 18px;
   font-weight: 500;
 }
@@ -4369,7 +4370,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 18px;
   font-weight: 500;
 }
@@ -4380,7 +4381,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 18px;
   font-weight: 500;
 }
@@ -4391,7 +4392,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 18px;
   font-weight: 500;
 }
@@ -4402,7 +4403,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 18px;
   font-weight: 500;
 }
@@ -4425,8 +4426,8 @@ body {
 }
 .organized_exhibition_present_content_box2 p {
   font-size: 20px;
-  letter-spacing: -0.8px;
-  font-family: "Noto Sans KR", sans-serif;
+  letter-spacing: var(--ls-body);
+  font-family: var(--font-sans);
   font-weight: 700;
 }
 .organized_exhibition_present_content_imgbox {
@@ -4450,7 +4451,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 32px;
   font-weight: 700;
 }
@@ -4463,7 +4464,7 @@ body {
   align-items: center;
 }
 .organized_exhibition_present_content_box3 p {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 20px;
   font-weight: 500;
 }
@@ -4476,7 +4477,7 @@ body {
   align-items: center;
 }
 .organized_exhibition_present_content_box4 p {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 20px;
   font-weight: 500;
 }
@@ -4561,7 +4562,7 @@ body {
 }
 .view_work_textbox p {
   color: white;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 20px;
   font-weight: 500;
   margin: 0px;
@@ -4614,7 +4615,7 @@ body {
   background-color: snow;
   border: 0;
   outline: 0;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 20px;
   font-weight: 500;
   border-radius: 5px;
@@ -4644,7 +4645,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 24px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   color: white;
   font-weight: 700;
   transition: all ease 0.4s;
@@ -4659,7 +4660,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 24px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   color: red;
   font-weight: 700;
   transition: all ease 0.4s;
@@ -4689,7 +4690,7 @@ body {
   outline: none;
   border: 2px solid darkgray;
   font-size: 18px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 
 .inquiry_title {
@@ -4699,7 +4700,7 @@ body {
   outline: none;
   border: 2px solid darkgray;
   font-size: 18px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   margin-top: 0px;
   color: black;
 }
@@ -4710,7 +4711,7 @@ body {
   outline: none;
   border: 2px solid darkgray;
   font-size: 18px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   margin-top: 30px;
   color: black;
 }
@@ -4723,14 +4724,14 @@ body {
   background-color: red;
   cursor: pointer;
   font-size: 20px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   border-radius: 5px;
 }
 .inquiry_title_container p {
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 22px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 
 /* 문의 리스트 */
@@ -4738,7 +4739,7 @@ body {
   width: 100%;
   height: 40px;
   font-size: 32px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -4816,7 +4817,7 @@ body {
   align-items: center;
   margin-top: 50px;
   font-size: 24px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
 }
 .inquiry_list_title_left {
@@ -4844,7 +4845,7 @@ body {
   margin-top: 30px;
   border: 2px solid black;
   font-size: 18px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .answer_btn {
   width: 200px;
@@ -4854,7 +4855,7 @@ body {
   background-color: #1387fc;
   color: white;
   margin-top: 20px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 18px;
   border-radius: 10px;
   cursor: pointer;
@@ -4862,7 +4863,7 @@ body {
 .answer_number {
   width: 100px;
   height: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 30px;
   padding-left: 10px;
   font-weight: 700;
@@ -4894,7 +4895,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 30px;
   font-weight: 700;
   margin-top: 70px;
@@ -4936,7 +4937,7 @@ body {
 .purchase_card_content_title {
   margin: 0px;
   font-size: 24px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
 }
 .purchase_card_content_box3 {
   padding-left: 10px;
@@ -4970,7 +4971,7 @@ body {
 }
 .exhibi_purchase_title {
   font-size: 24px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
 }
 .exhibi_purchase_head {
@@ -4993,13 +4994,13 @@ body {
   align-items: center;
   padding-left: 10px;
   font-size: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
 }
 .book_mark_title {
   width: 100%;
   height: 50px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -5057,7 +5058,7 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 18px;
 }
 .bookmark_start_box {
@@ -5116,7 +5117,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 40px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 700;
 }
 .rating {
@@ -5160,7 +5161,7 @@ body {
   width: 500px;
   height: 300px;
   margin-top: 30px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 16px;
 }
 .review_btn {
@@ -5263,7 +5264,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 24px;
 }
 .organized_present_detail_img {
@@ -5288,7 +5289,7 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 20px;
 }
 .organized_present_detail_title button {
@@ -5329,9 +5330,9 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-sans);
   font-size: 24px;
-  letter-spacing: -0.7px;
+  letter-spacing: var(--ls-body);
 }
 .ex_end_img {
   width: 600px;
