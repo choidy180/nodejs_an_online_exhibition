@@ -86,56 +86,75 @@
     <!-- 메인 화면과 같은 내비게이션 바: 반투명 검정, 로고 + 가는 글씨 링크 -->
     <header class="intro_nav intro_fixed">
         <a class="intro_nav_logo" href="/"><img src="/public/images/icon/exhibition_logo.svg" alt="EXHIBITION"></a>
-        <a class="intro_nav_link" href="/login">LOGIN</a>
+        <a class="intro_nav_link" href="/login" data-stage-leave>LOGIN</a>
     </header>
     <script src="/public/javascripts/intro-typing.js"></script>
     <script src="/public/javascripts/intro-stage.js"></script>
     <script>
-        // 인트로 → 시작 페이지 전환
+        // 인트로 → 시작 페이지(버튼들) · 로그인 화면(오른쪽 위 LOGIN) 전환
         // 문구/버튼이 블록 단위로 걷히는 동안, 배경 캔버스(intro-stage.js)가 반짝이는 원형 디졸브로
-        // 시작 페이지 배경까지 넘어간 뒤 이동한다. 움직임은 끝에서 0이 되어 시작 페이지 배경과 똑같이 끝난다
+        // 다음 화면 배경까지 넘어간 뒤 이동한다. 움직임은 끝에서 0이 되어 다음 화면 배경과 똑같이 끝난다
+        // (도착한 화면은 stage_transition 표시를 보고 글과 버튼만 차례로 드러낸다)
         (function () {
-            // 시작 페이지(start.ejs)의 #back1 배경과 반드시 같아야 이동 순간이 이어져 보인다
-            var START_BACKGROUND = "/public/images/start/start5.png";
-            var START_BRIGHTNESS = 0.2; // start.ejs #back1: filter: brightness(20%)
+            // 값은 각 화면 #back1 배경과 반드시 같아야 이동 순간이 이어져 보인다
+            var DESTINATIONS = {
+                "/start": { background: "/public/images/start/start5.png", brightness: 0.2 }, // start.ejs
+                "/login": { background: "/public/images/start/login.jpg", brightness: 0.2 }   // user/login.ejs
+            };
             var TEXT_OUT_MS = 420;      // WebGL을 못 쓸 때는 문구가 걷힌 뒤 바로 이동
 
             var leaving = false;
             var fallbackTimer = null;
             var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+            function leaveTo(href) {
+                if (leaving) return;
+                var dest = DESTINATIONS[href];
+                if (reduceMotion || !dest) {
+                    location.href = href;
+                    return;
+                }
+                leaving = true;
+                try {
+                    sessionStorage.setItem("stage_transition", "1");
+                } catch (e) {}
+                document.body.classList.add("is-leaving");
+
+                function go() {
+                    location.href = href;
+                }
+                function goAfterTextOut() {
+                    fallbackTimer = setTimeout(go, TEXT_OUT_MS);
+                }
+
+                if (!window.IntroStage) {
+                    goAfterTextOut();
+                    return;
+                }
+                window.IntroStage.leave(dest.background, dest.brightness, 1700).then(go, goAfterTextOut);
+            }
+
             document.querySelectorAll(".intro_content_button[data-href]").forEach(function (button) {
                 button.addEventListener("click", function () {
-                    if (leaving) return;
-                    var href = button.getAttribute("data-href");
-                    if (reduceMotion) {
-                        location.href = href;
-                        return;
-                    }
-                    leaving = true;
-                    try {
-                        sessionStorage.setItem("stage_transition", "1");
-                    } catch (e) {}
-                    document.body.classList.add("is-leaving");
+                    leaveTo(button.getAttribute("data-href"));
+                });
+            });
 
-                    function go() {
-                        location.href = href;
-                    }
-                    function goAfterTextOut() {
-                        fallbackTimer = setTimeout(go, TEXT_OUT_MS);
-                    }
-
-                    if (!window.IntroStage) {
-                        goAfterTextOut();
-                        return;
-                    }
-                    window.IntroStage.leave(START_BACKGROUND, START_BRIGHTNESS, 1700).then(go, goAfterTextOut);
+            document.querySelectorAll("a[data-stage-leave]").forEach(function (link) {
+                link.addEventListener("click", function (event) {
+                    // 새 탭 열기(Ctrl/⌘/Shift/가운데 버튼)는 그대로 둔다
+                    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
+                    leaveTo(link.getAttribute("href"));
                 });
             });
 
             // 다음 배경을 미리 받아 둔다
             window.addEventListener("load", function () {
-                if (window.IntroStage) window.IntroStage.preload([START_BACKGROUND]);
+                if (!window.IntroStage) return;
+                window.IntroStage.preload(Object.keys(DESTINATIONS).map(function (href) {
+                    return DESTINATIONS[href].background;
+                }));
             });
 
             // 뒤로가기로 bfcache에서 복원되면 퇴장 상태를 되돌린다 (캔버스 쪽은 intro-stage.js 가 되돌린다)
