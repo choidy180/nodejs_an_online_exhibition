@@ -158,10 +158,11 @@
     </div>
     <div class="main_area_text">ORIGINAL EXHIBITION</div>
     <%
-        // 오리지널 전시 (DB가 아닌 고정 목록). hover: 마우스를 올리면 바뀌는 이미지, href: 상세 페이지
+        // 오리지널 전시 (DB가 아닌 고정 목록). href: 상세 페이지
+        // hover: 마우스를 올리면 바뀌는 이미지 / hoverVideo: 대신 재생할 영상 (hover는 영상을 못 트는 브라우저용)
         var originals = [
             { title: "CHERNOBYL", img: "101.jpg" },
-            { title: "조제", img: "test100.PNG", hover: "100.webp" },
+            { title: "조제", img: "test100.PNG", hoverVideo: "100.mp4", hover: "100.webp" },
             { title: "ABOUT TIME", img: "test101.PNG" },
             { title: "EXTRACURRICULAR", img: "104.PNG", hover: "104_1.PNG", href: "/exhibition_detail/32" },
             { title: "WITCH", img: "108.jpg", hover: "106_1.jpg" },
@@ -173,7 +174,9 @@
         <% originals.forEach(function (item, i) { var tag = item.href ? "a" : "div"; %>
             <<%= tag %> class="now_card now_card--poster"<% if (item.href) { %> href="<%= item.href %>"<% } %>>
                 <img class="now_card_img" src="/public/images/<%= item.img %>" alt="" loading="lazy">
-                <% if (item.hover) { %>
+                <% if (item.hoverVideo) { %>
+                    <video class="now_card_img now_card_img--alt" data-src="/public/images/<%= item.hoverVideo %>"<% if (item.hover) { %> data-fallback="/public/images/<%= item.hover %>"<% } %> muted loop playsinline preload="none" aria-hidden="true"></video>
+                <% } else if (item.hover) { %>
                     <img class="now_card_img now_card_img--alt" data-src="/public/images/<%= item.hover %>" alt="">
                 <% } %>
                 <% if (item.href) { %>
@@ -190,20 +193,87 @@
         <% }) %>
     </div>
     <script>
-        // 마우스를 올리면 바뀌는 포스터 이미지: 처음 올렸을 때 불러오고(100.webp는 6MB),
-        // 다 받은 뒤에 부드럽게 겹쳐 보여 준다. 받는 동안에는 원래 이미지가 그대로 보인다
-        document.querySelectorAll(".now_card_img--alt[data-src]").forEach(function (img) {
-            var card = img.closest(".now_card");
-            function load() {
-                if (img.getAttribute("src")) return;
-                img.addEventListener("load", function () {
-                    img.classList.add("is-ready");
-                }, { once: true });
-                img.src = img.getAttribute("data-src");
+        // 마우스를 올리면 바뀌는 포스터 이미지 · 영상
+        // - 섹션이 화면에 들어오면 미리 받아 둔다 → 처음 올렸을 때도 기다림 없이 바로 겹친다
+        //   (데이터 절약 모드면 미리 받지 않고, 마우스를 올렸을 때 받는다)
+        // - 이미지는 디코딩까지, 영상은 첫 장면까지 준비된 뒤에 보여 준다 → 처음 겹칠 때 끊기지 않는다
+        // - 영상은 올렸을 때만 재생하고, 다 사라지면 멈춰서 처음으로 돌린다 (다음에도 첫 장면부터)
+        //   예전 움직이는 webp(1879×1512, 299장)는 보일 때마다 CPU로 디코딩하느라 화면이 1초 넘게 멈췄다
+        // - 받는 동안에는 원래 이미지가 그대로 보인다. 겹치는 효과는 style.css .now_card_img--alt
+        (function () {
+            var HIDE_MS = 700; // style.css .now_card_img--alt 가 사라지는 시간
+            var cards = Array.prototype.filter.call(document.querySelectorAll(".orig_grid .now_card"), function (card) {
+                return card.querySelector(".now_card_img--alt[data-src]");
+            });
+            if (!cards.length) return;
+
+            function markReady(card, media) {
+                media.classList.add("is-ready");
+                card.classList.add("has-alt");
             }
-            card.addEventListener("mouseenter", load);
-            card.addEventListener("focusin", load);
-        });
+
+            function load(card) {
+                var media = card.querySelector(".now_card_img--alt[data-src]");
+                if (!media || media.getAttribute("src")) return;
+                if (media.tagName === "VIDEO") {
+                    var fallback = media.getAttribute("data-fallback");
+                    if (media.canPlayType('video/mp4; codecs="avc1.640020"') || !fallback) {
+                        media.muted = true;
+                        media.addEventListener("loadeddata", function () { markReady(card, media); }, { once: true });
+                        media.preload = "auto";
+                        media.src = media.getAttribute("data-src");
+                        return;
+                    }
+                    // MP4(H.264)를 못 트는 브라우저는 예전 움직이는 webp 이미지로 바꾼다
+                    var img = document.createElement("img");
+                    img.className = media.className;
+                    img.alt = "";
+                    img.setAttribute("data-src", fallback);
+                    media.replaceWith(img);
+                    media = img;
+                }
+                media.addEventListener("load", function () {
+                    var decoded = media.decode ? media.decode().catch(function () {}) : Promise.resolve();
+                    decoded.then(function () { markReady(card, media); });
+                }, { once: true });
+                media.src = media.getAttribute("data-src");
+            }
+
+            cards.forEach(function (card) {
+                var pauseTimer = null;
+                function enter() {
+                    load(card);
+                    var video = card.querySelector("video.now_card_img--alt");
+                    if (!video) return;
+                    clearTimeout(pauseTimer);
+                    var playing = video.play();
+                    if (playing && playing.catch) playing.catch(function () {});
+                }
+                function leave() {
+                    var video = card.querySelector("video.now_card_img--alt");
+                    if (!video) return;
+                    clearTimeout(pauseTimer);
+                    pauseTimer = setTimeout(function () {
+                        video.pause();
+                        video.currentTime = 0;
+                    }, HIDE_MS);
+                }
+                card.addEventListener("mouseenter", enter);
+                card.addEventListener("mouseleave", leave);
+                card.addEventListener("focusin", enter);
+                card.addEventListener("focusout", leave);
+            });
+
+            var saveData = navigator.connection && navigator.connection.saveData;
+            var grid = document.querySelector(".orig_grid");
+            if (saveData || !grid || !("IntersectionObserver" in window)) return;
+            var observer = new IntersectionObserver(function (entries) {
+                if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+                observer.disconnect();
+                cards.forEach(load);
+            }, { rootMargin: "200px 0px" });
+            observer.observe(grid);
+        })();
     </script>
     <!-- 카테고리 (CATEGORY_1~3) — 세 섹션이 같은 구성이라 목록 하나로 그린다 -->
     <%

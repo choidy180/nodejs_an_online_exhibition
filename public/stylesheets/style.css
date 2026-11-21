@@ -2171,13 +2171,41 @@ html.modal-open {
   top: 10px;
   right: 12px;
 }
+/* 마우스를 올리면 바뀌는 이미지 (받고 디코딩까지 끝난 뒤 .is-ready, 카드에는 .has-alt)
+   - 들어올 때: 새 이미지가 살짝 크게(1.12) 시작해 제자리(1.06)로 내려앉으며 천천히 떠오르고,
+     원래 이미지는 새 이미지가 거의 덮은 뒤에 빠진다 → 투명한 PNG도 두 장이 겹쳐 보이지 않고,
+     가운데에서 화면이 어두워지지도 않는다
+   - 나갈 때: 원래 이미지가 먼저 돌아온 뒤 새 이미지가 사라진다
+   - 안 보일 때는 visibility: hidden 이라 그리지 않는다 (움직이는 webp가 뒤에서 계속 디코딩되지 않게) */
 .now_card_img--alt {
   opacity: 0;
-  transition: opacity var(--nav-motion), transform var(--nav-motion), filter var(--nav-motion);
+  visibility: hidden;
+  transform: scale(1.12);
+  will-change: opacity, transform;
+  transition:
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0.7s;
 }
 .now_card:hover .now_card_img--alt.is-ready,
 .now_card:focus-visible .now_card_img--alt.is-ready {
   opacity: 1;
+  visibility: visible;
+  transform: scale(1.06);
+  transition:
+    opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s;
+}
+.now_card.has-alt .now_card_img:not(.now_card_img--alt) {
+  transition: transform var(--nav-motion), filter var(--nav-motion), opacity 0.35s ease;
+}
+.now_card.has-alt:hover .now_card_img:not(.now_card_img--alt),
+.now_card.has-alt:focus-visible .now_card_img:not(.now_card_img--alt) {
+  opacity: 0;
+  transition: transform var(--nav-motion), filter var(--nav-motion), opacity 0.6s ease 0.45s;
 }
 
 /* 섹션 제목 (ORIGINAL EXHIBITION, CATEGORY_1 …) — 내비게이션과 같은 가는 대문자,
